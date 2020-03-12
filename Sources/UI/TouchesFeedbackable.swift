@@ -6,6 +6,7 @@ public protocol TouchesFeedbackable: class {
     var touchesBeganDate: Date? { get set }
 }
 
+@available(iOS 9.0, *)
 extension TouchesFeedbackable where Self: UIView {
     public func showFeedback() {
         touchesBeganDate = Date()
@@ -51,6 +52,7 @@ extension TouchesFeedbackable where Self: UIView {
     }
 }
 
+@available(iOS 9.0, *)
 open class TouchesFeedbackView: UIView, TouchesFeedbackable {
     public var tapAction: ((TouchesFeedbackView) -> Void)?
 
