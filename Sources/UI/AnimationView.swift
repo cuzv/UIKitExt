@@ -30,7 +30,10 @@ open class AnimationView: UIView {
 
     open var isAnimating: Bool = false {
         didSet {
-            isAnimating ? startAnimating() : stopAnimating()
+            let currentValue = isAnimating
+            if oldValue != currentValue {
+                currentValue ? startAnimating() : stopAnimating()
+            }
         }
     }
 
@@ -42,7 +45,8 @@ open class AnimationView: UIView {
     @objc private func updateAnimation() {
         if resumeWhileAwake {
             if nil != window && isAnimating {
-                isAnimating = true
+                isAnimating.toggle()
+                isAnimating.toggle()
             }
         } else {
             isAnimating = false
