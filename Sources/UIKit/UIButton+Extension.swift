@@ -61,8 +61,8 @@ extension UIButton {
     }
 
     public func layoutDidChange() {
-        guard let imageSize = imageView?.image?.size else { return }
         guard let font = titleLabel?.font, let titleSize = currentTitle?.size(withAttributes: [.font: font]) else { return }
+        let imageSize = imageView?.image?.size ?? .zero
         let halfSpacing = contentSpacing * 0.5
         var contentOffset = self.contentOffset
 
