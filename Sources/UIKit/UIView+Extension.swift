@@ -15,7 +15,7 @@ extension UIView {
                 context.setFillColor(backgroundColor.cgColor)
                 context.fill(bounds)
             }
-            
+
             if let scrollView = self as? UIScrollView {
                 let previousFrame = frame
                 frame = CGRect(origin: frame.origin, size: scrollView.contentSize)
