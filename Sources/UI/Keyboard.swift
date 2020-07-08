@@ -54,3 +54,22 @@ extension NotificationCenter {
         }
     }
 }
+
+extension UIView {
+    public static func animateKeyboard(
+        withDuration duration: TimeInterval,
+        curve: UIView.AnimationCurve,
+        animations: @escaping () -> Void
+    ) {
+        if #available(iOS 14, *) {
+            UIView.animate(withDuration: duration, delay: 0, options: AnimationOptions(rawValue: UInt(curve.rawValue) << 16), animations: animations, completion: nil)
+        } else {
+            UIView.beginAnimations(nil, context: nil)
+            UIView.setAnimationBeginsFromCurrentState(true)
+            UIView.setAnimationDuration(duration)
+            UIView.setAnimationCurve(curve)
+            animations()
+            UIView.commitAnimations()
+        }
+    }
+}
