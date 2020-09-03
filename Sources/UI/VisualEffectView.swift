@@ -40,7 +40,6 @@ public final class VisualEffectView: UIVisualEffectView {
 
         additionPerFrame = (endRadius - self.blurRadius) / CGFloat(duration * 60)
         displayLink.isPaused = false
-        print("perFrame: \(additionPerFrame)")
     }
 
     // MARK: Animation support
