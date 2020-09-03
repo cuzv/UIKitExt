@@ -2,7 +2,9 @@ import UIKit
 
 @available(iOS 10.0, *)
 public final class VisualEffectView: UIVisualEffectView {
-    private let animator = UIViewPropertyAnimator()
+    private var animator: UIViewPropertyAnimator?
+    private var observer: NSObjectProtocol?
+    private var restoreEffect: UIVisualEffect?
 
     public override init(effect: UIVisualEffect?) {
         super.init(effect: effect)
@@ -14,16 +16,61 @@ public final class VisualEffectView: UIVisualEffectView {
         setup()
     }
 
+    deinit {
+        if let token = observer {
+            observer = nil
+            NotificationCenter.default.removeObserver(token)
+        }
+
+        if isDisplayLinkInitialized {
+            displayLink.invalidate()
+        }
+    }
+
     private func setup() {
-        animator.addAnimations { [weak self] in
+        observer = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.initializeAnimator()
+        }
+    }
+
+    public override func didMoveToWindow() {
+        super.didMoveToWindow()
+
+        if nil != window {
+            initializeAnimator()
+        }
+    }
+
+    private func initializeAnimator() {
+        animator?.stopAnimation(false)
+        animator = nil
+
+        animator = UIViewPropertyAnimator()
+        animator?.addAnimations { [weak self] in
             self?.effect = nil
+        }
+
+        restoreEffect = effect
+        animator?.addCompletion { [weak self] position in
+            let effect = self?.restoreEffect
+            if .end == position, nil != effect {
+                self?.effect = effect
+            }
+        }
+    }
+
+    public override var effect: UIVisualEffect? {
+        didSet {
+            if nil != effect {
+                restoreEffect = effect
+            }
         }
     }
 
     /// [0...100]
     public var blurRadius: CGFloat {
-        get { 100 - min(100, animator.fractionComplete * 100) }
-        set { animator.fractionComplete = 1 - min(1, newValue / 100) }
+        get { 100 - min(100, (animator?.fractionComplete ?? 1) * 100) }
+        set { animator?.fractionComplete = 1 - min(1, newValue / 100) }
     }
 
     public var colorTint: UIColor? {
@@ -83,12 +130,6 @@ public final class VisualEffectView: UIVisualEffectView {
         displayLink.isPaused = true
         return displayLink
     }()
-
-    deinit {
-        if isDisplayLinkInitialized {
-            displayLink.invalidate()
-        }
-    }
 }
 
 @available(iOS 10.0, *)
