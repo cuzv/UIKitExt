@@ -26,6 +26,18 @@ public final class VisualEffectView: UIVisualEffectView {
         set { animator.fractionComplete = 1 - min(1, newValue / 100) }
     }
 
+    public var colorTint: UIColor? {
+        get { contentView.backgroundColor }
+        set { contentView.backgroundColor = newValue }
+    }
+
+    public var colorTintAlpha: CGFloat {
+        get { contentView.alpha }
+        set { contentView.alpha = newValue }
+    }
+
+    // MARK: Animation support
+
     public func animate(blurRadius: CGFloat, within duration: TimeInterval, completion: (() -> Void)? = nil) {
         if isAnimating { return }
 
@@ -41,8 +53,6 @@ public final class VisualEffectView: UIVisualEffectView {
         additionPerFrame = (endRadius - self.blurRadius) / CGFloat(duration * 60)
         displayLink.isPaused = false
     }
-
-    // MARK: Animation support
 
     private var endRadius: CGFloat = 0
     private var additionPerFrame: CGFloat = 0
