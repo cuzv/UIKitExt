@@ -4,6 +4,16 @@ import CoreGraphics
 // MARK: - Snapshot
 
 extension UIView {
+    @available(iOS 10.0, *)
+    public func snapshot(cropping: CGRect? = nil) -> UIImage {
+        let rect = cropping ?? bounds
+        let renderer = UIGraphicsImageRenderer(bounds: rect)
+        return renderer.image { context in
+            layer.render(in: context.cgContext)
+        }
+    }
+
+    /*
     /// AnySubclassOfUIView().snapshot
     /// UIScrollView().snapshot
     /// UITableView().snapshot
@@ -29,6 +39,7 @@ extension UIView {
         }
         return nil
     }
+ */
 }
 
 // MRARK: - Layer Property
