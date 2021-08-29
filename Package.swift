@@ -4,18 +4,18 @@
 import PackageDescription
 
 let package = Package(
-    name: "UserInterface",
+    name: "UIKitExt",
     platforms: [
         .iOS(.v10),
     ],
     products: [
-        .library(name: "UserInterface", targets: ["UserInterface"]),
+        .library(name: "UIKitExt", targets: ["UIKitExt"]),
     ],
     dependencies: [
     ],
     targets: [
         .target(
-            name: "UserInterface",
+            name: "UIKitExt",
             dependencies: [
             ],
             path: "Sources"
