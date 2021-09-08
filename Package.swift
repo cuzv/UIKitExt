@@ -4,22 +4,22 @@
 import PackageDescription
 
 let package = Package(
-    name: "UIKitExt",
-    platforms: [
-        .iOS(.v10),
-    ],
-    products: [
-        .library(name: "UIKitExt", targets: ["UIKitExt"]),
-    ],
-    dependencies: [
-    ],
-    targets: [
-        .target(
-            name: "UIKitExt",
-            dependencies: [
-            ],
-            path: "Sources"
-        ),
-    ],
-    swiftLanguageVersions: [.v5]
+  name: "UIKitExt",
+  platforms: [
+    .iOS(.v10),
+  ],
+  products: [
+    .library(name: "UIKitExt", targets: ["UIKitExt"]),
+  ],
+  dependencies: [
+  ],
+  targets: [
+    .target(
+      name: "UIKitExt",
+      dependencies: [
+      ],
+      path: "Sources"
+    ),
+  ],
+  swiftLanguageVersions: [.v5]
 )
