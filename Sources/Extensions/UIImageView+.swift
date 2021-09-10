@@ -9,6 +9,6 @@ extension UIImageView {
     self.init()
     self.image = image
     self.contentMode = contentMode
-    translatesAutoresizingMaskIntoConstraints = false
+    self.translatesAutoresizingMaskIntoConstraints = false
   }
 }

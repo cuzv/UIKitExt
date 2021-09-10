@@ -4,20 +4,22 @@ import CoreGraphics
 extension UIScrollView {
   @available(iOS 11.0, tvOS 11.0, macCatalyst 11.0, *)
   public convenience init(
-    backgroundColor: UIColor?,
+    contentInset: UIEdgeInsets,
+    contentInsetAdjustmentBehavior: ContentInsetAdjustmentBehavior = .never,
+    backgroundColor: UIColor? = nil,
     showsHorizontalScrollIndicator: Bool = false,
     showsVerticalScrollIndicator: Bool = true,
     alwaysBounceHorizontal: Bool = false,
-    alwaysBounceVertical: Bool = true,
-    contentInsetAdjustmentBehavior: ContentInsetAdjustmentBehavior = .never
+    alwaysBounceVertical: Bool = true
   ) {
-    self.init(frame: .zero)
+    self.init()
+    self.contentInset = contentInset
+    self.contentInsetAdjustmentBehavior = contentInsetAdjustmentBehavior
     self.backgroundColor = backgroundColor
     self.showsHorizontalScrollIndicator = showsHorizontalScrollIndicator
     self.showsVerticalScrollIndicator = showsVerticalScrollIndicator
     self.alwaysBounceHorizontal = alwaysBounceHorizontal
     self.alwaysBounceVertical = alwaysBounceVertical
-    self.contentInsetAdjustmentBehavior = contentInsetAdjustmentBehavior
     self.translatesAutoresizingMaskIntoConstraints = false
   }
 }
