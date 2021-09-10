@@ -1,15 +1,16 @@
 import UIKit
 
 extension UICollectionView {
-  @available(macOS 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
+  @available(iOS 11.0, tvOS 11.0, macCatalyst 11.0, *)
   public convenience init(
-    backgroundColor: UIColor,
-    layout: UICollectionViewLayout = UICollectionViewFlowLayout(),
+    layout: UICollectionViewLayout,
+    backgroundColor: UIColor? = nil,
     showsHorizontalScrollIndicator: Bool = false,
     showsVerticalScrollIndicator: Bool = true,
     alwaysBounceHorizontal: Bool = false,
     alwaysBounceVertical: Bool = true,
-    contentInsetAdjustmentBehavior: ContentInsetAdjustmentBehavior = .automatic
+    contentInsetAdjustmentBehavior: ContentInsetAdjustmentBehavior = .never,
+    clipsToBounds: Bool = true
   ) {
     self.init(frame: .zero, collectionViewLayout: layout)
     self.backgroundColor = backgroundColor
@@ -18,6 +19,7 @@ extension UICollectionView {
     self.alwaysBounceHorizontal = alwaysBounceHorizontal
     self.alwaysBounceVertical = alwaysBounceVertical
     self.contentInsetAdjustmentBehavior = contentInsetAdjustmentBehavior
+    self.clipsToBounds = clipsToBounds
     self.translatesAutoresizingMaskIntoConstraints = false
   }
 }

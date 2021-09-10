@@ -86,3 +86,21 @@ extension UIColor {
   /// 0xD9D9D9
   public static let selected: UIColor = .init(hex: 0xD9D9D9)
 }
+
+extension UIColor {
+  public static var background: UIColor {
+    if #available(iOS 13.0, *) {
+      return .systemBackground
+    } else {
+      return .white
+    }
+  }
+
+  public static var foreground: UIColor {
+    if #available(iOS 13.0, *) {
+      return .label
+    } else {
+      return .black
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import UIKit
 
-@available(macOS 10.14, iOS 12.0, tvOS 12.0, watchOS 5.0, macCatalyst 13.0, *)
+@available(iOS 12.0, tvOS 12.0, macCatalyst 13.0, *)
 public final class OuroborosView: UIView {
   override public init(frame: CGRect) {
     super.init(frame: frame)

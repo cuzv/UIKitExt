@@ -2,6 +2,27 @@ import UIKit
 import CoreGraphics
 
 extension UIScrollView {
+  @available(iOS 11.0, tvOS 11.0, macCatalyst 11.0, *)
+  public convenience init(
+    backgroundColor: UIColor?,
+    showsHorizontalScrollIndicator: Bool = false,
+    showsVerticalScrollIndicator: Bool = true,
+    alwaysBounceHorizontal: Bool = false,
+    alwaysBounceVertical: Bool = true,
+    contentInsetAdjustmentBehavior: ContentInsetAdjustmentBehavior = .never
+  ) {
+    self.init(frame: .zero)
+    self.backgroundColor = backgroundColor
+    self.showsHorizontalScrollIndicator = showsHorizontalScrollIndicator
+    self.showsVerticalScrollIndicator = showsVerticalScrollIndicator
+    self.alwaysBounceHorizontal = alwaysBounceHorizontal
+    self.alwaysBounceVertical = alwaysBounceVertical
+    self.contentInsetAdjustmentBehavior = contentInsetAdjustmentBehavior
+    self.translatesAutoresizingMaskIntoConstraints = false
+  }
+}
+
+extension UIScrollView {
   public var insetTop: CGFloat {
     get { contentInset.top }
     set {

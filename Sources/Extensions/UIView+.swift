@@ -20,20 +20,24 @@ extension UIView {
     self.translatesAutoresizingMaskIntoConstraints = false
   }
 
-  public convenience init(spacing: CGFloat) {
-    self.init(frame: .init(origin: .zero, size: .init(width: spacing, height: spacing)))
+  public convenience init(size: CGSize) {
+    self.init(frame: .init(origin: .zero, size: size))
     self.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      self.widthAnchor.constraint(equalToConstant: spacing),
-      self.heightAnchor.constraint(equalToConstant: spacing),
+      self.widthAnchor.constraint(equalToConstant: size.width),
+      self.heightAnchor.constraint(equalToConstant: size.height),
     ])
+  }
+
+  public convenience init(length: CGFloat) {
+    self.init(size: .init(width: length, height: length))
   }
 }
 
 // MARK: - Layout
 
 extension UIView {
-  @available(macOS 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
+  @available(iOS 11.0, tvOS 11.0, macCatalyst 13.0, *)
   @discardableResult
   public func filling(
     margin: UIEdgeInsets = .zero,

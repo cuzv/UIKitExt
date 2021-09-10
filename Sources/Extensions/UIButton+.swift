@@ -1,12 +1,11 @@
 import UIKit
 
 extension UIButton {
-  @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *)
   public convenience init(
     type buttonType: ButtonType = .system,
     title: String,
-    titleColor: UIColor? = .label,
-    backgroundColor bgColor: UIColor? = nil,
+    titleColor: UIColor? = .foreground,
+    backgroundColor: UIColor? = nil,
     font: UIFont? = nil,
     image: UIImage? = nil,
     backgroundImage: UIImage? = nil,
@@ -18,7 +17,7 @@ extension UIButton {
     self.init(type: buttonType)
     self.setTitle(title, for: .normal)
     self.setTitleColor(titleColor, for: .normal)
-    self.backgroundColor = bgColor
+    self.backgroundColor = backgroundColor
     self.titleLabel?.font = font
     self.setImage(image, for: .normal)
     self.setBackgroundImage(backgroundImage, for: .normal)

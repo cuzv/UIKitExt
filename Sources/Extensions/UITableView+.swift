@@ -1,10 +1,10 @@
 import UIKit
 
 extension UITableView {
-  @available(macOS 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
+  @available(iOS 11.0, tvOS 11.0, macCatalyst 11.0, *)
   public convenience init(
-    style: UITableView.Style = .plain,
-    backgroundColor: UIColor,
+    style: UITableView.Style,
+    backgroundColor: UIColor? = nil,
     alwaysBounceHorizontal: Bool = false,
     alwaysBounceVertical: Bool = true,
     showsHorizontalScrollIndicator: Bool = false,
