@@ -3,13 +3,18 @@ import UIKit
 public protocol LayoutAnchor {
   func constraint(
     equalTo anchor: Self,
-    constant: CGFloat) -> NSLayoutConstraint
+    constant: CGFloat
+  ) -> NSLayoutConstraint
+
   func constraint(
     greaterThanOrEqualTo anchor: Self,
-    constant: CGFloat) -> NSLayoutConstraint
+    constant: CGFloat
+  ) -> NSLayoutConstraint
+
   func constraint(
     lessThanOrEqualTo anchor: Self,
-    constant: CGFloat) -> NSLayoutConstraint
+    constant: CGFloat
+  ) -> NSLayoutConstraint
 }
 
 public protocol LayoutDimension: LayoutAnchor {
@@ -20,15 +25,20 @@ public protocol LayoutDimension: LayoutAnchor {
   func constraint(
     equalTo anchor: Self,
     multiplier m: CGFloat,
-    constant c: CGFloat) -> NSLayoutConstraint
+    constant c: CGFloat
+  ) -> NSLayoutConstraint
+
   func constraint(
     greaterThanOrEqualTo anchor: Self,
     multiplier m: CGFloat,
-    constant c: CGFloat) -> NSLayoutConstraint
+    constant c: CGFloat
+  ) -> NSLayoutConstraint
+
   func constraint(
     lessThanOrEqualTo anchor: Self,
     multiplier m: CGFloat,
-    constant c: CGFloat) -> NSLayoutConstraint
+    constant c: CGFloat
+  ) -> NSLayoutConstraint
 }
 
 extension NSLayoutAnchor: LayoutAnchor {}
@@ -177,7 +187,10 @@ public class LayoutProxy {
 
   public lazy var size = SizePack(width: width, height: height)
   public lazy var center = CenterPack(centerX: centerX, centerY: centerY)
-  public lazy var edges = EdgesPack(leading: leading, trailing: trailing, top: top, bottom: bottom)
+  public lazy var edges = EdgesPack(
+    leading: leading, trailing: trailing,
+    top: top, bottom: bottom
+  )
 
   private let view: UIView
 
@@ -270,6 +283,16 @@ extension UIView {
   }
 }
 
+extension UIStackView {
+  public func addArrangedSubview(
+    _ view: UIView,
+    layout: (LayoutProxy) -> Void
+  ) {
+    addArrangedSubview(view)
+    view.layout(using: layout)
+  }
+}
+
 public func +<Anchor: LayoutAnchor>(
   lhs: Anchor,
   rhs: CGFloat
@@ -326,37 +349,43 @@ public func <=<Anchor: LayoutAnchor>(
 
 @discardableResult
 public func <=<Anchor: LayoutAnchor>(
-  lhs: LayoutAnchorBox<Anchor>, rhs: Anchor
+  lhs: LayoutAnchorBox<Anchor>,
+  rhs: Anchor
 ) -> NSLayoutConstraint {
   lhs.lessThanOrEqual(to: rhs)
 }
 
 public func +<Anchor: LayoutDimension>(
-  lhs: Anchor, rhs: CGFloat
+  lhs: Anchor,
+  rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
   .init(anchor: lhs, multiplier: 1, constant: rhs)
 }
 
 public func -<Anchor: LayoutDimension>(
-  lhs: Anchor, rhs: CGFloat
+  lhs: Anchor,
+  rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
   .init(anchor: lhs, multiplier: 1, constant: -rhs)
 }
 
 public func *<Anchor: LayoutDimension>(
-  lhs: Anchor, rhs: CGFloat)
+  lhs: Anchor,
+  rhs: CGFloat)
 -> LayoutDimensionPack<Anchor> {
   .init(anchor: lhs, multiplier: rhs, constant: 0)
 }
 
 public func /<Anchor: LayoutDimension>(
-  lhs: Anchor, rhs: CGFloat
+  lhs: Anchor,
+  rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
   .init(anchor: lhs, multiplier: 1.0 / rhs, constant: 0)
 }
 
 public func +<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionPack<Anchor>, rhs: CGFloat
+  lhs: LayoutDimensionPack<Anchor>,
+  rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
   .init(
     anchor: lhs.anchor,
@@ -366,7 +395,8 @@ public func +<Anchor: LayoutDimension>(
 }
 
 public func -<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionPack<Anchor>, rhs: CGFloat
+  lhs: LayoutDimensionPack<Anchor>,
+  rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
   .init(
     anchor: lhs.anchor,
@@ -377,21 +407,24 @@ public func -<Anchor: LayoutDimension>(
 
 @discardableResult
 public func ==<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>, rhs: CGFloat
+  lhs: LayoutDimensionBox<Anchor>,
+  rhs: CGFloat
 ) -> NSLayoutConstraint {
   lhs.equalToConstant(rhs)
 }
 
 @discardableResult
 public func ==<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>, rhs: Anchor
+  lhs: LayoutDimensionBox<Anchor>,
+  rhs: Anchor
 ) -> NSLayoutConstraint {
   lhs.equal(to: rhs, multiplier: 1, constant: 0)
 }
 
 @discardableResult
 public func ==<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>, rhs: LayoutDimensionPack<Anchor>
+  lhs: LayoutDimensionBox<Anchor>,
+  rhs: LayoutDimensionPack<Anchor>
 ) -> NSLayoutConstraint {
   lhs.equal(
     to: rhs.anchor,
@@ -402,14 +435,16 @@ public func ==<Anchor: LayoutDimension>(
 
 @discardableResult
 public func >=<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>, rhs: CGFloat
+  lhs: LayoutDimensionBox<Anchor>,
+  rhs: CGFloat
 ) -> NSLayoutConstraint {
   lhs.greaterThanOrEqualToConstant(rhs)
 }
 
 @discardableResult
 public func >=<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>, rhs: Anchor
+  lhs: LayoutDimensionBox<Anchor>,
+  rhs: Anchor
 ) -> NSLayoutConstraint {
   lhs.greaterThanOrEqual(
     to: rhs,
@@ -420,7 +455,8 @@ public func >=<Anchor: LayoutDimension>(
 
 @discardableResult
 public func >=<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>, rhs: LayoutDimensionPack<Anchor>
+  lhs: LayoutDimensionBox<Anchor>,
+  rhs: LayoutDimensionPack<Anchor>
 ) -> NSLayoutConstraint {
   lhs.greaterThanOrEqual(
     to: rhs.anchor,
@@ -431,14 +467,16 @@ public func >=<Anchor: LayoutDimension>(
 
 @discardableResult
 public func <=<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>, rhs: CGFloat
+  lhs: LayoutDimensionBox<Anchor>,
+  rhs: CGFloat
 ) -> NSLayoutConstraint {
   lhs.lessThanOrEqualToConstant(rhs)
 }
 
 @discardableResult
 public func <=<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>, rhs: Anchor
+  lhs: LayoutDimensionBox<Anchor>,
+  rhs: Anchor
 ) -> NSLayoutConstraint {
   lhs.lessThanOrEqual(
     to: rhs,
@@ -449,7 +487,8 @@ public func <=<Anchor: LayoutDimension>(
 
 @discardableResult
 public func <=<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>, rhs: LayoutDimensionPack<Anchor>
+  lhs: LayoutDimensionBox<Anchor>,
+  rhs: LayoutDimensionPack<Anchor>
 ) -> NSLayoutConstraint {
   lhs.lessThanOrEqual(
     to: rhs.anchor,
@@ -504,7 +543,10 @@ public func ==(
   ]
 }
 
-public func -(lhs: UIView.EdgesPack, rhs: UIEdgeInsets) -> UIView.EdgesMarginPack {
+public func -(
+  lhs: UIView.EdgesPack,
+  rhs: UIEdgeInsets
+) -> UIView.EdgesMarginPack {
   .init(edges: lhs, margin: rhs)
 }
 
