@@ -26,7 +26,9 @@ final class ToastQueue {
 
   private init() {
     if #available(iOS 13.0, *) {
-      let windowScene = UIApplication.shared.connectedScenes.filter { $0.activationState == .foregroundActive }.first
+      let windowScene = UIApplication.shared.connectedScenes.filter {
+        $0.activationState == .foregroundActive
+      }.first
       if let windowScene = windowScene as? UIWindowScene {
         window = ToastWindow(windowScene: windowScene)
       } else {
@@ -49,7 +51,11 @@ final class ToastQueue {
     UIView.animate(withDuration: 0.25) {
       toast.view.alpha = 1
     } completion: { _ in
-      UIView.animate(withDuration: 0.25, delay: toast.duration, options: .beginFromCurrentState) {
+      UIView.animate(
+        withDuration: 0.25,
+        delay: toast.duration,
+        options: .beginFromCurrentState
+      ) {
         toast.view.alpha = 0
       } completion: { _ in
         self.window.hide()
@@ -88,8 +94,16 @@ final class ToastWindow: UIWindow {
   }
 
   deinit {
-    NotificationCenter.default.removeObserver(self, name: UIWindow.keyboardWillShowNotification, object: nil)
-    NotificationCenter.default.removeObserver(self, name: UIWindow.keyboardDidHideNotification, object: nil)
+    NotificationCenter.default.removeObserver(
+      self,
+      name: UIWindow.keyboardWillShowNotification,
+      object: nil
+    )
+    NotificationCenter.default.removeObserver(
+      self,
+      name: UIWindow.keyboardDidHideNotification,
+      object: nil
+    )
   }
 
   private func setup() {
@@ -98,8 +112,18 @@ final class ToastWindow: UIWindow {
     backgroundColor = .clear
     windowLevel = .init(.greatestFiniteMagnitude)
 
-    NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillShow), name: UIWindow.keyboardWillShowNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDidHide), name: UIWindow.keyboardDidHideNotification, object: nil)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(onKeyboardWillShow),
+      name: UIWindow.keyboardWillShowNotification,
+      object: nil
+    )
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(onKeyboardDidHide),
+      name: UIWindow.keyboardDidHideNotification,
+      object: nil
+    )
   }
 
   @objc private func onKeyboardWillShow() {
@@ -115,7 +139,9 @@ final class ToastWindow: UIWindow {
 
   private func handleTopWindowAppear() {
     // https://github.com/devxoul/Toaster/pull/155/files
-    if let window = UIApplication.shared.windows.last(where: { keyboardWindowDidAppear || ($0.isOpaque && $0.windowLevel > windowLevel) }), window !== self {
+    if let window = UIApplication.shared.windows.last(where: {
+      keyboardWindowDidAppear || ($0.isOpaque && $0.windowLevel > windowLevel)
+    }), window !== self {
       removedSubviews = rootVC.view.subviews
       removedSubviews.forEach(window.fillSubview(_:))
     }
@@ -167,7 +193,10 @@ extension Toast {
 
   @available(iOS 11.0, *)
   public init(attributedText: NSAttributedString, duration: TimeInterval = 2) {
-    self.init(view: PlainContainerView(attributedText: attributedText), duration: duration)
+    self.init(
+      view: PlainContainerView(attributedText: attributedText),
+      duration: duration
+    )
   }
 
   @available(iOS 11.0, *)

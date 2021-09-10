@@ -21,6 +21,8 @@ extension CALayer {
     shadowOpacity = shadow.alpha
     shadowOffset = CGSize(width: shadow.x, height: shadow.y)
     shadowRadius = shadow.blur / 2.0
-    shadowPath = UIBezierPath(rect: bounds.insetBy(dx: -shadow.spread, dy: -shadow.spread)).cgPath
+    shadowPath = UIBezierPath(
+      rect: bounds.insetBy(dx: -shadow.spread, dy: -shadow.spread)
+    ).cgPath
   }
 }

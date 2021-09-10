@@ -2,7 +2,12 @@ import UIKit
 import CoreGraphics
 
 extension UIColor {
-  public convenience init(r red: UInt, g green: UInt, b blue: UInt, a alpha: CGFloat = 1.0) {
+  public convenience init(
+    r red: UInt,
+    g green: UInt,
+    b blue: UInt,
+    a alpha: CGFloat = 1.0
+  ) {
     let red   = CGFloat(red) / 255.0
     let green = CGFloat(green) / 255.0
     let blue  = CGFloat(blue) / 255.0

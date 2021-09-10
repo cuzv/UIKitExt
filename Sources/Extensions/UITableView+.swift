@@ -27,8 +27,12 @@ extension UITableView {
     self.estimatedSectionHeaderHeight = 0
     self.layoutMargins = .zero
     self.separatorInset = .zero
-    self.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Double.leastNonzeroMagnitude))
-    self.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Double.leastNonzeroMagnitude))
+    self.tableHeaderView = UIView(
+      frame: CGRect(x: 0, y: 0, width: 0, height: Double.leastNonzeroMagnitude)
+    )
+    self.tableFooterView = UIView(
+      frame: CGRect(x: 0, y: 0, width: 0, height: Double.leastNonzeroMagnitude)
+    )
     self.translatesAutoresizingMaskIntoConstraints = false
   }
 }

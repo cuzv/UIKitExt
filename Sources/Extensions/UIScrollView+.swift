@@ -145,7 +145,10 @@ extension UIScrollView {
     } else if let tableView = self as? UITableView {
       tableView.tv_scrollToTail(animated: animated)
     } else {
-      scrollRectToVisible(CGRect(origin: CGPoint(x: 0, y: contentSize.height), size: .zero), animated: animated)
+      scrollRectToVisible(
+        CGRect(origin: CGPoint(x: 0, y: contentSize.height), size: .zero),
+        animated: animated
+      )
     }
   }
 }

@@ -13,7 +13,9 @@ public struct CoreImageFilter {
   }
 
   public var parametersDictionaryValue: [String: Any] {
-    Dictionary(uniqueKeysWithValues: parameters.map({ ($0.key.rawValue, $0.value) }))
+    Dictionary(uniqueKeysWithValues: parameters.map {
+      ($0.key.rawValue, $0.value)
+    })
   }
 }
 
@@ -105,7 +107,11 @@ extension UIImage {
     if let input = CIImage(image: self) {
       let output = input.applying(contentsOf: filters)
       if let cgImage = CIContext().createCGImage(output, from: input.extent) {
-        return UIImage(cgImage: cgImage, scale: scale, orientation: imageOrientation)
+        return UIImage(
+          cgImage: cgImage,
+          scale: scale,
+          orientation: imageOrientation
+        )
       }
     }
     return self
@@ -113,8 +119,14 @@ extension UIImage {
 
   public func blur(radius: CGFloat) -> UIImage {
     applying(contentsOf: [
-      .init(name: .tileEffect(.clamp), parameters: [.inputTransform: CGAffineTransform.identity]),
-      .init(name: .blur(.gaussian), parameters: [.inputRadius: radius]),
+      .init(
+        name: .tileEffect(.clamp),
+        parameters: [.inputTransform: CGAffineTransform.identity]
+      ),
+      .init(
+        name: .blur(.gaussian),
+        parameters: [.inputRadius: radius]
+      ),
     ])
   }
 }
@@ -122,7 +134,12 @@ extension UIImage {
 extension CIImage {
   public func applying(contentsOf filters: [CoreImageFilter]) -> CIImage {
     var output = self
-    filters.forEach { output = output.applyingFilter($0.name.stringValue, parameters: $0.parametersDictionaryValue) }
+    filters.forEach {
+      output = output.applyingFilter(
+        $0.name.stringValue,
+        parameters: $0.parametersDictionaryValue
+      )
+    }
     return output
   }
 }

@@ -39,7 +39,10 @@ extension UIImage {
   public func scaled(aspectFit boundingSize: CGSize) -> UIImage {
     guard size.width != 0 && size.height != 0 else { return self }
     guard boundingSize.width < size.width || boundingSize.height < size.height else { return self }
-    let scaledRect = AVMakeRect(aspectRatio: size, insideRect: .init(origin: .zero, size: boundingSize))
+    let scaledRect = AVMakeRect(
+      aspectRatio: size,
+      insideRect: .init(origin: .zero, size: boundingSize)
+    )
     return UIGraphicsImageRenderer(canvasSize: boundingSize).image { _ in
       draw(in: scaledRect)
     }
@@ -49,30 +52,47 @@ extension UIImage {
     guard size.width != 0 && size.height != 0 else { return self }
     guard boundingSize.width < size.width || boundingSize.height < size.height else { return self }
     let scale = max(boundingSize.width / size.width, boundingSize.height / size.height)
-    let scaledRect = CGRect(origin: .zero, size: size.applying(.init(scaleX: scale, y: scale)))
+    let scaledRect = CGRect(
+      origin: .zero,
+      size: size.applying(.init(scaleX: scale, y: scale))
+    )
     return UIGraphicsImageRenderer(canvasSize: boundingSize).image { _ in
       draw(in: scaledRect)
     }
   }
 
   public func cropped(to rect: CGRect) -> UIImage? {
-    cgImage?.cropping(to: rect.applying(.init(scaleX: scale, y: scale))).flatMap(UIImage.init(cgImage:))
+    cgImage?.cropping(to: rect.applying(.init(scaleX: scale, y: scale)))
+      .flatMap(UIImage.init(cgImage:))
   }
 
   public func rotated(byRadians radians: CGFloat) -> UIImage? {
     guard let cgImage = cgImage else { return nil }
-    var rotatedSize = CGRect(origin: .zero, size: size).applying(.init(rotationAngle: radians)).size
+    var rotatedSize = CGRect(origin: .zero, size: size)
+      .applying(.init(rotationAngle: radians)).size
     // Trim off the extremely small float value to prevent core graphics from rounding it up
-    rotatedSize = .init(width: floor(rotatedSize.width), height: floor(rotatedSize.height))
+    rotatedSize = .init(
+      width: floor(rotatedSize.width),
+      height: floor(rotatedSize.height)
+    )
     return UIGraphicsImageRenderer(canvasSize: rotatedSize).image { context in
       let cgContext = context.cgContext
       // Move origin to middle
-      cgContext.translateBy(x: rotatedSize.width * 0.5, y: rotatedSize.height * 0.5)
+      cgContext.translateBy(
+        x: rotatedSize.width * 0.5,
+        y: rotatedSize.height * 0.5
+      )
       // Rotate around middle
       cgContext.rotate(by: radians)
       // Draw the image at its center
       cgContext.scaleBy(x: 1.0, y: -1.0)
-      cgContext.draw(cgImage, in: .init(origin: .init(x: -size.width * 0.5, y: -size.height * 0.5), size: size))
+      cgContext.draw(
+        cgImage,
+        in: .init(
+          origin: .init(x: -size.width * 0.5, y: -size.height * 0.5),
+          size: size
+        )
+      )
     }
   }
 
@@ -94,20 +114,28 @@ extension UIImage {
       transform = transform.translatedBy(x: 0, y: rect.height)
       transform = transform.scaledBy(x: 1, y: -1)
     case .left:
-      bounds = .init(origin: bounds.origin, size: .init(width: bounds.height, height: bounds.width))
+      bounds = .init(
+        origin: bounds.origin,
+        size: .init(width: bounds.height, height: bounds.width))
       transform = transform.translatedBy(x: 0, y: rect.width)
       transform = transform.rotated(by: .pi * 3 / 2)
     case .leftMirrored:
-      bounds = .init(origin: bounds.origin, size: .init(width: bounds.height, height: bounds.width))
+      bounds = .init(
+        origin: bounds.origin,
+        size: .init(width: bounds.height, height: bounds.width))
       transform = transform.translatedBy(x: rect.height, y: rect.width)
       transform = transform.scaledBy(x: -1, y: 1)
       transform = transform.rotated(by: .pi * 3 / 2)
     case .right:
-      bounds = .init(origin: bounds.origin, size: .init(width: bounds.height, height: bounds.width))
+      bounds = .init(
+        origin: bounds.origin,
+        size: .init(width: bounds.height, height: bounds.width))
       transform = transform.translatedBy(x: rect.height, y: 0)
       transform = transform.rotated(by: .pi / 2)
     case .rightMirrored:
-      bounds = .init(origin: bounds.origin, size: .init(width: bounds.height, height: bounds.width))
+      bounds = .init(
+        origin: bounds.origin,
+        size: .init(width: bounds.height, height: bounds.width))
       transform = transform.scaledBy(x: -1, y: 1)
       transform = transform.rotated(by: .pi / 2)
     @unknown default:
@@ -175,7 +203,10 @@ extension UIImage {
 
       switch imageOrientation {
       case .left, .leftMirrored, .right, .rightMirrored:
-        cgContext.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.height, height: size.width))
+        cgContext.draw(
+          cgImage,
+          in: CGRect(x: 0, y: 0, width: size.height, height: size.width)
+        )
       default:
         cgContext.draw(cgImage, in: .init(origin: .zero, size: size))
       }

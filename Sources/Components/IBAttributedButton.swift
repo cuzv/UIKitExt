@@ -33,7 +33,10 @@ final public class IBAttributedButton: UIButton, TouchesExpandable {
       if let color = titleColor(for: state) {
         attributes[.foregroundColor] = color
       }
-      let attributedTitle = NSAttributedString(string: title(for: state) ?? "", attributes: attributes)
+      let attributedTitle = NSAttributedString(
+        string: title(for: state) ?? "",
+        attributes: attributes
+      )
       setAttributedTitle(attributedTitle, for: state)
     }
   }

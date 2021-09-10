@@ -2,21 +2,10 @@
 import UIKit
 import Combine
 
-@objc public enum ColorScheme: Int, CustomStringConvertible, CaseIterable {
+@objc public enum ColorScheme: Int {
   case automatic = 0
   case light = 1
   case dark = 2
-
-  public var description: String {
-    switch self {
-    case .automatic:
-      return NSLocalizedString("Automatic", comment: "")
-    case .light:
-      return NSLocalizedString("Light", comment: "")
-    case .dark:
-      return NSLocalizedString("Dark", comment: "")
-    }
-  }
 
   @available(iOS 12.0, *)
   public var userInterfaceStyle: UIUserInterfaceStyle {
@@ -36,6 +25,21 @@ import Combine
       return .dark
     default:
       return .light
+    }
+  }
+}
+
+extension ColorScheme: CaseIterable {}
+
+extension ColorScheme: CustomStringConvertible {
+  public var description: String {
+    switch self {
+    case .automatic:
+      return NSLocalizedString("Automatic", comment: "")
+    case .light:
+      return NSLocalizedString("Light", comment: "")
+    case .dark:
+      return NSLocalizedString("Dark", comment: "")
     }
   }
 }
@@ -66,14 +70,22 @@ extension UIWindow {
       assertionFailure("Method swizzling failed! Class: \(cls), Selector: \(selector)")
       return
     }
-    let originalImpl = unsafeBitCast(method_getImplementation(method), to: (@convention(c) (UIWindow, Selector, CGRect) -> UIWindow).self)
+    let originalImpl = unsafeBitCast(
+      method_getImplementation(method),
+      to: (@convention(c) (UIWindow, Selector, CGRect) -> UIWindow).self
+    )
 
-    class_replaceMethod(cls, selector, imp_implementationWithBlock({ (self: UIWindow, frame: CGRect) -> UIWindow in
-      defer {
-        self.supportDarkMode()
-      }
-      return originalImpl(self, selector, frame)
-    } as @convention(block) (UIWindow, CGRect) -> UIWindow), method_getTypeEncoding(method))
+    class_replaceMethod(
+      cls,
+      selector,
+      imp_implementationWithBlock({ (self: UIWindow, frame: CGRect) -> UIWindow in
+        defer {
+          self.supportDarkMode()
+        }
+        return originalImpl(self, selector, frame)
+      } as @convention(block) (UIWindow, CGRect) -> UIWindow),
+      method_getTypeEncoding(method)
+    )
   }()
 
   private static let swizzleInitFromCoderOnce: Void = {
@@ -83,14 +95,21 @@ extension UIWindow {
       assertionFailure("Method swizzling failed! Class: \(cls), Selector: \(selector)")
       return
     }
-    let originalImpl = unsafeBitCast(method_getImplementation(method), to: (@convention(c) (UIWindow, Selector, NSCoder) -> UIWindow?).self)
+    let originalImpl = unsafeBitCast(
+      method_getImplementation(method),
+      to: (@convention(c) (UIWindow, Selector, NSCoder) -> UIWindow?).self
+    )
 
-    class_replaceMethod(cls, selector, imp_implementationWithBlock({ (self: UIWindow, coder: NSCoder) -> UIWindow? in
-      defer {
-        self.supportDarkMode()
-      }
-      return originalImpl(self, selector, coder)
-    } as @convention(block) (UIWindow, NSCoder) -> UIWindow?), method_getTypeEncoding(method))
+    class_replaceMethod(
+      cls,
+      selector,
+      imp_implementationWithBlock({ (self: UIWindow, coder: NSCoder) -> UIWindow? in
+        defer {
+          self.supportDarkMode()
+        }
+        return originalImpl(self, selector, coder)
+      } as @convention(block) (UIWindow, NSCoder) -> UIWindow?),
+      method_getTypeEncoding(method))
   }()
 
   private static var subscriptions = Set<AnyCancellable>([])
@@ -102,14 +121,17 @@ extension UIWindow {
       .map(\.userInterfaceStyle)
       .assign(to: \.overrideUserInterfaceStyle, on: self)
 
-    let swipe = UISwipeGestureRecognizer(target: self, action: #selector(toggleColorScheme))
+    let swipe = UISwipeGestureRecognizer(
+      target: self,
+      action: #selector(toggleColorScheme))
     swipe.numberOfTouchesRequired = 2
     swipe.direction = [.left, .right]
     addGestureRecognizer(swipe)
   }
 
   @objc private func toggleColorScheme() {
-    UserDefaults.standard.preferredColorScheme = UserDefaults.standard.preferredColorScheme.next
+    let defaults = UserDefaults.standard
+    defaults.preferredColorScheme = defaults.preferredColorScheme.next
   }
 
   @nonobjc private static var subscriptionKey: Void?
@@ -133,8 +155,20 @@ extension UIImage {
   public class func union(light: UIImage, dark: UIImage) -> UIImage {
     if #available(iOS 13.0, *) {
       let imageAsset = UIImageAsset()
-      imageAsset.register(light, with: .init(traitsFrom: [.init(userInterfaceStyle: .light), .init(displayScale: light.scale)]))
-      imageAsset.register(dark, with: .init(traitsFrom: [.init(userInterfaceStyle: .dark), .init(displayScale: dark.scale)]))
+      imageAsset.register(
+        light,
+        with: .init(traitsFrom: [
+          .init(userInterfaceStyle: .light),
+          .init(displayScale: light.scale)
+        ])
+      )
+      imageAsset.register(
+        dark,
+        with: .init(traitsFrom: [
+          .init(userInterfaceStyle: .dark),
+          .init(displayScale: dark.scale)
+        ])
+      )
       return imageAsset.image(with: .current)
     } else {
       return light

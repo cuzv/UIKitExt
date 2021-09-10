@@ -18,7 +18,10 @@ extension UIView {
     public init(
       edge: Edge,
       width: CGFloat = 1.0 / UIScreen.main.scale,
-      color: UIColor = UIColor(red: 200/255.0, green: 199/255.0, blue: 204/255.0, alpha: 1),
+      color: UIColor = UIColor(
+        red: 200/255.0,
+        green: 199/255.0,
+        blue: 204/255.0, alpha: 1),
       leading: CGFloat = 0,
       trailing: CGFloat = 0
     ) {

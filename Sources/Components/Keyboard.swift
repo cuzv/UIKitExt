@@ -17,14 +17,23 @@ extension NotificationCenter {
   }
 }
 
-extension NotificationCenter.KeyboardNotificationDescriptor where Payload == NotificationCenter.KeyboardPayload {
+extension NotificationCenter.KeyboardNotificationDescriptor
+where Payload == NotificationCenter.KeyboardPayload {
   public typealias KeyboardNotificationDescriptor = NotificationCenter.KeyboardNotificationDescriptor
   public typealias KeyboardPayload = NotificationCenter.KeyboardPayload
 
-  public static let keyboardWillShow = KeyboardNotificationDescriptor(name: UIWindow.keyboardWillShowNotification, convert: KeyboardPayload.init)
-  public static let keyboardDidShow = KeyboardNotificationDescriptor(name: UIWindow.keyboardDidShowNotification, convert: KeyboardPayload.init)
-  public static let keyboardWillHide = KeyboardNotificationDescriptor(name: UIWindow.keyboardWillHideNotification, convert: KeyboardPayload.init)
-  public static let keyboardDidHide = KeyboardNotificationDescriptor(name: UIWindow.keyboardDidHideNotification, convert: KeyboardPayload.init)
+  public static let keyboardWillShow = KeyboardNotificationDescriptor(
+    name: UIWindow.keyboardWillShowNotification,
+    convert: KeyboardPayload.init)
+  public static let keyboardDidShow = KeyboardNotificationDescriptor(
+    name: UIWindow.keyboardDidShowNotification,
+    convert: KeyboardPayload.init)
+  public static let keyboardWillHide = KeyboardNotificationDescriptor(
+    name: UIWindow.keyboardWillHideNotification,
+    convert: KeyboardPayload.init)
+  public static let keyboardDidHide = KeyboardNotificationDescriptor(
+    name: UIWindow.keyboardDidHideNotification,
+    convert: KeyboardPayload.init)
 }
 
 extension NotificationCenter.KeyboardPayload {
@@ -47,7 +56,11 @@ extension NotificationCenter {
     queue: OperationQueue? = nil,
     block: @escaping (Payload) -> Void
   ) -> NSObjectProtocol {
-    addObserver(forName: descriptor.name, object: object, queue: queue) { notification in
+    addObserver(
+      forName: descriptor.name,
+      object: object,
+      queue: queue
+    ) { notification in
       block(descriptor.convert(notification))
     }
   }
@@ -60,7 +73,13 @@ extension UIView {
     animations: @escaping () -> Void
   ) {
     if #available(iOS 14, *) {
-      UIView.animate(withDuration: duration, delay: 0, options: AnimationOptions(rawValue: UInt(curve.rawValue) << 16), animations: animations, completion: nil)
+      UIView.animate(
+        withDuration: duration,
+        delay: 0,
+        options: AnimationOptions(rawValue: UInt(curve.rawValue) << 16),
+        animations: animations,
+        completion: nil
+      )
     } else {
       UIView.beginAnimations(nil, context: nil)
       UIView.setAnimationBeginsFromCurrentState(true)

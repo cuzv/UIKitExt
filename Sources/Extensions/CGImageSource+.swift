@@ -8,12 +8,17 @@ extension CGImageSource {
     case maxPixelAreaSize(Double) // mainstream iOS device texture limits: 4096 * 4096
   }
 
-  public func frames(constraint: FramePixelConstraint) -> [(CGImage, CGImagePropertyOrientation, TimeInterval)] {
+  public func frames(
+    constraint: FramePixelConstraint
+  ) -> [(CGImage, CGImagePropertyOrientation, TimeInterval)] {
     let count = CGImageSourceGetCount(self)
     return (0 ..< count).compactMap({ frame(at: $0, constraint: constraint) })
   }
 
-  public func frame(at index: Int, constraint: FramePixelConstraint) -> (CGImage, CGImagePropertyOrientation, TimeInterval)? {
+  public func frame(
+    at index: Int,
+    constraint: FramePixelConstraint
+  ) -> (CGImage, CGImagePropertyOrientation, TimeInterval)? {
     let type = CGImageSourceGetType(self)
     let properties = CGImageSourceCopyPropertiesAtIndex(self, index, nil) as? [CFString: Any]
 

@@ -19,7 +19,10 @@ final public class IBAttributedLabel: UILabel {
 
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = textAlignment
-    paragraphStyle.lineBreakMode = isTruncatingMiddle ? .byTruncatingMiddle : .byTruncatingTail
+    paragraphStyle.lineBreakMode =
+      isTruncatingMiddle ?
+      .byTruncatingMiddle :
+      .byTruncatingTail
     if line > 0 {
       paragraphStyle.minimumLineHeight = line
     }

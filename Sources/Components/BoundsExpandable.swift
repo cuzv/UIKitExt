@@ -7,7 +7,7 @@ import CoreGraphics
 
 extension BoundsExpandable where Self: UIView {
   public var overrideIntrinsicContentSize: CGSize {
-    let size = sizeThatFits(CGSize(width: bounds.size.width, height: bounds.size.height))
+    let size = sizeThatFits(bounds.size)
     let width = size.width + boundsMargin.left + boundsMargin.right
     let height = size.height + boundsMargin.top + boundsMargin.bottom
     return CGSize(width: width, height: height)

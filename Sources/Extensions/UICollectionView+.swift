@@ -36,7 +36,10 @@ extension UICollectionView {
       if 0 ..< itemCount ~= lastItemIndex {
         let lastIndexpath = IndexPath(item: lastItemIndex, section: lastSectionIndex)
 
-        assert(collectionViewLayout is UICollectionViewFlowLayout, "Only supports on UICollectionViews have a UICollectionViewFlowLayout")
+        assert(
+          collectionViewLayout is UICollectionViewFlowLayout,
+          "Only supports on UICollectionViews have a UICollectionViewFlowLayout"
+        )
         let layout = collectionViewLayout as! UICollectionViewFlowLayout
         let position: ScrollPosition = layout.scrollDirection == .horizontal ? .right : .bottom
 
@@ -66,7 +69,10 @@ extension UICollectionView {
       }
   }
 
-  public func selectAllItems(animated: Bool = false, scrollPosition: ScrollPosition = []) {
+  public func selectAllItems(
+    animated: Bool = false,
+    scrollPosition: ScrollPosition = []
+  ) {
     indexPathsForAll
       .map({ ($0, animated, scrollPosition) })
       .forEach(selectItem(at:animated:scrollPosition:))

@@ -36,10 +36,18 @@ public extension Gradable where Self: UIView {
 
   fileprivate var drawingLocations: (start: CGPoint, end: CGPoint) {
     switch start {
-    case .topCenter: return (start: CGPoint(x: bounds.midX, y: 0), end: CGPoint(x: bounds.midX, y: bounds.height))
-    case .leftCenter: return (start: CGPoint(x: 0, y: bounds.midY), end: CGPoint(x: bounds.width, y: bounds.midY))
-    case .topLeft: return (start: .zero, end: CGPoint(x: bounds.width, y: bounds.height))
-    case .topRight: return (start: CGPoint(x: bounds.width, y: 0), end: CGPoint(x: 0, y: bounds.height))
+    case .topCenter: return (
+      start: CGPoint(x: bounds.midX, y: 0),
+      end: CGPoint(x: bounds.midX, y: bounds.height))
+    case .leftCenter: return (
+      start: CGPoint(x: 0, y: bounds.midY),
+      end: CGPoint(x: bounds.width, y: bounds.midY))
+    case .topLeft: return (
+      start: .zero,
+      end: CGPoint(x: bounds.width, y: bounds.height))
+    case .topRight: return (
+      start: CGPoint(x: bounds.width, y: 0),
+      end: CGPoint(x: 0, y: bounds.height))
     }
   }
 
@@ -65,7 +73,11 @@ public extension Gradable where Self: UIView {
       return UIColor(red: red, green: green, blue: blue, alpha: alpha).cgColor
     }
 
-    return CGGradient(colorsSpace: colorSpace, colors: colors as CFArray, locations: locations)
+    return CGGradient(
+      colorsSpace: colorSpace,
+      colors: colors as CFArray,
+      locations: locations
+    )
   }
 
   private var gradientColors: [UIColor] {
@@ -83,9 +95,19 @@ public extension Gradable where Self: UIView {
           var brightness: CGFloat = 0
           var alpha: CGFloat = 0
 
-          color.getHue(&hue, saturation: nil, brightness: &brightness, alpha: &alpha)
+          color.getHue(
+            &hue,
+            saturation: nil,
+            brightness: &brightness,
+            alpha: &alpha
+          )
 
-          return UIColor(hue: hue, saturation: 0, brightness: brightness, alpha: alpha)
+          return UIColor(
+            hue: hue,
+            saturation: 0,
+            brightness: brightness,
+            alpha: alpha
+          )
         }
       }
     }
@@ -94,13 +116,28 @@ public extension Gradable where Self: UIView {
   }
 
   fileprivate func draw(_ gradient: CGGradient, context: CGContext) {
-    let options: CGGradientDrawingOptions = [.drawsAfterEndLocation, .drawsBeforeStartLocation]
+    let options: CGGradientDrawingOptions = [
+      .drawsAfterEndLocation,
+      .drawsBeforeStartLocation
+    ]
     if mode == .linear {
       let loc = drawingLocations
-      context.drawLinearGradient(gradient, start: loc.start, end: loc.end, options: options)
+      context.drawLinearGradient(
+        gradient,
+        start: loc.start,
+        end: loc.end,
+        options: options
+      )
     } else {
       let center = CGPoint(x: bounds.midX, y: bounds.midY)
-      context.drawRadialGradient(gradient, startCenter: center, startRadius: 0, endCenter: center, endRadius: min(bounds.width, bounds.height) / 2, options: options)
+      context.drawRadialGradient(
+        gradient,
+        startCenter: center,
+        startRadius: 0,
+        endCenter: center,
+        endRadius: min(bounds.width, bounds.height) / 2,
+        options: options
+      )
     }
   }
 }
@@ -134,7 +171,8 @@ public class GradientView: UIView, Gradable {
   }
 
   override public func draw(_ rect: CGRect) {
-    if let context = UIGraphicsGetCurrentContext(), let currentGradient = currentGradient ?? gradient {
+    if let context = UIGraphicsGetCurrentContext(),
+       let currentGradient = currentGradient ?? gradient {
       draw(currentGradient, context: context)
     } else {
       super.draw(rect)
@@ -232,7 +270,8 @@ public class GradientButton: UIButton, Gradable {
   }
 
   override public func draw(_ rect: CGRect) {
-    if let context = UIGraphicsGetCurrentContext(), let currentGradient = currentGradient ?? gradient {
+    if let context = UIGraphicsGetCurrentContext(),
+       let currentGradient = currentGradient ?? gradient {
       draw(currentGradient, context: context)
     } else {
       super.draw(rect)

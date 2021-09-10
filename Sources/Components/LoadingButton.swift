@@ -37,7 +37,12 @@ final public class LoadingButton: UIButton {
   }
 
   private func setup() {
-    NotificationCenter.default.addObserver(self, selector: #selector(resumeAnimationIfNeeded), name: UIApplication.didBecomeActiveNotification, object: nil)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(resumeAnimationIfNeeded),
+      name: UIApplication.didBecomeActiveNotification,
+      object: nil
+    )
   }
 
   // Prevent weird bug which do animation the second time with image miss-rotation.

@@ -34,7 +34,14 @@ public final class OuroborosView: UIView {
     shape.fillColor = UIColor.clear.cgColor
 
     let lineWidth: CGFloat = 4
-    let path = UIBezierPath(ovalIn: shape.frame.inset(by: UIEdgeInsets(top: lineWidth, left: lineWidth, bottom: lineWidth, right: lineWidth))).cgPath
+    let path = UIBezierPath(
+      ovalIn: shape.frame.inset(by: UIEdgeInsets(
+        top: lineWidth,
+        left: lineWidth,
+        bottom: lineWidth,
+        right: lineWidth
+      ))
+    ).cgPath
     shape.path = path
     shape.lineWidth = lineWidth
     shape.lineCap = .round

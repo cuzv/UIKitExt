@@ -1,7 +1,11 @@
 import UIKit
 
 extension UINavigationController {
-  public func push(_ vc: UIViewController, animated: Bool, completion: (() -> Void)?) {
+  public func push(
+    _ vc: UIViewController,
+    animated: Bool,
+    completion: (() -> Void)?
+  ) {
     pushViewController(vc, animated: animated)
 
     if let coordinator = transitionCoordinator, animated {

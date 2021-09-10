@@ -34,8 +34,16 @@ extension UITextField {
   }
 
   public func fixWhitespacesIssue() {
-    addTarget(self, action: #selector(replaceNormalSpacesWithNonBreakingSpaces(textField:)), for: .editingChanged)
-    addTarget(self, action: #selector(replaceNonBreakingSpacesWithNormalSpaces(textField:)), for: .editingDidEnd)
+    addTarget(
+      self,
+      action: #selector(replaceNormalSpacesWithNonBreakingSpaces(textField:)),
+      for: .editingChanged
+    )
+    addTarget(
+      self,
+      action: #selector(replaceNonBreakingSpacesWithNormalSpaces(textField:)),
+      for: .editingDidEnd
+    )
   }
 
   @objc private func replaceNormalSpacesWithNonBreakingSpaces(textField: UITextField) {

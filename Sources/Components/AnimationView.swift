@@ -25,7 +25,12 @@ open class AnimationView: UIView {
   }
 
   private func setup() {
-    NotificationCenter.default.addObserver(self, selector: #selector(updateAnimation), name: UIApplication.didBecomeActiveNotification, object: nil)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(updateAnimation),
+      name: UIApplication.didBecomeActiveNotification,
+      object: nil
+    )
   }
 
   open var isAnimating: Bool = false {
