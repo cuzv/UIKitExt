@@ -3,18 +3,13 @@ import UIKit
 public protocol LayoutAnchor {
   func constraint(
     equalTo anchor: Self,
-    constant: CGFloat
-  ) -> NSLayoutConstraint
-
+    constant: CGFloat) -> NSLayoutConstraint
   func constraint(
     greaterThanOrEqualTo anchor: Self,
-    constant: CGFloat
-  ) -> NSLayoutConstraint
-
+    constant: CGFloat) -> NSLayoutConstraint
   func constraint(
     lessThanOrEqualTo anchor: Self,
-    constant: CGFloat
-  ) -> NSLayoutConstraint
+    constant: CGFloat) -> NSLayoutConstraint
 }
 
 public protocol LayoutDimension: LayoutAnchor {
@@ -25,20 +20,15 @@ public protocol LayoutDimension: LayoutAnchor {
   func constraint(
     equalTo anchor: Self,
     multiplier m: CGFloat,
-    constant c: CGFloat
-  ) -> NSLayoutConstraint
-
+    constant c: CGFloat) -> NSLayoutConstraint
   func constraint(
     greaterThanOrEqualTo anchor: Self,
     multiplier m: CGFloat,
-    constant c: CGFloat
-  ) -> NSLayoutConstraint
-
+    constant c: CGFloat) -> NSLayoutConstraint
   func constraint(
     lessThanOrEqualTo anchor: Self,
     multiplier m: CGFloat,
-    constant c: CGFloat
-  ) -> NSLayoutConstraint
+    constant c: CGFloat) -> NSLayoutConstraint
 }
 
 extension NSLayoutAnchor: LayoutAnchor {}
@@ -128,12 +118,12 @@ extension LayoutDimensionBox {
 
   @discardableResult
   func equal(
-    to anchor: Dimension,
+    to otherAnchor: Dimension,
     multiplier m: CGFloat,
     constant c: CGFloat
   ) -> NSLayoutConstraint {
     let result = anchor.constraint(
-      equalTo: anchor,
+      equalTo: otherAnchor,
       multiplier: m,
       constant: c
     )
@@ -143,12 +133,12 @@ extension LayoutDimensionBox {
 
   @discardableResult
   func greaterThanOrEqual(
-    to anchor: Dimension,
+    to otherAnchor: Dimension,
     multiplier m: CGFloat,
     constant c: CGFloat
   ) -> NSLayoutConstraint {
     let result = anchor.constraint(
-      greaterThanOrEqualTo: anchor,
+      greaterThanOrEqualTo: otherAnchor,
       multiplier: m,
       constant: c
     )
@@ -158,12 +148,12 @@ extension LayoutDimensionBox {
 
   @discardableResult
   func lessThanOrEqual(
-    to anchor: Dimension,
+    to otherAnchor: Dimension,
     multiplier m: CGFloat,
     constant c: CGFloat
   ) -> NSLayoutConstraint {
     let result = anchor.constraint(
-      lessThanOrEqualTo: anchor,
+      lessThanOrEqualTo: otherAnchor,
       multiplier: m,
       constant: c
     )
@@ -173,17 +163,17 @@ extension LayoutDimensionBox {
 }
 
 public class LayoutProxy {
-  public lazy var leading = LayoutAnchorBox(anchor: view.leadingAnchor)
-  public lazy var trailing = LayoutAnchorBox(anchor: view.trailingAnchor)
-  public lazy var top = LayoutAnchorBox(anchor: view.topAnchor)
-  public lazy var bottom = LayoutAnchorBox(anchor: view.bottomAnchor)
-  public lazy var centerX = LayoutAnchorBox(anchor: view.centerXAnchor)
-  public lazy var centerY = LayoutAnchorBox(anchor: view.centerYAnchor)
-  public lazy var firstBaseline = LayoutAnchorBox(anchor: view.firstBaselineAnchor)
-  public lazy var lastBaseline = LayoutAnchorBox(anchor: view.lastBaselineAnchor)
+  public lazy var leading = LayoutAnchorBox(anchor: target.leadingAnchor)
+  public lazy var trailing = LayoutAnchorBox(anchor: target.trailingAnchor)
+  public lazy var top = LayoutAnchorBox(anchor: target.topAnchor)
+  public lazy var bottom = LayoutAnchorBox(anchor: target.bottomAnchor)
+  public lazy var centerX = LayoutAnchorBox(anchor: target.centerXAnchor)
+  public lazy var centerY = LayoutAnchorBox(anchor: target.centerYAnchor)
+  public lazy var firstBaseline = LayoutAnchorBox(anchor: target.firstBaselineAnchor)
+  public lazy var lastBaseline = LayoutAnchorBox(anchor: target.lastBaselineAnchor)
 
-  public lazy var width = LayoutDimensionBox(anchor: view.widthAnchor)
-  public lazy var height = LayoutDimensionBox(anchor: view.heightAnchor)
+  public lazy var width = LayoutDimensionBox(anchor: target.widthAnchor)
+  public lazy var height = LayoutDimensionBox(anchor: target.heightAnchor)
 
   public lazy var size = SizePack(width: width, height: height)
   public lazy var center = CenterPack(centerX: centerX, centerY: centerY)
@@ -192,10 +182,10 @@ public class LayoutProxy {
     top: top, bottom: bottom
   )
 
-  private let view: UIView
+  private let target: UIView
 
   init(view: UIView) {
-    self.view = view
+    self.target = view
   }
 
   public struct SizePack {

@@ -8,7 +8,7 @@ extension UILabel {
     font: UIFont = .preferredFont(forTextStyle: .body),
     lineBreakMode: NSLineBreakMode = .byTruncatingTail,
     numberOfLines: Int = 0,
-    backgroundColor: UIColor? = nil
+    backgroundColor: UIColor = .clear
   ) {
     self.init()
     self.text = text
@@ -17,6 +17,7 @@ extension UILabel {
     self.font = font
     self.lineBreakMode = lineBreakMode
     self.numberOfLines = numberOfLines
+    // `nil` not working as doc says
     self.backgroundColor = backgroundColor
     self.translatesAutoresizingMaskIntoConstraints = false
   }
