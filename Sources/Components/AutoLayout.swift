@@ -297,54 +297,6 @@ public func -<Anchor: LayoutAnchor>(
   .init(anchor: lhs, constant: -rhs)
 }
 
-@discardableResult
-public func ==<Anchor: LayoutAnchor>(
-  lhs: LayoutAnchorBox<Anchor>,
-  rhs: LayoutAnchorPack<Anchor>
-) -> NSLayoutConstraint {
-  lhs.equal(to: rhs.anchor, offsetBy: rhs.constant)
-}
-
-@discardableResult
-public func ==<Anchor: LayoutAnchor>(
-  lhs: LayoutAnchorBox<Anchor>,
-  rhs: Anchor
-) -> NSLayoutConstraint {
-  lhs.equal(to: rhs)
-}
-
-@discardableResult
-public func >=<Anchor: LayoutAnchor>(
-  lhs: LayoutAnchorBox<Anchor>,
-  rhs: LayoutAnchorPack<Anchor>
-) -> NSLayoutConstraint {
-  lhs.greaterThanOrEqual(to: rhs.anchor, offsetBy: rhs.constant)
-}
-
-@discardableResult
-public func >=<Anchor: LayoutAnchor>(
-  lhs: LayoutAnchorBox<Anchor>,
-  rhs: Anchor
-) -> NSLayoutConstraint {
-  lhs.greaterThanOrEqual(to: rhs)
-}
-
-@discardableResult
-public func <=<Anchor: LayoutAnchor>(
-  lhs: LayoutAnchorBox<Anchor>,
-  rhs: LayoutAnchorPack<Anchor>
-) -> NSLayoutConstraint {
-  lhs.lessThanOrEqual(to: rhs.anchor, offsetBy: rhs.constant)
-}
-
-@discardableResult
-public func <=<Anchor: LayoutAnchor>(
-  lhs: LayoutAnchorBox<Anchor>,
-  rhs: Anchor
-) -> NSLayoutConstraint {
-  lhs.lessThanOrEqual(to: rhs)
-}
-
 public func +<Anchor: LayoutDimension>(
   lhs: Anchor,
   rhs: CGFloat
@@ -393,6 +345,75 @@ public func -<Anchor: LayoutDimension>(
     multiplier: lhs.multiplier,
     constant: lhs.constant - rhs
   )
+}
+
+public func *<Anchor: LayoutDimension>(
+  lhs: LayoutDimensionBox<Anchor>,
+  rhs: CGFloat
+) -> LayoutDimensionPack<Anchor> {
+  .init(anchor: lhs.anchor, multiplier: rhs, constant: 0)
+}
+
+public func /<Anchor: LayoutDimension>(
+  lhs: LayoutDimensionBox<Anchor>,
+  rhs: CGFloat
+) -> LayoutDimensionPack<Anchor> {
+  .init(anchor: lhs.anchor, multiplier: 1.0 / rhs, constant: 0)
+}
+
+public func -(
+  lhs: UIView.EdgesPack,
+  rhs: UIEdgeInsets
+) -> UIView.EdgesMarginPack {
+  .init(edges: lhs, margin: rhs)
+}
+
+@discardableResult
+public func ==<Anchor: LayoutAnchor>(
+  lhs: LayoutAnchorBox<Anchor>,
+  rhs: LayoutAnchorPack<Anchor>
+) -> NSLayoutConstraint {
+  lhs.equal(to: rhs.anchor, offsetBy: rhs.constant)
+}
+
+@discardableResult
+public func ==<Anchor: LayoutAnchor>(
+  lhs: LayoutAnchorBox<Anchor>,
+  rhs: Anchor
+) -> NSLayoutConstraint {
+  lhs.equal(to: rhs)
+}
+
+@discardableResult
+public func >=<Anchor: LayoutAnchor>(
+  lhs: LayoutAnchorBox<Anchor>,
+  rhs: LayoutAnchorPack<Anchor>
+) -> NSLayoutConstraint {
+  lhs.greaterThanOrEqual(to: rhs.anchor, offsetBy: rhs.constant)
+}
+
+@discardableResult
+public func >=<Anchor: LayoutAnchor>(
+  lhs: LayoutAnchorBox<Anchor>,
+  rhs: Anchor
+) -> NSLayoutConstraint {
+  lhs.greaterThanOrEqual(to: rhs)
+}
+
+@discardableResult
+public func <=<Anchor: LayoutAnchor>(
+  lhs: LayoutAnchorBox<Anchor>,
+  rhs: LayoutAnchorPack<Anchor>
+) -> NSLayoutConstraint {
+  lhs.lessThanOrEqual(to: rhs.anchor, offsetBy: rhs.constant)
+}
+
+@discardableResult
+public func <=<Anchor: LayoutAnchor>(
+  lhs: LayoutAnchorBox<Anchor>,
+  rhs: Anchor
+) -> NSLayoutConstraint {
+  lhs.lessThanOrEqual(to: rhs)
 }
 
 @discardableResult
@@ -531,13 +552,6 @@ public func ==(
     lhs.top.equal(to: rhs.top),
     lhs.bottom.equal(to: rhs.bottom),
   ]
-}
-
-public func -(
-  lhs: UIView.EdgesPack,
-  rhs: UIEdgeInsets
-) -> UIView.EdgesMarginPack {
-  .init(edges: lhs, margin: rhs)
 }
 
 @discardableResult
