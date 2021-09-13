@@ -255,3 +255,61 @@ extension UIView {
     return self
   }
 }
+
+extension UIView {
+  @discardableResult
+  public func width(_ width: CGFloat) -> Self {
+    widthAnchor.constraint(equalToConstant: width).isActive = true
+    frame.size.width = width
+    return self
+  }
+
+  @discardableResult
+  public func height(_ height: CGFloat) -> Self {
+    heightAnchor.constraint(equalToConstant: height).isActive = true
+    frame.size.height = height
+    return self
+  }
+
+  @discardableResult
+  public func size(_ size: CGSize) -> Self {
+    widthAnchor.constraint(equalToConstant: size.width).isActive = true
+    heightAnchor.constraint(equalToConstant: size.height).isActive = true
+    frame.size = size
+    return self
+  }
+
+  @discardableResult
+  public func width(
+    equalTo other: UIView, multiplier: CGFloat = 1, constant: CGFloat = 0
+  ) -> Self {
+    widthAnchor.constraint(
+      equalTo: other.widthAnchor,
+      multiplier: multiplier,
+      constant: constant
+    ).isActive = true
+    frame.size.width = other.frame.size.width
+    return self
+  }
+
+  @discardableResult
+  public func height(
+    equalTo other: UIView, multiplier: CGFloat = 1, constant: CGFloat = 0
+  ) -> Self {
+    heightAnchor.constraint(
+      equalTo: other.heightAnchor,
+      multiplier: multiplier,
+      constant: constant
+    ).isActive = true
+    frame.size.height = other.frame.size.height
+    return self
+  }
+
+  @discardableResult
+  public func size(equalTo other: UIView) -> Self {
+    widthAnchor.constraint(equalTo: other.widthAnchor).isActive = true
+    heightAnchor.constraint(equalTo: other.heightAnchor).isActive = true
+    frame.size = other.frame.size
+    return self
+  }
+}

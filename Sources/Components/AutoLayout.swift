@@ -207,20 +207,26 @@ public class LayoutProxy {
 }
 
 extension UIView {
-  public func addSubview(_ view: UIView, layout: (LayoutProxy) -> Void) {
+  @discardableResult
+  public func addSubview(_ view: UIView, layout: (LayoutProxy) -> Void) -> Self {
     addSubview(view)
     view.layout(using: layout)
+    return self
   }
 
-  public func layout(using closure: (LayoutProxy) -> Void) {
+  @discardableResult
+  public func layout(using closure: (LayoutProxy) -> Void) -> Self {
     translatesAutoresizingMaskIntoConstraints = false
     closure(LayoutProxy(target: self))
+    return self
   }
 
-  public func relayout(using closure: (LayoutProxy) -> Void) {
+  @discardableResult
+  public func relayout(using closure: (LayoutProxy) -> Void) -> Self  {
     NSLayoutConstraint.deactivate(constraints)
     closure(LayoutProxy(target: self))
     updateConstraintsIfNeeded()
+    return self
   }
 
   public struct SizeAnchorPack {
@@ -274,12 +280,14 @@ extension UIView {
 }
 
 extension UIStackView {
+  @discardableResult
   public func addArrangedSubview(
     _ view: UIView,
     layout: (LayoutProxy) -> Void
-  ) {
+  ) -> Self {
     addArrangedSubview(view)
     view.layout(using: layout)
+    return self
   }
 }
 

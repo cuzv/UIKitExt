@@ -15,11 +15,16 @@ extension UIStackView {
     self.translatesAutoresizingMaskIntoConstraints = false
   }
 
-  public func addArrangedSubviews(_ views: UIView...) {
+
+  @discardableResult
+  public func addArrangedSubviews(_ views: UIView...) -> Self {
     views.forEach(addArrangedSubview(_:))
+    return self
   }
 
-  public func removeArrangedSubviews(_ views: UIView...) {
+  @discardableResult
+  public func removeArrangedSubviews(_ views: UIView...) -> Self {
     views.forEach(removeArrangedSubview(_:))
+    return self
   }
 }

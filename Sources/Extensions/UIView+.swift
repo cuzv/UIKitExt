@@ -22,15 +22,31 @@ extension UIView {
 
   public convenience init(size: CGSize) {
     self.init(frame: .init(origin: .zero, size: size))
-    self.translatesAutoresizingMaskIntoConstraints = false
+    translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      self.widthAnchor.constraint(equalToConstant: size.width),
-      self.heightAnchor.constraint(equalToConstant: size.height),
+      widthAnchor.constraint(equalToConstant: size.width),
+      heightAnchor.constraint(equalToConstant: size.height),
     ])
   }
 
   public convenience init(length: CGFloat) {
     self.init(size: .init(width: length, height: length))
+  }
+
+  public convenience init(width: CGFloat) {
+    self.init(frame: .zero)
+    translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      widthAnchor.constraint(equalToConstant: width),
+    ])
+  }
+
+  public convenience init(height: CGFloat) {
+    self.init(frame: .zero)
+    translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      heightAnchor.constraint(equalToConstant: height),
+    ])
   }
 }
 
