@@ -3,8 +3,8 @@ import UIKit
 extension UILabel {
   public convenience init(
     text: String,
-    textAlignment: NSTextAlignment = .natural,
     textColor: UIColor = .foreground,
+    textAlignment: NSTextAlignment = .natural,
     font: UIFont = .preferredFont(forTextStyle: .body),
     lineBreakMode: NSLineBreakMode = .byTruncatingTail,
     numberOfLines: Int = 0,
@@ -17,7 +17,7 @@ extension UILabel {
     self.font = font
     self.lineBreakMode = lineBreakMode
     self.numberOfLines = numberOfLines
-    // `nil` not working as doc says
+    // backgroundColor set to `nil` not working as doc says, use `.clear` instead
     self.backgroundColor = backgroundColor
     self.translatesAutoresizingMaskIntoConstraints = false
   }

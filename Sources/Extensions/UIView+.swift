@@ -146,6 +146,7 @@ extension UIView {
    */
 }
 
+/*
 // MRARK: - Layer Property
 
 extension UIView {
@@ -245,6 +246,7 @@ extension UIView {
     set { layer.shouldRasterize = newValue }
   }
 }
+ */
 
 // MARK: - Border
 
