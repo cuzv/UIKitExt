@@ -186,3 +186,72 @@ extension UIView {
     return self
   }
 }
+
+extension UIView {
+  @discardableResult
+  public func opacity(_ opacity: Float) -> Self {
+    layer.opacity = opacity
+    return self
+  }
+
+  @discardableResult
+  public func masksToBounds(_ masks: Bool) -> Self {
+    layer.masksToBounds = masks
+    return self
+  }
+
+  @discardableResult
+  public func cornerRadius(_ radius: CGFloat) -> Self {
+    layer.cornerRadius = radius
+    return self
+  }
+
+  @available(iOS 11.0, *)
+  @discardableResult
+  public func maskedCorners(_ corners: CACornerMask) -> Self {
+    layer.maskedCorners = corners
+    return self
+  }
+
+  @discardableResult
+  public func borderWidth(_ width: CGFloat) -> Self {
+    layer.borderWidth = width
+    return self
+  }
+
+  @discardableResult
+  public func borderColor(_ color: UIColor?) -> Self {
+    layer.borderColor = color?.cgColor
+    return self
+  }
+
+  @discardableResult
+  public func shadowOpacity(_ opacity: Float) -> Self {
+    layer.shadowOpacity = opacity
+    return self
+  }
+
+  @discardableResult
+  public func shadowRadius(_ radius: CGFloat) -> Self {
+    layer.shadowRadius = radius
+    return self
+  }
+
+  @discardableResult
+  @objc public func shadowOffset(_ offset: CGSize) -> Self {
+    layer.shadowOffset = offset
+    return self
+  }
+
+  @discardableResult
+  @objc public func shadowColor(_ color: UIColor?) -> Self {
+    layer.shadowColor = color?.cgColor
+    return self
+  }
+
+  @discardableResult
+  public func shouldRasterize(_ should: Bool) -> Self {
+    layer.shouldRasterize = should
+    return self
+  }
+}

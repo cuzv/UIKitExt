@@ -146,7 +146,7 @@ extension UIView {
    */
 }
 
-/*
+
 // MRARK: - Layer Property
 
 extension UIView {
@@ -178,75 +178,75 @@ extension UIView {
   /// - layerMaxXMaxYCorner: 8
   @available(iOS 11.0, *)
   @IBInspectable public var maskedCornersRawValue: UInt {
-    get { return layer.maskedCorners.rawValue }
+    get { layer.maskedCorners.rawValue }
     set { layer.maskedCorners = CACornerMask(rawValue: newValue) }
   }
 
   @available(iOS 11.0, *)
   @IBInspectable public var maskTopLeftCorner: Bool {
-    get { return layer.maskedCorners.contains(.layerMinXMinYCorner) }
+    get { layer.maskedCorners.contains(.layerMinXMinYCorner) }
     set { layer.maskedCorners.insert(.layerMinXMinYCorner) }
   }
 
   @available(iOS 11.0, *)
   @IBInspectable public var maskTopRightCorner: Bool {
-    get { return layer.maskedCorners.contains(.layerMaxXMinYCorner) }
+    get { layer.maskedCorners.contains(.layerMaxXMinYCorner) }
     set { layer.maskedCorners.insert(.layerMaxXMinYCorner) }
   }
 
   @available(iOS 11.0, *)
   @IBInspectable public var maskBottomLeftCorner: Bool {
-    get { return layer.maskedCorners.contains(.layerMinXMaxYCorner) }
+    get { layer.maskedCorners.contains(.layerMinXMaxYCorner) }
     set { layer.maskedCorners.insert(.layerMinXMaxYCorner) }
   }
 
   @available(iOS 11.0, *)
   @IBInspectable public var maskBottomRightCorner: Bool {
-    get { return layer.maskedCorners.contains(.layerMaxXMaxYCorner) }
+    get { layer.maskedCorners.contains(.layerMaxXMaxYCorner) }
     set { layer.maskedCorners.insert(.layerMaxXMaxYCorner) }
   }
 
   @IBInspectable public var borderWidth: CGFloat {
-    get { return layer.borderWidth }
+    get { layer.borderWidth }
     set { layer.borderWidth = newValue }
   }
 
   @IBInspectable public var borderColor: UIColor? {
-    get { return layer.borderColor.map(UIColor.init) }
+    get { layer.borderColor.map(UIColor.init) }
     set { layer.borderColor = newValue?.cgColor }
   }
 
   @IBInspectable public var shadowOpacity: Float {
-    get { return layer.shadowOpacity }
+    get { layer.shadowOpacity }
     set { layer.shadowOpacity = newValue }
   }
 
   @IBInspectable public var shadowRadius: CGFloat {
-    get { return layer.shadowRadius }
+    get { layer.shadowRadius }
     set { layer.shadowRadius = newValue }
   }
 
-  @IBInspectable public var shadowOffset: CGSize {
-    get { return layer.shadowOffset }
+  @IBInspectable public var layerShadowOffset: CGSize {
+    get { layer.shadowOffset }
     set { layer.shadowOffset = newValue }
   }
 
-  @IBInspectable public var shadowColor: UIColor? {
-    get { return layer.shadowColor.map(UIColor.init) }
+  @IBInspectable public var layerShadowColor: UIColor? {
+    get { layer.shadowColor.map(UIColor.init) }
     set { layer.shadowColor = newValue?.cgColor }
   }
 
   @IBInspectable public var isOpaqueEnabled: Bool {
-    get { return layer.isOpaque }
+    get { layer.isOpaque }
     set { layer.isOpaque = newValue }
   }
 
   @IBInspectable public var shouldRasterize: Bool {
-    get { return layer.shouldRasterize }
+    get { layer.shouldRasterize }
     set { layer.shouldRasterize = newValue }
   }
 }
- */
+
 
 // MARK: - Border
 

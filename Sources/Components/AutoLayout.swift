@@ -182,10 +182,10 @@ public class LayoutProxy {
     top: top, bottom: bottom
   )
 
-  private let target: UIView
+  public let target: UIView
 
-  init(view: UIView) {
-    self.target = view
+  init(target: UIView) {
+    self.target = target
   }
 
   public struct SizePack {
@@ -214,12 +214,12 @@ extension UIView {
 
   public func layout(using closure: (LayoutProxy) -> Void) {
     translatesAutoresizingMaskIntoConstraints = false
-    closure(LayoutProxy(view: self))
+    closure(LayoutProxy(target: self))
   }
 
   public func relayout(using closure: (LayoutProxy) -> Void) {
     NSLayoutConstraint.deactivate(constraints)
-    closure(LayoutProxy(view: self))
+    closure(LayoutProxy(target: self))
     updateConstraintsIfNeeded()
   }
 

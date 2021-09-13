@@ -86,13 +86,13 @@ extension UILabel {
   }
 
   @discardableResult
-  public func shadowColor(_ color: UIColor?) -> Self {
+  public override func shadowColor(_ color: UIColor?) -> Self {
     shadowColor = color
     return self
   }
 
   @discardableResult
-  public func shadowOffset(_ offset: CGSize) -> Self {
+  public override func shadowOffset(_ offset: CGSize) -> Self {
     shadowOffset = offset
     return self
   }
