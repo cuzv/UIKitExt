@@ -313,3 +313,17 @@ extension UIView {
     return self
   }
 }
+
+extension UIView {
+  @discardableResult
+  public func addSubviews(_ views: UIView...) -> Self {
+    views.forEach(addSubview)
+    return self
+  }
+
+  @discardableResult
+  public func addSubviews(_ views: [UIView]) -> Self {
+    views.forEach(addSubview)
+    return self
+  }
+}

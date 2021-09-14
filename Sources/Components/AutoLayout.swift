@@ -207,28 +207,6 @@ public class LayoutProxy {
 }
 
 extension UIView {
-  @discardableResult
-  public func addSubview(_ view: UIView, layout: (LayoutProxy) -> Void) -> Self {
-    addSubview(view)
-    view.layout(using: layout)
-    return self
-  }
-
-  @discardableResult
-  public func layout(using closure: (LayoutProxy) -> Void) -> Self {
-    translatesAutoresizingMaskIntoConstraints = false
-    closure(LayoutProxy(target: self))
-    return self
-  }
-
-  @discardableResult
-  public func relayout(using closure: (LayoutProxy) -> Void) -> Self  {
-    NSLayoutConstraint.deactivate(constraints)
-    closure(LayoutProxy(target: self))
-    updateConstraintsIfNeeded()
-    return self
-  }
-
   public struct SizeAnchorPack {
     let widthAnchor: NSLayoutDimension
     let heightAnchor: NSLayoutDimension
@@ -279,6 +257,53 @@ extension UIView {
   }
 }
 
+extension UIView {
+  @discardableResult
+  public func addSubview(_ view: UIView, layout: (LayoutProxy) -> Void) -> Self {
+    addSubview(view)
+    view.layout(using: layout)
+    return self
+  }
+
+  @discardableResult
+  public func layout(using closure: (LayoutProxy) -> Void) -> Self {
+    translatesAutoresizingMaskIntoConstraints = false
+    closure(LayoutProxy(target: self))
+    return self
+  }
+
+  @discardableResult
+  public func relayout(using closure: (LayoutProxy) -> Void) -> Self  {
+    NSLayoutConstraint.deactivate(constraints)
+    closure(LayoutProxy(target: self))
+    updateConstraintsIfNeeded()
+    return self
+  }
+
+
+  @discardableResult
+  public func addSubviews(
+    _ pairs: (view: UIView, layout: (LayoutProxy) -> Void)...
+  ) -> Self {
+    for pair in pairs {
+      addSubview(pair.view)
+      pair.view.layout(using: pair.layout)
+    }
+    return self
+  }
+
+  @discardableResult
+  public func addSubviews(
+    _ pairs: [(view: UIView, layout: (LayoutProxy) -> Void)]
+  ) -> Self {
+    for pair in pairs {
+      addSubview(pair.view)
+      pair.view.layout(using: pair.layout)
+    }
+    return self
+  }
+}
+
 extension UIStackView {
   @discardableResult
   public func addArrangedSubview(
@@ -287,6 +312,28 @@ extension UIStackView {
   ) -> Self {
     addArrangedSubview(view)
     view.layout(using: layout)
+    return self
+  }
+
+  @discardableResult
+  public func addArrangedSubviews(
+    _ pairs: (view: UIView, layout: (LayoutProxy) -> Void)...
+  ) -> Self {
+    for pair in pairs {
+      addArrangedSubview(pair.view)
+      pair.view.layout(using: pair.layout)
+    }
+    return self
+  }
+
+  @discardableResult
+  public func addArrangedSubviews(
+    _ pairs: [(view: UIView, layout: (LayoutProxy) -> Void)]
+  ) -> Self {
+    for pair in pairs {
+      addArrangedSubview(pair.view)
+      pair.view.layout(using: pair.layout)
+    }
     return self
   }
 }
