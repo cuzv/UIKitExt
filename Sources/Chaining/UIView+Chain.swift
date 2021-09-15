@@ -129,6 +129,48 @@ extension UIView {
     return self
   }
 
+  @discardableResult
+  public func contentCompressionResistancePriority(
+    _ priority: UILayoutPriority,
+    for axis: NSLayoutConstraint.Axis
+  ) -> Self {
+    setContentCompressionResistancePriority(priority, for: axis)
+    return self
+  }
+
+  @discardableResult
+  public func contentHuggingPriority(
+    _ priority: UILayoutPriority,
+    for axis: NSLayoutConstraint.Axis
+  ) -> Self {
+    setContentHuggingPriority(priority, for: axis)
+    return self
+  }
+
+  @discardableResult
+  public func contentMode(_ mode: ContentMode ) -> Self {
+    contentMode = mode
+    return self
+  }
+
+  @discardableResult
+  public func autoresizesSubviews(_ resizes: Bool) -> Self {
+    autoresizesSubviews = resizes
+    return self
+  }
+
+  @discardableResult
+  public func autoresizingMask(_ mask: AutoresizingMask) -> Self {
+    autoresizingMask = mask
+    return self
+  }
+
+  @discardableResult
+  public func translatesAutoresizingMaskIntoConstraints(_ translates: Bool) -> Self {
+    useConstraints(!translates)
+    return self
+  }
+
   @available(iOS 13.0, *)
   @discardableResult
   public func overrideUserInterfaceStyle(_ style: UIUserInterfaceStyle) -> Self {
@@ -183,6 +225,55 @@ extension UIView {
   @discardableResult
   public func accessibilityIgnoresInvertColors(_ ignores: Bool) -> Self {
     accessibilityIgnoresInvertColors = ignores
+    return self
+  }
+
+  @available(iOS 14.0, *)
+  @discardableResult
+  public func focusGroupIdentifier(_ identifier: String?) -> Self {
+    focusGroupIdentifier = identifier
+    return self
+  }
+
+  @available(iOS 13.0, *)
+  @discardableResult
+  public func largeContentImage(_ image: UIImage?) -> Self {
+    largeContentImage = image
+    return self
+  }
+
+  @available(iOS 13.0, *)
+  @discardableResult
+  public func largeContentImageInsets(_ insets: UIEdgeInsets) -> Self {
+    largeContentImageInsets = insets
+    return self
+  }
+
+  @available(iOS 13.0, *)
+  @discardableResult
+  public func largeContentTitle(_ title: String?) -> Self {
+    largeContentTitle = title
+    return self
+  }
+
+  @available(iOS 13.0, *)
+  @discardableResult
+  public func scalesLargeContentImage(_ scales: Bool) -> Self {
+    scalesLargeContentImage = scales
+    return self
+  }
+
+  @available(iOS 13.0, *)
+  @discardableResult
+  public func showsLargeContentViewer(_ shows: Bool) -> Self {
+    showsLargeContentViewer = shows
+    return self
+  }
+
+  @available(iOS 13.0, *)
+  @discardableResult
+  public func transform3D(_ transform: CATransform3D) -> Self {
+    transform3D = transform
     return self
   }
 }
