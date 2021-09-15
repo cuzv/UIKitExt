@@ -62,4 +62,31 @@ extension UIStackView {
     views.forEach(removeArrangedSubview(_:))
     return self
   }
+
+  /// Call lastly while arrange subviews
+  @discardableResult
+  public func distributionCenter() -> Self {
+    insertArrangedSubview(UIView().useConstraints(), at: 0)
+    addArrangedSubview(UIView().useConstraints())
+    return distributeHeadEqualTail()
+  }
+
+  @discardableResult
+  public func distributeHeadEqualTail() -> Self {
+    if
+      let head = arrangedSubviews.first,
+      let tail = arrangedSubviews.last,
+      head !== tail
+    {
+      switch axis {
+      case .horizontal:
+        head.width(equalTo: tail)
+      case .vertical:
+        head.height(equalTo: tail)
+      @unknown default:
+        print("Unknown default distribution: do nothing")
+      }
+    }
+    return self
+  }
 }
