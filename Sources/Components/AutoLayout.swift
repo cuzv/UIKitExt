@@ -204,6 +204,14 @@ public class LayoutProxy {
     let top: LayoutAnchorBox<NSLayoutYAxisAnchor>
     let bottom: LayoutAnchorBox<NSLayoutYAxisAnchor>
   }
+
+  public var superview: UIView {
+    if let superview = target.superview {
+      return superview
+    } else {
+      fatalError("Must add to a superview before get it")
+    }
+  }
 }
 
 extension UIView {
@@ -251,9 +259,56 @@ extension UIView {
     )
   }
 
+  public var marginEdgesAnchor: EdgesPack {
+    .init(
+      leading: layoutMarginsGuide.leadingAnchor,
+      trailing: layoutMarginsGuide.trailingAnchor,
+      top: layoutMarginsGuide.topAnchor,
+      bottom: layoutMarginsGuide.bottomAnchor
+    )
+  }
+
   public struct EdgesMarginPack {
     let edges: EdgesPack
     let margin: UIEdgeInsets
+  }
+}
+
+extension UIView {
+  public var marginLeadingAnchor: NSLayoutXAxisAnchor {
+    layoutMarginsGuide.leadingAnchor
+  }
+
+  public var marginTrailingAnchor: NSLayoutXAxisAnchor {
+    layoutMarginsGuide.trailingAnchor
+  }
+
+  public var marginTopAnchor: NSLayoutYAxisAnchor {
+    layoutMarginsGuide.topAnchor
+  }
+
+  public var marginBottomAnchor: NSLayoutYAxisAnchor {
+    layoutMarginsGuide.bottomAnchor
+  }
+
+  @available(iOS 11.0, *)
+  public var safeLeadingAnchor: NSLayoutXAxisAnchor {
+    safeAreaLayoutGuide.leadingAnchor
+  }
+
+  @available(iOS 11.0, *)
+  public var safeTrailingAnchor: NSLayoutXAxisAnchor {
+    safeAreaLayoutGuide.trailingAnchor
+  }
+
+  @available(iOS 11.0, *)
+  public var safeTopAnchor: NSLayoutYAxisAnchor {
+    safeAreaLayoutGuide.topAnchor
+  }
+
+  @available(iOS 11.0, *)
+  public var safeBottomAnchor: NSLayoutYAxisAnchor {
+    safeAreaLayoutGuide.bottomAnchor
   }
 }
 
@@ -279,7 +334,6 @@ extension UIView {
     updateConstraintsIfNeeded()
     return self
   }
-
 
   @discardableResult
   public func addSubviews(
