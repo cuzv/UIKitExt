@@ -55,7 +55,6 @@ extension CALayer {
     return self
   }
 
-
   @discardableResult
   public func cornerRadius(_ radius: CGFloat) -> Self {
     cornerRadius = radius

@@ -162,7 +162,6 @@ extension UIView {
    */
 }
 
-
 // MRARK: - Layer Property
 
 extension UIView {
@@ -262,7 +261,6 @@ extension UIView {
     set { layer.shouldRasterize = newValue }
   }
 }
-
 
 // MARK: - Border
 
@@ -429,7 +427,7 @@ extension UIView {
     }
 
     for view in subviews {
-      if let view = view as? _BorderLineView , rectEdge.contains(view.edge) {
+      if let view = view as? _BorderLineView, rectEdge.contains(view.edge) {
         return
       }
     }
@@ -490,7 +488,7 @@ extension UIView {
     }
 
     for view in subviews {
-      if let view = view as? _BorderLineView , rectEdge.contains(view.edge) {
+      if let view = view as? _BorderLineView, rectEdge.contains(view.edge) {
         view.removeFromSuperview()
       }
     }

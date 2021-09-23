@@ -328,7 +328,7 @@ extension UIView {
   }
 
   @discardableResult
-  public func relayout(using closure: (LayoutProxy) -> Void) -> Self  {
+  public func relayout(using closure: (LayoutProxy) -> Void) -> Self {
     NSLayoutConstraint.deactivate(constraints)
     closure(LayoutProxy(target: self))
     updateConstraintsIfNeeded()
