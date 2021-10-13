@@ -2,6 +2,12 @@ import UIKit
 
 extension UIScrollView {
   @discardableResult
+  public func delegate(_ value: UIScrollViewDelegate) -> Self {
+    delegate = value
+    return self
+  }
+  
+  @discardableResult
   public func contentSize(_ size: CGSize) -> Self {
     contentSize = size
     return self
