@@ -2,6 +2,12 @@ import UIKit
 
 extension UISearchBar {
   @discardableResult
+  public func delegate(_ value: UISearchBarDelegate?) -> Self {
+    delegate = value
+    return self
+  }
+
+  @discardableResult
   public func placeholder(_ value: String?) -> Self {
     placeholder = value
     return self
@@ -56,6 +62,12 @@ extension UISearchBar {
   }
 
   @discardableResult
+  public func showsCancelButton(_ shows: Bool, animated: Bool) -> Self {
+    setShowsCancelButton(shows, animated: animated)
+    return self
+  }
+
+  @discardableResult
   public func showsSearchResultsButton(_ shows: Bool) -> Self {
     showsSearchResultsButton = shows
     return self
@@ -74,8 +86,46 @@ extension UISearchBar {
   }
 
   @discardableResult
+  public func backgroundImage(
+    _ backgroundImage: UIImage?,
+    for barPosition: UIBarPosition,
+    barMetrics: UIBarMetrics
+  ) -> Self {
+    setBackgroundImage(backgroundImage, for: barPosition, barMetrics: barMetrics)
+    return self
+  }
+
+  @discardableResult
+  public func image(
+    _ iconImage: UIImage?,
+    for icon: UISearchBar.Icon,
+    state: UIControl.State
+  ) -> Self {
+    setImage(iconImage, for: icon, state: state)
+    return self
+  }
+
+  @discardableResult
+  public func positionAdjustment(
+    _ adjustment: UIOffset,
+    for icon: UISearchBar.Icon
+  ) -> Self {
+    setPositionAdjustment(adjustment, for: icon)
+    return self
+  }
+
+  @discardableResult
   public func inputAccessoryView(_ view: UIView?) -> Self {
     inputAccessoryView = view
+    return self
+  }
+
+  @discardableResult
+  public func searchFieldBackgroundImage(
+    _ backgroundImage: UIImage?,
+    for state: UIControl.State
+  ) -> Self {
+    setSearchFieldBackgroundImage(backgroundImage, for: state)
     return self
   }
 
@@ -112,6 +162,36 @@ extension UISearchBar {
   @discardableResult
   public func scopeBarBackgroundImage(_ image: UIImage?) -> Self {
     scopeBarBackgroundImage = image
+    return self
+  }
+
+  @discardableResult
+  public func scopeBarButtonBackgroundImage(
+    _ backgroundImage: UIImage?,
+    for state: UIControl.State
+  ) -> Self {
+    setScopeBarButtonBackgroundImage(backgroundImage, for: state)
+    return self
+  }
+
+  @discardableResult
+  public func scopeBarButtonDividerImage(
+    _ dividerImage: UIImage?,
+    forLeftSegmentState leftState: UIControl.State,
+    rightSegmentState rightState: UIControl.State
+  ) -> Self {
+    setScopeBarButtonDividerImage(
+      dividerImage,
+      forLeftSegmentState: leftState, rightSegmentState: rightState)
+    return self
+  }
+
+  @discardableResult
+  public func scopeBarButtonTitleTextAttributes(
+    _ attributes: [NSAttributedString.Key : Any]?,
+    for state: UIControl.State
+  ) -> Self {
+    setScopeBarButtonTitleTextAttributes(attributes, for: state)
     return self
   }
 }
