@@ -92,6 +92,7 @@ extension UIStackView {
 }
 
 extension UIStackView {
+  @discardableResult
   public func addingArrangedHeaderFooterDistributedEqually() -> Self {
     let header = UIView().useConstraints()
     let footer = UIView().useConstraints()
