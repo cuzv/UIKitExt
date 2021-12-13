@@ -139,3 +139,62 @@ extension UIButton {
     return self
   }
 }
+
+extension UIButton {
+  @discardableResult
+  public func titles(
+    _ pairs: (UIControl.State, String?)...
+  ) -> Self {
+    pairs.forEach { setTitle($1, for: $0) }
+    return self
+  }
+
+  @discardableResult
+  public func attributedTitles(
+    _ pairs: (UIControl.State, NSAttributedString?)...
+  ) -> Self {
+    pairs.forEach { setAttributedTitle($1, for: $0) }
+    return self
+  }
+
+  @discardableResult
+  public func titleColors(
+    _ pairs: (UIControl.State, UIColor)...
+  ) -> Self {
+    pairs.forEach { setTitleColor($1, for: $0) }
+    return self
+  }
+
+  @discardableResult
+  public func titleShadowColors(
+    _ pairs: (UIControl.State, UIColor)...
+  ) -> Self {
+    pairs.forEach { setTitleShadowColor($1, for: $0) }
+    return self
+  }
+
+  @discardableResult
+  public func backgroundImages(
+    _ pairs: (UIControl.State, UIImage?)...
+  ) -> Self {
+    pairs.forEach { setBackgroundImage($1, for: $0) }
+    return self
+  }
+
+  @discardableResult
+  public func images(
+    _ pairs: (UIControl.State, UIImage?)...
+  ) -> Self {
+    pairs.forEach { setImage($1, for: $0) }
+    return self
+  }
+
+  @available(iOS 13.0, *)
+  @discardableResult
+  public func preferredSymbolConfigurations(
+    _ pairs: (UIControl.State, UIImage.SymbolConfiguration?)...
+  ) -> Self {
+    pairs.forEach { setPreferredSymbolConfiguration($1, forImageIn: $0) }
+    return self
+  }
+}

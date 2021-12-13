@@ -39,7 +39,7 @@ extension UIPageControl {
 
   @available(iOS 14.0, *)
   @discardableResult
-  public func backgroundStyle(_ style: BackgroundStyle ) -> Self {
+  public func backgroundStyle(_ style: BackgroundStyle) -> Self {
     backgroundStyle = style
     return self
   }

@@ -14,19 +14,19 @@ extension UIBarButtonItem {
   }
 
   @discardableResult
-  public func style(_ value: Style ) -> Self {
+  public func style(_ value: Style) -> Self {
     style = value
     return self
   }
 
   @discardableResult
-  public func possibleTitles(_ elements: Set<String>?  ) -> Self {
+  public func possibleTitles(_ elements: Set<String>?) -> Self {
     possibleTitles = elements
     return self
   }
 
   @discardableResult
-  public func width(_ value: CGFloat ) -> Self {
+  public func width(_ value: CGFloat) -> Self {
     width = value
     return self
   }

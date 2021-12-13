@@ -148,7 +148,7 @@ extension UIView {
   }
 
   @discardableResult
-  public func contentMode(_ mode: ContentMode ) -> Self {
+  public func contentMode(_ mode: ContentMode) -> Self {
     contentMode = mode
     return self
   }

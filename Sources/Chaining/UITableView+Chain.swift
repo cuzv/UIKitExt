@@ -114,7 +114,7 @@ extension UITableView {
 
   @available(iOS 11.0, *)
   @discardableResult
-  public func separatorInsetReference(_ reference: SeparatorInsetReference ) -> Self {
+  public func separatorInsetReference(_ reference: SeparatorInsetReference) -> Self {
     separatorInsetReference = reference
     return self
   }
