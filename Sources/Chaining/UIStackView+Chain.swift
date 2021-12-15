@@ -63,6 +63,20 @@ extension UIStackView {
     return self
   }
 
+  /// Compose of `removeArrangedSubview(_:)` & `removeFromSuperview`
+  public func detachArrangedSubview(_ view: UIView) {
+    removeArrangedSubview(view)
+    view.removeFromSuperview()
+  }
+
+  public func detachArrangedSubviews(_ views: UIView...) {
+    views.forEach(detachArrangedSubview(_:))
+  }
+
+  public func detachArrangedSubviews(_ views: [UIView]) {
+    views.forEach(detachArrangedSubview(_:))
+  }
+
   /// Call lastly while arrange subviews
   @discardableResult
   public func distributionCenter() -> Self {
