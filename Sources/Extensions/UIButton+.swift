@@ -111,7 +111,8 @@ extension UIButton {
     }
   }
 
-  public func layoutDidChange() {
+  @discardableResult
+  public func layoutDidChange() -> Self {
     let titleSize: CGSize
     if let font = titleLabel?.font,
        let size = currentTitle?.size(withAttributes: [.font: font]) {
@@ -122,8 +123,8 @@ extension UIButton {
 
     let imageSize = imageView?.image?.size ?? .zero
 
-    if  titleSize == .zero && imageSize == .zero {
-      return
+    if titleSize == .zero && imageSize == .zero {
+      return self
     }
 
     let halfSpacing = contentSpacing * 0.5
@@ -217,5 +218,27 @@ extension UIButton {
         bottom: contentMargin.bottom + margin + halfSpacing,
         right: contentMargin.right - padding)
     }
+
+    return self
+  }
+}
+
+extension UIButton {
+  @discardableResult
+  public func layoutAxisAlignment(_ value: LayoutAxisAlignment) -> Self {
+    layoutAxisAlignment = value
+    return self
+  }
+
+  @discardableResult
+  public func contentSpacing(_ value: CGFloat) -> Self {
+    contentSpacing = value
+    return self
+  }
+
+  @discardableResult
+  public func padding(_ value: UIEdgeInsets) -> Self {
+    padding = value
+    return self
   }
 }
