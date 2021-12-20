@@ -51,7 +51,7 @@ extension UIScrollView {
   }
 
   @discardableResult
-  public func scrollsToTopEnabled(_ enabled: Bool) -> Self {
+  public func scrollsToTop(_ enabled: Bool) -> Self {
     scrollsToTop = enabled
     return self
   }
@@ -81,6 +81,12 @@ extension UIScrollView {
   }
 
   @discardableResult
+  public func indicatorStyle(_ style: IndicatorStyle) -> Self {
+    indicatorStyle = style
+    return self
+  }
+
+  @discardableResult
   public func showsHorizontalScrollIndicator(_ shows: Bool) -> Self {
     showsHorizontalScrollIndicator = shows
     return self
@@ -89,6 +95,27 @@ extension UIScrollView {
   @discardableResult
   public func showsVerticalScrollIndicator(_ shows: Bool) -> Self {
     showsVerticalScrollIndicator = shows
+    return self
+  }
+
+  @available(iOS 11.1, *)
+  @discardableResult
+  public func horizontalScrollIndicatorInsets(_ insets: UIEdgeInsets) -> Self {
+    horizontalScrollIndicatorInsets = insets
+    return self
+  }
+
+  @available(iOS 11.1, *)
+  @discardableResult
+  public func verticalScrollIndicatorInsets(_ insets: UIEdgeInsets) -> Self {
+    verticalScrollIndicatorInsets = insets
+    return self
+  }
+
+  @available(iOS 13.0, *)
+  @discardableResult
+  public func automaticallyAdjustsScrollIndicatorInsets(_ adjusts: Bool) -> Self {
+    automaticallyAdjustsScrollIndicatorInsets = adjusts
     return self
   }
 
@@ -111,6 +138,12 @@ extension UIScrollView {
   }
 
   @discardableResult
+  public func zoomScale(_ scale: CGFloat, animated: Bool = false) -> Self {
+    setZoomScale(scale, animated: animated)
+    return self
+  }
+
+  @discardableResult
   public func maximumZoomScale(_ scale: CGFloat) -> Self {
     maximumZoomScale = scale
     return self
@@ -128,24 +161,15 @@ extension UIScrollView {
     return self
   }
 
-  @available(iOS 13.0, *)
   @discardableResult
-  public func automaticallyAdjustsScrollIndicatorInsets(_ adjusts: Bool) -> Self {
-    automaticallyAdjustsScrollIndicatorInsets = adjusts
+  public func keyboardDismissMode(_ mode: KeyboardDismissMode) -> Self {
+    keyboardDismissMode = mode
     return self
   }
 
-  @available(iOS 11.1, *)
   @discardableResult
-  public func horizontalScrollIndicatorInsets(_ insets: UIEdgeInsets) -> Self {
-    horizontalScrollIndicatorInsets = insets
-    return self
-  }
-
-  @available(iOS 11.1, *)
-  @discardableResult
-  public func verticalScrollIndicatorInsets(_ insets: UIEdgeInsets) -> Self {
-    verticalScrollIndicatorInsets = insets
+  public func indexDisplayMode(_ mode: IndexDisplayMode) -> Self {
+    indexDisplayMode = mode
     return self
   }
 }
