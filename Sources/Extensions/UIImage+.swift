@@ -36,6 +36,13 @@ extension UIImage {
     }
   }
 
+  public func invertingColors() -> UIImage? {
+    guard let ciImage = CIImage(image: self) ?? ciImage, let filter = CIFilter(name: "CIColorInvert") else { return nil }
+    filter.setValue(ciImage, forKey: kCIInputImageKey)
+    guard let outputImage = filter.outputImage else { return nil }
+    return UIImage(ciImage: outputImage)
+  }
+
   public func scaled(aspectFit boundingSize: CGSize) -> UIImage {
     guard size.width != 0 && size.height != 0 else { return self }
     guard boundingSize.width < size.width || boundingSize.height < size.height else { return self }

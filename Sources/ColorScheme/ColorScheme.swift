@@ -141,6 +141,8 @@ extension UIWindow {
   }
 }
 
+infix operator |: AdditionPrecedence
+
 extension UIColor {
   public class func union(light: UIColor, dark: UIColor) -> UIColor {
     if #available(iOS 13.0, *) {
@@ -148,6 +150,10 @@ extension UIColor {
     } else {
       return light
     }
+  }
+
+  public static func | (light: UIColor, dark: UIColor) -> UIColor {
+    union(light: light, dark: dark)
   }
 }
 
@@ -173,6 +179,10 @@ extension UIImage {
     } else {
       return light
     }
+  }
+
+  public static func | (light: UIImage, dark: UIImage) -> UIImage {
+    union(light: light, dark: dark)
   }
 }
 #endif
