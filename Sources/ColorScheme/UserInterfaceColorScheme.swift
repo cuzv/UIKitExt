@@ -2,7 +2,8 @@
 import UIKit
 import Combine
 
-@objc public enum ColorScheme: Int {
+/// Stolen from https://github.com/Ranchero-Software/NetNewsWire
+@objc public enum UserInterfaceColorScheme: Int {
   case automatic = 0
   case light = 1
   case dark = 2
@@ -29,9 +30,9 @@ import Combine
   }
 }
 
-extension ColorScheme: CaseIterable {}
+extension UserInterfaceColorScheme: CaseIterable {}
 
-extension ColorScheme: CustomStringConvertible {
+extension UserInterfaceColorScheme: CustomStringConvertible {
   public var description: String {
     switch self {
     case .automatic:
@@ -45,8 +46,8 @@ extension ColorScheme: CustomStringConvertible {
 }
 
 extension UserDefaults {
-  @objc var preferredColorScheme: ColorScheme {
-    get { ColorScheme(rawValue: integer(forKey: #function)) ?? .automatic  }
+  @objc var preferredColorScheme: UserInterfaceColorScheme {
+    get { UserInterfaceColorScheme(rawValue: integer(forKey: #function)) ?? .automatic  }
     set { set(newValue.rawValue, forKey: #function) }
   }
 }
@@ -58,7 +59,7 @@ extension UIWindow {
     Self.swizzleInitFromCoderOnce
   }
 
-  public static var preferredColorScheme: ColorScheme {
+  public static var preferredColorScheme: UserInterfaceColorScheme {
     get { UserDefaults.standard.preferredColorScheme }
     set { UserDefaults.standard.preferredColorScheme = newValue }
   }
