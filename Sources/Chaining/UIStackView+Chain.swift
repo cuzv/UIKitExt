@@ -40,14 +40,34 @@ extension UIStackView {
 
 extension UIStackView {
   @discardableResult
+  public func addArrangedSubview(_ view: UIView?) -> Self {
+    if let view = view {
+      addArrangedSubview(view)
+    }
+    return self
+  }
+
+  @discardableResult
   public func addArrangedSubviews(_ views: UIView...) -> Self {
     views.forEach(addArrangedSubview(_:))
     return self
   }
 
   @discardableResult
+  public func addArrangedSubviews(_ views: UIView?...) -> Self {
+    views.compactMap({ $0 }).forEach(addArrangedSubview(_:))
+    return self
+  }
+
+  @discardableResult
   public func addArrangedSubviews(_ views: [UIView]) -> Self {
     views.forEach(addArrangedSubview(_:))
+    return self
+  }
+
+  @discardableResult
+  public func addArrangedSubviews(_ views: [UIView?]) -> Self {
+    views.compactMap({ $0 }).forEach(addArrangedSubview(_:))
     return self
   }
 
