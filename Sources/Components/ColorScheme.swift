@@ -3,7 +3,7 @@ import UIKit
 import Combine
 
 /// Stolen from https://github.com/Ranchero-Software/NetNewsWire
-@objc public enum UserInterfaceColorScheme: Int {
+@objc public enum ColorScheme: Int {
   case automatic = 0
   case light = 1
   case dark = 2
@@ -30,9 +30,15 @@ import Combine
   }
 }
 
-extension UserInterfaceColorScheme: CaseIterable {}
+extension ColorScheme: CaseIterable {}
 
-extension UserInterfaceColorScheme: CustomStringConvertible {
+extension ColorScheme: Identifiable {
+  public var id: Int {
+    rawValue
+  }
+}
+
+extension ColorScheme: CustomStringConvertible {
   public var description: String {
     switch self {
     case .automatic:
@@ -45,24 +51,63 @@ extension UserInterfaceColorScheme: CustomStringConvertible {
   }
 }
 
+// MARK: -
+
+extension ColorScheme {
+  public static var preferredColorScheme: ColorScheme {
+    get { UserDefaults.standard.preferredColorScheme }
+    set { UserDefaults.standard.preferredColorScheme = newValue }
+  }
+
+  @available(iOS 13.0, *)
+  public static var preferredColorSchemePublisher: AnyPublisher<ColorScheme, Never> {
+    UserDefaults.standard.publisher(for: \.preferredColorScheme)
+      .removeDuplicates()
+      .eraseToAnyPublisher()
+  }
+}
+
 extension UserDefaults {
-  @objc var preferredColorScheme: UserInterfaceColorScheme {
-    get { UserInterfaceColorScheme(rawValue: integer(forKey: #function)) ?? .automatic  }
+  @objc var preferredColorScheme: ColorScheme {
+    get { ColorScheme(rawValue: integer(forKey: #function)) ?? .automatic  }
     set { set(newValue.rawValue, forKey: #function) }
   }
 }
 
+// MARK: -
+
 @available(iOS 13.0, *)
 extension UIWindow {
-  public static func registerDarkModeSupport() {
+  public static func allowsPreferredColorScheme() {
+    Self.swizzleInitFromWindowSceneOnce
     Self.swizzleInitFromFrameOnce
     Self.swizzleInitFromCoderOnce
   }
 
-  public static var preferredColorScheme: UserInterfaceColorScheme {
-    get { UserDefaults.standard.preferredColorScheme }
-    set { UserDefaults.standard.preferredColorScheme = newValue }
-  }
+  private static let swizzleInitFromWindowSceneOnce: Void = {
+    let cls = UIWindow.self
+    let selector = #selector(UIWindow.init(windowScene:))
+    guard let method = class_getInstanceMethod(cls, selector) else {
+      assertionFailure("Method swizzling failed! Class: \(cls), Selector: \(selector)")
+      return
+    }
+    let originalImpl = unsafeBitCast(
+      method_getImplementation(method),
+      to: (@convention(c) (UIWindow, Selector, UIWindowScene) -> UIWindow).self
+    )
+
+    class_replaceMethod(
+      cls,
+      selector,
+      imp_implementationWithBlock({ (window: UIWindow, scene: UIWindowScene) -> UIWindow in
+        defer {
+          window.allowsPreferredColorScheme()
+        }
+        return originalImpl(window, selector, scene)
+      } as @convention(block) (UIWindow, UIWindowScene) -> UIWindow),
+      method_getTypeEncoding(method)
+    )
+  }()
 
   private static let swizzleInitFromFrameOnce: Void = {
     let cls = UIWindow.self
@@ -79,11 +124,11 @@ extension UIWindow {
     class_replaceMethod(
       cls,
       selector,
-      imp_implementationWithBlock({ (self: UIWindow, frame: CGRect) -> UIWindow in
+      imp_implementationWithBlock({ (window: UIWindow, frame: CGRect) -> UIWindow in
         defer {
-          self.supportDarkMode()
+          window.allowsPreferredColorScheme()
         }
-        return originalImpl(self, selector, frame)
+        return originalImpl(window, selector, frame)
       } as @convention(block) (UIWindow, CGRect) -> UIWindow),
       method_getTypeEncoding(method)
     )
@@ -104,22 +149,23 @@ extension UIWindow {
     class_replaceMethod(
       cls,
       selector,
-      imp_implementationWithBlock({ (self: UIWindow, coder: NSCoder) -> UIWindow? in
+      imp_implementationWithBlock({ (window: UIWindow, coder: NSCoder) -> UIWindow? in
         defer {
-          self.supportDarkMode()
+          window.allowsPreferredColorScheme()
         }
-        return originalImpl(self, selector, coder)
+        return originalImpl(window, selector, coder)
       } as @convention(block) (UIWindow, NSCoder) -> UIWindow?),
       method_getTypeEncoding(method))
   }()
+}
 
-  private static var subscriptions = Set<AnyCancellable>([])
-
-  private func supportDarkMode() {
-    subscription = UserDefaults.standard.publisher(for: \.preferredColorScheme)
+@available(iOS 13.0, *)
+extension UIWindow {
+  public func allowsPreferredColorScheme() {
+    subscription = ColorScheme.preferredColorSchemePublisher
       .removeDuplicates()
-      .print("∆preferredColorScheme")
       .map(\.userInterfaceStyle)
+      .print("∆preferredColorScheme")
       .assign(to: \.overrideUserInterfaceStyle, on: self)
 
     let swipe = UISwipeGestureRecognizer(
@@ -141,6 +187,8 @@ extension UIWindow {
     set { objc_setAssociatedObject(self, &Self.subscriptionKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
   }
 }
+
+// MARK: -
 
 infix operator |: AdditionPrecedence
 
