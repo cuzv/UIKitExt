@@ -6,7 +6,7 @@ extension UIScrollView {
     delegate = value
     return self
   }
-  
+
   @discardableResult
   public func contentSize(_ size: CGSize) -> Self {
     contentSize = size

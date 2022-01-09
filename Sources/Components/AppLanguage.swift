@@ -4,7 +4,7 @@ import UIKit
 
 public struct AppLanguage {
   private static let kAppleLanguages = "AppleLanguages"
-  
+
   public static var currentLanguage: String? {
     get {
       UserDefaults.standard.string(forKey: #function) ?? NSLocale.preferredLanguages.first
@@ -51,18 +51,18 @@ public extension Bundle {
       }
     }
   }
-  
+
   @objc func _al_localizedStringForKey(
     forKey key: String, value: String?, table tableName: String?) -> String {
     _al_localizedBundle._al_localizedStringForKey(
-      forKey:key, value: value, table: tableName)
+      forKey: key, value: value, table: tableName)
   }
-  
+
   private var _al_localizedBundle: Bundle {
-    var bundle: Bundle? = nil
+    var bundle: Bundle?
     let currentLanguage = AppLanguage.currentLanguage
     let previousLanguage = _al_language
-    
+
     if nil == currentLanguage && nil == previousLanguage {
       bundle = self
       objc_setAssociatedObject(
@@ -74,7 +74,7 @@ public extension Bundle {
       objc_setAssociatedObject(
         self, &_al_localizedBundleKey, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
-    
+
     if
       nil == bundle,
       let currentLanguage = currentLanguage,
@@ -86,10 +86,10 @@ public extension Bundle {
         bundle, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       _al_language = currentLanguage
     }
-    
+
     return bundle ?? self
   }
-  
+
   private var _al_language: String? {
     get {
       objc_getAssociatedObject(self, &_al_languageKey) as? String
@@ -108,7 +108,7 @@ extension UIApplication {
   private static let runOnce: Void = {
     Bundle.awake()
   }()
-  
+
   override open var next: UIResponder? {
     // Called before applicationDidFinishLaunching
     UIApplication.runOnce

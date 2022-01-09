@@ -188,7 +188,7 @@ extension UISearchBar {
 
   @discardableResult
   public func scopeBarButtonTitleTextAttributes(
-    _ attributes: [NSAttributedString.Key : Any]?,
+    _ attributes: [NSAttributedString.Key: Any]?,
     for state: UIControl.State
   ) -> Self {
     setScopeBarButtonTitleTextAttributes(attributes, for: state)

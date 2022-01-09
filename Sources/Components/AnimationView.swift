@@ -4,7 +4,7 @@ import QuartzCore
 
 open class AnimationView: UIView {
   @IBInspectable open var resumeWhileAwake: Bool = true
-  @IBInspectable open var image: UIImage? = nil {
+  @IBInspectable open var image: UIImage? {
     didSet {
       layer.contents = image?.cgImage
     }
