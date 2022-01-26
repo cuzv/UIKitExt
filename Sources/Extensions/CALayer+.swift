@@ -13,15 +13,31 @@ extension CALayer {
     public let y: CGFloat
     public let blur: CGFloat
     public let spread: CGFloat
+
+    public init(
+      color: UIColor = .black,
+      alpha: Float = 0.5,
+      x: CGFloat = 0,
+      y: CGFloat = 0,
+      blur: CGFloat = 8,
+      spread: CGFloat = 0
+    ) {
+      self.color = color
+      self.alpha = alpha
+      self.x = x
+      self.y = y
+      self.blur = blur
+      self.spread = spread
+    }
   }
 
-  /// Invoke when the bounds is determined.
-  public func apply(_ shadow: SketchShadow) {
+  /// Invoke when the bounds is determined if `shadow.spread != 0`.
+  public func applySketchShadow(_ shadow: SketchShadow) {
     shadowColor = shadow.color.cgColor
     shadowOpacity = shadow.alpha
     shadowOffset = CGSize(width: shadow.x, height: shadow.y)
     shadowRadius = shadow.blur / 2.0
-    shadowPath = UIBezierPath(
+    shadowPath = (0 == shadow.spread) ? nil : UIBezierPath(
       rect: bounds.insetBy(dx: -shadow.spread, dy: -shadow.spread)
     ).cgPath
   }
