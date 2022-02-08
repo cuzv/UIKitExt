@@ -151,4 +151,19 @@ extension UIScrollView {
       )
     }
   }
+
+  public var isZoomed: Bool {
+    zoomScale != minimumZoomScale
+  }
+
+  public func centerContents() {
+    var top: CGFloat = 0, left: CGFloat = 0
+    if contentSize.height < bounds.height {
+      top = (bounds.height - contentSize.height) * 0.5
+    }
+    if contentSize.width < bounds.width {
+      left = (bounds.width - contentSize.width) * 0.5
+    }
+    contentInset = UIEdgeInsets(top: top, left: left, bottom: top, right: left)
+  }
 }
