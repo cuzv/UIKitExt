@@ -166,4 +166,12 @@ extension UIScrollView {
     }
     contentInset = UIEdgeInsets(top: top, left: left, bottom: top, right: left)
   }
+
+  public var contentCenter: CGPoint {
+    let (cWidth, cHeight) = (contentSize.width, contentSize.height)
+    return CGPoint(
+      x: cWidth + max(0, bounds.width - cWidth),
+      y: cHeight + max(0, bounds.height - cHeight)
+    ).applying(.init(scaleX: 0.5, y: 0.5))
+  }
 }
