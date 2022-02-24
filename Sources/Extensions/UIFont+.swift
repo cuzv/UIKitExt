@@ -8,12 +8,18 @@ extension UIFont {
     var traits = originalDescriptor.object(forKey: .traits) as! [String: Any]
     traits[UIFontDescriptor.TraitKey.weight.rawValue] = weight.rawValue
     let artificalDescriptor = originalDescriptor.addingAttributes([.traits: traits])
-    return UIFont(descriptor: artificalDescriptor, size: 0)
+    return .init(descriptor: artificalDescriptor, size: 0)
   }
 
   public func withSymbolicTraits(_ symbolicTraits: UIFontDescriptor.SymbolicTraits) -> UIFont {
-    let descriptor = fontDescriptor.withSymbolicTraits(symbolicTraits)
-    return .init(descriptor: descriptor!, size: 0)
+    let descriptor = fontDescriptor.withSymbolicTraits(symbolicTraits) ?? fontDescriptor
+    return .init(descriptor: descriptor, size: 0)
+  }
+
+  @available(iOS 13.0, *)
+  public func withDesign(_ design: UIFontDescriptor.SystemDesign) -> UIFont {
+    let descriptor = fontDescriptor.withDesign(design) ?? fontDescriptor
+    return .init(descriptor: descriptor, size: 0)
   }
 }
 
