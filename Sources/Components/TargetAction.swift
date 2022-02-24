@@ -8,6 +8,7 @@ extension UIControlTargetActionClosureSupport where Self: UIControl {
   ///   - action: A closure identifying the action method to be called.
   ///   - sender: The object that initiated the request.
   @available(iOS 9.0, *)
+  @discardableResult
   public func action(
     on events: UIControl.Event = .touchUpInside,
     perform: @escaping (_ sender: Self) -> Void
