@@ -417,4 +417,18 @@ extension UIView {
     views.forEach(addSubview)
     return self
   }
+
+  @discardableResult
+  public func addSubview(_ view: UIView, paddings insets: UIEdgeInsets) -> Self {
+    addSubview(view)
+    view.pinEdges(to: self, margins: insets)
+    return self
+  }
+
+  @discardableResult
+  public func pinEdges(to other: UIView, margins insets: UIEdgeInsets = .zero) -> Self {
+    layout { proxy in
+      proxy.edges == (other).edgesAnchor - insets
+    }
+  }
 }
