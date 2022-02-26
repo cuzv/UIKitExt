@@ -11,10 +11,12 @@ final public class LoadingButton: UIButton {
 
   public var isLoading: Bool = false {
     didSet {
-      let currentValue = isLoading
-      if oldValue != currentValue {
-        onLoadingStateUpdated(isLoading: currentValue)
+      let loading = isLoading
+      if oldValue != loading {
+        onLoadingStateUpdated(isLoading: loading)
       }
+
+      isUserInteractionEnabled = !loading
     }
   }
 
