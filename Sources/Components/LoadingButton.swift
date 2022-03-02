@@ -9,7 +9,7 @@ final public class LoadingButton: UIButton {
   private let loadingAnimationKey = "com.redrainlab.loading"
   private let emptyImage = UIImage()
 
-  public var isLoading: Bool = false {
+  @objc dynamic public var isLoading: Bool = false {
     didSet {
       let loading = isLoading
       if oldValue != loading {
