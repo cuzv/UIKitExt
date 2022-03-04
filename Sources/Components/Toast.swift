@@ -206,15 +206,8 @@ extension Toast {
 
   @available(iOS 11.0, *)
   private final class ContentView: ToastContent {
-    private let backgroundView: UIVisualEffectView = {
-      let style: UIBlurEffect.Style
-      if #available(iOS 13.0, *) {
-        style = .systemChromeMaterial
-      } else {
-        style = .prominent
-      }
-      return UIVisualEffectView(effect: UIBlurEffect(style: style))
-    }()
+    private let backgroundView = UIView()
+    private var shadowLayer: CAShapeLayer?
 
     convenience init(text: String) {
       self.init(attributedText: NSAttributedString(string: text))
@@ -223,23 +216,18 @@ extension Toast {
     init(attributedText: NSAttributedString) {
       super.init(frame: .zero)
 
-      let textLabel = UILabel()
-      textLabel.attributedText = attributedText
-      textLabel.translatesAutoresizingMaskIntoConstraints = false
-      textLabel.textAlignment = .left
-      textLabel.font = .preferredFont(forTextStyle: .footnote)
-      textLabel.lineBreakMode = .byTruncatingTail
-      textLabel.numberOfLines = 0
+      let style: UIBlurEffect.Style
+      let textColor: UIColor
+
       if #available(iOS 13.0, *) {
-        textLabel.textColor = .label
+        textColor = .label
+        style = .systemChromeMaterial
       } else {
-        textLabel.textColor = .white
-        backgroundView.backgroundColor = .black
+        textColor = .black
+        style = .prominent
       }
 
       backgroundView.translatesAutoresizingMaskIntoConstraints = false
-      backgroundView.layer.cornerRadius = 8
-      backgroundView.layer.masksToBounds = true
       addSubview(backgroundView)
       NSLayoutConstraint.activate([
         backgroundView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -247,7 +235,27 @@ extension Toast {
         backgroundView.widthAnchor.constraint(lessThanOrEqualToConstant: 280),
       ])
 
-      let superview = backgroundView.contentView
+      let blurView = UIVisualEffectView(effect: UIBlurEffect(style: style))
+      blurView.translatesAutoresizingMaskIntoConstraints = false
+      blurView.layer.masksToBounds = true
+      backgroundView.addSubview(blurView)
+      NSLayoutConstraint.activate([
+        blurView.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor),
+        blurView.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor),
+        blurView.topAnchor.constraint(equalTo: backgroundView.topAnchor),
+        blurView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor),
+      ])
+
+      let textLabel = UILabel()
+      textLabel.translatesAutoresizingMaskIntoConstraints = false
+      textLabel.attributedText = attributedText
+      textLabel.textAlignment = .left
+      textLabel.font = .preferredFont(forTextStyle: .footnote)
+      textLabel.lineBreakMode = .byTruncatingTail
+      textLabel.numberOfLines = 0
+      textLabel.textColor = textColor
+
+      let superview = blurView.contentView
       superview.addSubview(textLabel)
       NSLayoutConstraint.activate([
         textLabel.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: 15),
@@ -259,6 +267,33 @@ extension Toast {
 
     required init?(coder aDecoder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
+    }
+
+
+    override func draw(_ rect: CGRect) {
+      super.draw(rect)
+
+      let bounds = backgroundView.bounds
+      let cornerRadius = bounds.height * 0.5
+
+      backgroundView.layer.cornerRadius = cornerRadius
+      backgroundView.subviews.forEach { view in
+        view.layer.cornerRadius = cornerRadius
+      }
+
+      if let layer = shadowLayer {
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10).cgPath
+      } else {
+        let layer = CAShapeLayer()
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10).cgPath
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 10
+        layer.shadowOpacity = 1
+        layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
+        backgroundView.layer.insertSublayer(layer, at: 0)
+
+        shadowLayer = layer
+      }
     }
 
     override func hitTest(_ point: CGPoint, with event: UIEvent!) -> UIView? {
