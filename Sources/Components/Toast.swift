@@ -2,12 +2,22 @@ import UIKit
 
 // MARK: - Toast
 
+open class ToastContent: UIView {
+  open func present(completion: @escaping (Bool) -> Void) {
+    fatalError("Subclass must override.")
+  }
+
+  open func dismiss(delay: TimeInterval, completion: @escaping (Bool) -> Void) {
+    fatalError("Subclass must override.")
+  }
+}
+
 public struct Toast {
-  let view: UIView
+  let body: ToastContent
   let duration: TimeInterval
 
-  public init(view: UIView, duration: TimeInterval = 2) {
-    self.view = view
+  public init(body: ToastContent, duration: TimeInterval = 2) {
+    self.body = body
     self.duration = duration
   }
 
@@ -48,18 +58,9 @@ final class ToastQueue {
     }
     isProcessing = true
 
-    window.show(view: toast.view)
-    toast.view.alpha = 0
-    UIView.animate(withDuration: 0.25) {
-      toast.view.alpha = 1
-    } completion: { _ in
-      UIView.animate(
-        withDuration: 0.25,
-        delay: toast.duration,
-        options: .beginFromCurrentState
-      ) {
-        toast.view.alpha = 0
-      } completion: { _ in
+    window.show(view: toast.body)
+    toast.body.present { _ in
+      toast.body.dismiss(delay: toast.duration) { _ in
         self.window.hide()
         self.isProcessing = false
         self.reduce()
@@ -192,19 +193,19 @@ extension UIView {
 extension Toast {
   @available(iOS 11.0, *)
   public init(text: String, duration: TimeInterval = 2) {
-    self.init(view: ContentView(text: text), duration: duration)
+    self.init(body: ContentView(text: text), duration: duration)
   }
 
   @available(iOS 11.0, *)
   public init(attributedText: NSAttributedString, duration: TimeInterval = 2) {
     self.init(
-      view: ContentView(attributedText: attributedText),
+      body: ContentView(attributedText: attributedText),
       duration: duration
     )
   }
 
   @available(iOS 11.0, *)
-  private final class ContentView: UIView {
+  private final class ContentView: ToastContent {
     private let backgroundView: UIVisualEffectView = {
       let style: UIBlurEffect.Style
       if #available(iOS 13.0, *) {
@@ -242,7 +243,7 @@ extension Toast {
       addSubview(backgroundView)
       NSLayoutConstraint.activate([
         backgroundView.centerXAnchor.constraint(equalTo: centerXAnchor),
-        backgroundView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -44),
+        backgroundView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
         backgroundView.widthAnchor.constraint(lessThanOrEqualToConstant: 280),
       ])
 
@@ -266,6 +267,26 @@ extension Toast {
       } else {
         return nil
       }
+    }
+
+    override func present(completion: @escaping (Bool) -> Void) {
+      backgroundView.transform = .init(translationX: 0, y: -translateDistance)
+      UIView.animate(withDuration: 0.25, animations: { [backgroundView] in
+        backgroundView.transform = .identity
+      }, completion: completion)
+    }
+
+    override func dismiss(delay: TimeInterval, completion: @escaping (Bool) -> Void) {
+      let translationY = -translateDistance
+      UIView.animate(
+        withDuration: 0.25, delay: delay,
+        options: .beginFromCurrentState, animations: { [backgroundView] in
+          backgroundView.transform = .init(translationX: 0, y: translationY)
+        }, completion: completion)
+    }
+
+    private var translateDistance: CGFloat {
+      (superview?.safeAreaInsets ?? safeAreaInsets).top + max(backgroundView.bounds.size.height, 44)
     }
   }
 }
