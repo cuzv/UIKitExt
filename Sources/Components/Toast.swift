@@ -227,12 +227,16 @@ extension Toast {
         style = .prominent
       }
 
+      let screenBounds = UIScreen.main.bounds
+      let screenWidth = min(screenBounds.height, screenBounds.width)
+      let maxWidth = min(screenWidth, 414) * 0.8
+
       backgroundView.translatesAutoresizingMaskIntoConstraints = false
       addSubview(backgroundView)
       NSLayoutConstraint.activate([
         backgroundView.centerXAnchor.constraint(equalTo: centerXAnchor),
         backgroundView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-        backgroundView.widthAnchor.constraint(lessThanOrEqualToConstant: 280),
+        backgroundView.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth),
       ])
 
       let blurView = UIVisualEffectView(effect: UIBlurEffect(style: style))
@@ -249,7 +253,7 @@ extension Toast {
       let textLabel = UILabel()
       textLabel.translatesAutoresizingMaskIntoConstraints = false
       textLabel.attributedText = attributedText
-      textLabel.textAlignment = .left
+      textLabel.textAlignment = .center
       textLabel.font = .preferredFont(forTextStyle: .footnote)
       textLabel.lineBreakMode = .byTruncatingTail
       textLabel.numberOfLines = 0
@@ -258,8 +262,8 @@ extension Toast {
       let superview = blurView.contentView
       superview.addSubview(textLabel)
       NSLayoutConstraint.activate([
-        textLabel.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: 15),
-        textLabel.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -15),
+        textLabel.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: 20),
+        textLabel.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -20),
         textLabel.topAnchor.constraint(equalTo: superview.topAnchor, constant: 12),
         textLabel.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: -12),
       ])
