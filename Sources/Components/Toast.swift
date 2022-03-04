@@ -1,6 +1,6 @@
 import UIKit
 
-// MARK: - Toast Basics
+// MARK: - Toast
 
 public struct Toast {
   let view: UIView
@@ -16,6 +16,8 @@ public struct Toast {
     ToastQueue.shared.enqueue(self)
   }
 }
+
+// MARK: - ToastQueue
 
 final class ToastQueue {
   static let shared = ToastQueue()
@@ -71,6 +73,8 @@ final class ToastQueue {
     enqueue(pending.removeLast())
   }
 }
+
+// MARK: - ToastWindow
 
 final class ToastWindow: UIWindow {
   private var removedSubviews: [UIView] = []
@@ -183,59 +187,58 @@ extension UIView {
   }
 }
 
-// MARK: - Toast Convenience Methods
+// MARK: - Styled Toast
 
 extension Toast {
   @available(iOS 11.0, *)
   public init(text: String, duration: TimeInterval = 2) {
-    self.init(view: PlainContainerView(text: text), duration: duration)
+    self.init(view: ContentView(text: text), duration: duration)
   }
 
   @available(iOS 11.0, *)
   public init(attributedText: NSAttributedString, duration: TimeInterval = 2) {
     self.init(
-      view: PlainContainerView(attributedText: attributedText),
+      view: ContentView(attributedText: attributedText),
       duration: duration
     )
   }
 
   @available(iOS 11.0, *)
-  private final class PlainContainerView: UIView {
-    private let textLabel: UILabel
-    private let backgroundView: UIView
+  private final class ContentView: UIView {
+    private let backgroundView: UIVisualEffectView = {
+      let style: UIBlurEffect.Style
+      if #available(iOS 13.0, *) {
+        style = .systemChromeMaterial
+      } else {
+        style = .prominent
+      }
+      return UIVisualEffectView(effect: UIBlurEffect(style: style))
+    }()
 
     convenience init(text: String) {
       self.init(attributedText: NSAttributedString(string: text))
     }
 
     init(attributedText: NSAttributedString) {
-      textLabel = UILabel()
+      super.init(frame: .zero)
+
+      let textLabel = UILabel()
+      textLabel.attributedText = attributedText
       textLabel.translatesAutoresizingMaskIntoConstraints = false
       textLabel.textAlignment = .left
       textLabel.font = .preferredFont(forTextStyle: .footnote)
       textLabel.lineBreakMode = .byTruncatingTail
       textLabel.numberOfLines = 0
       if #available(iOS 13.0, *) {
-        textLabel.textColor = .systemBackground
+        textLabel.textColor = .label
       } else {
         textLabel.textColor = .white
-      }
-      textLabel.attributedText = attributedText
-
-      backgroundView = UIView()
-      backgroundView.translatesAutoresizingMaskIntoConstraints = false
-      backgroundView.layer.cornerRadius = 6
-      if #available(iOS 13.0, *) {
-        backgroundView.backgroundColor = .label
-      } else {
         backgroundView.backgroundColor = .black
       }
 
-      super.init(frame: .zero)
-
-      backgroundColor = .clear
-      translatesAutoresizingMaskIntoConstraints = false
-
+      backgroundView.translatesAutoresizingMaskIntoConstraints = false
+      backgroundView.layer.cornerRadius = 8
+      backgroundView.layer.masksToBounds = true
       addSubview(backgroundView)
       NSLayoutConstraint.activate([
         backgroundView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -243,12 +246,13 @@ extension Toast {
         backgroundView.widthAnchor.constraint(lessThanOrEqualToConstant: 280),
       ])
 
-      addSubview(textLabel)
+      let superview = backgroundView.contentView
+      superview.addSubview(textLabel)
       NSLayoutConstraint.activate([
-        textLabel.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 8),
-        textLabel.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -8),
-        textLabel.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 6),
-        textLabel.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: -6),
+        textLabel.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: 15),
+        textLabel.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -15),
+        textLabel.topAnchor.constraint(equalTo: superview.topAnchor, constant: 12),
+        textLabel.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: -12),
       ])
     }
 
