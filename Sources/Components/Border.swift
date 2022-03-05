@@ -10,14 +10,14 @@ extension UIView {
     }
 
     let edge: Edge
-    let width: CGFloat
+    let width: CGFloat?
     let color: UIColor
     let leading: CGFloat
     let trailing: CGFloat
 
     public init(
       edge: Edge,
-      width: CGFloat = 1.0 / UIScreen.main.scale,
+      width: CGFloat? = nil,
       color: UIColor = UIColor(
         red: 200/255.0,
         green: 199/255.0,
@@ -40,31 +40,33 @@ extension UIView {
     view.backgroundColor = border.color
     addSubview(view)
 
+    let borderWidth = border.width ?? 1.0 / UIScreen.main.scale
+
     switch border.edge {
     case .leading:
       NSLayoutConstraint.activate([
-        view.widthAnchor.constraint(equalToConstant: border.width),
+        view.widthAnchor.constraint(equalToConstant: borderWidth),
         view.topAnchor.constraint(equalTo: topAnchor, constant: border.leading),
         view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -border.trailing),
         view.leadingAnchor.constraint(equalTo: leadingAnchor)
       ])
     case .trailing:
       NSLayoutConstraint.activate([
-        view.widthAnchor.constraint(equalToConstant: border.width),
+        view.widthAnchor.constraint(equalToConstant: borderWidth),
         view.topAnchor.constraint(equalTo: topAnchor, constant: border.leading),
         view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -border.trailing),
         view.trailingAnchor.constraint(equalTo: trailingAnchor)
       ])
     case .top:
       NSLayoutConstraint.activate([
-        view.heightAnchor.constraint(equalToConstant: border.width),
+        view.heightAnchor.constraint(equalToConstant: borderWidth),
         view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: border.leading),
         view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -border.trailing),
         view.topAnchor.constraint(equalTo: topAnchor)
       ])
     case .bottom:
       NSLayoutConstraint.activate([
-        view.heightAnchor.constraint(equalToConstant: border.width),
+        view.heightAnchor.constraint(equalToConstant: borderWidth),
         view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: border.leading),
         view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -border.trailing),
         view.bottomAnchor.constraint(equalTo: bottomAnchor)

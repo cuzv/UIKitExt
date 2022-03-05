@@ -270,7 +270,7 @@ extension UIView {
   /// Because using CAShapeLayer, can not remove it, make sure add only once.
   public func addDashBorder(
     for rectEdge: UIRectEdge = .all,
-    width: CGFloat = 1.0 / UIScreen.main.scale,
+    width: CGFloat? = nil,
     color: UIColor = UIColor.separator,
     multiplier: CGFloat = 1,
     constant: CGFloat = 0,
@@ -304,10 +304,11 @@ extension UIView {
     let endX    = 0.5 * w * (1.0 + multiplier) - 0.5 * constant
     let startY  = 0.5 * h * (1.0 - multiplier) + 0.5 * constant
     let endY    = 0.5 * h * (1.0 + multiplier) - 0.5 * constant
+    let borderWidth = width ?? 1.0 / UIScreen.main.scale
 
     if rectEdge.contains(.top) {
       let lineLayer = makeLineLayer(
-        width: width,
+        width: borderWidth,
         color: color,
         lineDashPattern: lineDashPattern,
         startPoint: CGPoint(x: startX, y: 0),
@@ -318,7 +319,7 @@ extension UIView {
 
     if rectEdge.contains(.left) {
       let lineLayer = makeLineLayer(
-        width: width,
+        width: borderWidth,
         color: color,
         lineDashPattern: lineDashPattern,
         startPoint: CGPoint(x: 0, y: startY),
@@ -329,7 +330,7 @@ extension UIView {
 
     if rectEdge.contains(.bottom) {
       let lineLayer = makeLineLayer(
-        width: width,
+        width: borderWidth,
         color: color,
         lineDashPattern: lineDashPattern,
         startPoint: CGPoint(x: startX, y: h),
@@ -340,7 +341,7 @@ extension UIView {
 
     if rectEdge.contains(.right) {
       let lineLayer = makeLineLayer(
-        width: width,
+        width: borderWidth,
         color: color,
         lineDashPattern: lineDashPattern,
         startPoint: CGPoint(x: w, y: startY),
@@ -365,7 +366,7 @@ extension UIView {
   /// Add border line view using Autolayout.
   public func addBorder(
     for rectEdge: UIRectEdge = .all,
-    width: CGFloat = 1.0 / UIScreen.main.scale,
+    width: CGFloat? = nil,
     color: UIColor = UIColor.separator,
     multiplier: CGFloat = 1.0,
     constant: CGFloat = 0
@@ -432,12 +433,14 @@ extension UIView {
       }
     }
 
+    let borderWidth = width ?? 1.0 / UIScreen.main.scale
+
     if rectEdge.contains(.top) {
       addLineViewConstraints(
         edge: .top,
         center: .centerX,
         size: .width,
-        visualFormat: "V:[lineView(\(width))]",
+        visualFormat: "V:[lineView(\(borderWidth))]",
         color: color,
         multiplier: multiplier,
         rectEdge: .top
@@ -449,7 +452,7 @@ extension UIView {
         edge: .left,
         center: .centerY,
         size: .height,
-        visualFormat: "[lineView(\(width))]",
+        visualFormat: "[lineView(\(borderWidth))]",
         color: color,
         multiplier: multiplier,
         rectEdge: .left
@@ -461,7 +464,7 @@ extension UIView {
         edge: .bottom,
         center: .centerX,
         size: .width,
-        visualFormat: "V:[lineView(\(width))]",
+        visualFormat: "V:[lineView(\(borderWidth))]",
         color: color,
         multiplier: multiplier,
         rectEdge: .bottom
@@ -473,7 +476,7 @@ extension UIView {
         edge: .right,
         center: .centerY,
         size: .height,
-        visualFormat: "[lineView(\(width))]",
+        visualFormat: "[lineView(\(borderWidth))]",
         color: color,
         multiplier: multiplier,
         rectEdge: .right
