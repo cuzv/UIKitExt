@@ -428,7 +428,7 @@ extension UIView {
   @discardableResult
   public func pinEdges(to other: UIView, margins insets: UIEdgeInsets = .zero) -> Self {
     layout { proxy in
-      proxy.edges == (other).edgesAnchor - insets
+      proxy.edges == other.edgesAnchor - insets
     }
   }
 }
