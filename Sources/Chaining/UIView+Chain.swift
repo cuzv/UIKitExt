@@ -403,6 +403,12 @@ extension UIView {
     frame.size = other.frame.size
     return self
   }
+
+  @discardableResult
+  public func aspectRatio(_ value: CGFloat) -> Self {
+    widthAnchor.constraint(equalTo: heightAnchor, multiplier: value).isActive = true
+    return self
+  }
 }
 
 extension UIView {
