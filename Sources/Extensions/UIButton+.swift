@@ -11,7 +11,7 @@ extension UIButton {
     backgroundImage: UIImage? = nil,
     showsTouchWhenHighlighted: Bool = false,
     layoutAxisAlignment: LayoutAxisAlignment? = nil,
-    padding: UIEdgeInsets? = nil,
+    paddings: UIEdgeInsets? = nil,
     contentSpacing: CGFloat? = nil
   ) {
     self.init(type: buttonType)
@@ -24,7 +24,7 @@ extension UIButton {
     self.showsTouchWhenHighlighted = showsTouchWhenHighlighted
     self.translatesAutoresizingMaskIntoConstraints = false
     if let value = layoutAxisAlignment { self.layoutAxisAlignment = value }
-    if let value = padding { self.padding = value }
+    if let value = paddings { self.paddings = value }
     if let value = contentSpacing { self.contentSpacing = value }
   }
 }
@@ -32,7 +32,7 @@ extension UIButton {
 private struct _UIButtonAssociatedKey {
   public static var layoutAxisAlignment: Void?
   public static var contentSpacing: Void?
-  public static var padding: Void?
+  public static var paddings: Void?
 }
 
 /// FYI: https://noahgilmore.com/blog/uibutton-padding/
@@ -80,29 +80,29 @@ extension UIButton {
     }
   }
 
-  public var padding: UIEdgeInsets {
-    get { objc_getAssociatedObject(self, &_UIButtonAssociatedKey.padding) as? UIEdgeInsets ?? .zero }
+  public var paddings: UIEdgeInsets {
+    get { objc_getAssociatedObject(self, &_UIButtonAssociatedKey.paddings) as? UIEdgeInsets ?? .zero }
     set {
       objc_setAssociatedObject(
         self,
-        &_UIButtonAssociatedKey.padding,
+        &_UIButtonAssociatedKey.paddings,
         newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC
       )
       layoutDidChange()
     }
   }
 
-  @IBInspectable public var paddingRectValue: CGRect {
+  @IBInspectable public var paddingsRectValue: CGRect {
     get {
       .init(
-        x: padding.top,
-        y: padding.left,
-        width: padding.bottom,
-        height: padding.right
+        x: paddings.top,
+        y: paddings.left,
+        width: paddings.bottom,
+        height: paddings.right
       )
     }
     set {
-      padding = .init(
+      paddings = .init(
         top: newValue.origin.x,
         left: newValue.origin.y,
         bottom: newValue.width,
@@ -128,7 +128,7 @@ extension UIButton {
     }
 
     let halfSpacing = contentSpacing * 0.5
-    var contentMargin = padding
+    var contentMargin = paddings
 
     let isR2LLayout = effectiveUserInterfaceLayoutDirection == .rightToLeft
 
@@ -237,8 +237,8 @@ extension UIButton {
   }
 
   @discardableResult
-  public func padding(_ value: UIEdgeInsets) -> Self {
-    padding = value
+  public func paddings(_ value: UIEdgeInsets) -> Self {
+    paddings = value
     return self
   }
 }

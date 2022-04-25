@@ -3,42 +3,42 @@ import UIKit
 /// https://johncodeos.com/how-to-add-padding-in-uilabel-in-ios-using-swift/
 @IBDesignable
 final public class PaddingLabel: UILabel {
-  public var padding = UIEdgeInsets.zero {
+  public var paddings = UIEdgeInsets.zero {
     didSet { invalidateIntrinsicContentSize() }
   }
 
   override public func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
-    let insetRect = bounds.inset(by: padding)
+    let insetRect = bounds.inset(by: paddings)
     let textRect = super.textRect(forBounds: insetRect, limitedToNumberOfLines: numberOfLines)
-    let invertedInsets = UIEdgeInsets(top: -padding.top, left: -padding.left, bottom: -padding.bottom, right: -padding.right)
+    let invertedInsets = UIEdgeInsets(top: -paddings.top, left: -paddings.left, bottom: -paddings.bottom, right: -paddings.right)
     return textRect.inset(by: invertedInsets)
   }
 
   override public func drawText(in rect: CGRect) {
-    super.drawText(in: rect.inset(by: padding))
+    super.drawText(in: rect.inset(by: paddings))
   }
 
   @IBInspectable
   public var paddingLeft: CGFloat {
-    set { padding.left = newValue }
-    get { return padding.left }
+    set { paddings.left = newValue }
+    get { return paddings.left }
   }
 
   @IBInspectable
   public var paddingRight: CGFloat {
-    set { padding.right = newValue }
-    get { return padding.right }
+    set { paddings.right = newValue }
+    get { return paddings.right }
   }
 
   @IBInspectable
   public var paddingTop: CGFloat {
-    set { padding.top = newValue }
-    get { return padding.top }
+    set { paddings.top = newValue }
+    get { return paddings.top }
   }
 
   @IBInspectable
   public var paddingBottom: CGFloat {
-    set { padding.bottom = newValue }
-    get { return padding.bottom }
+    set { paddings.bottom = newValue }
+    get { return paddings.bottom }
   }
 }

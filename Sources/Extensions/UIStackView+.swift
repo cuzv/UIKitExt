@@ -23,7 +23,7 @@ extension UIStackView {
     alignment: UIStackView.Alignment = .fill,
     distribution: UIStackView.Distribution = .fill,
     spacing: CGFloat = 0,
-    layoutMargins: NSDirectionalEdgeInsets = .init()
+    paddings: NSDirectionalEdgeInsets = .init()
   ) {
     self.init()
     self.axis = axis
@@ -31,7 +31,7 @@ extension UIStackView {
     self.distribution = distribution
     self.spacing = spacing
     self.translatesAutoresizingMaskIntoConstraints = false
-    self.directionalLayoutMargins = layoutMargins
-    self.isLayoutMarginsRelativeArrangement = layoutMargins != .zero
+    self.directionalLayoutMargins = paddings
+    self.isLayoutMarginsRelativeArrangement = paddings != .zero
   }
 }
