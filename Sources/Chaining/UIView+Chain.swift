@@ -356,9 +356,37 @@ extension UIView {
   }
 
   @discardableResult
+  public func width(lessThanOrEqual width: CGFloat) -> Self {
+    widthAnchor.constraint(lessThanOrEqualToConstant: width).isActive = true
+    frame.size.width = width
+    return self
+  }
+
+  @discardableResult
+  public func width(greaterThanOrEqual width: CGFloat) -> Self {
+    widthAnchor.constraint(greaterThanOrEqualToConstant: width).isActive = true
+    frame.size.width = width
+    return self
+  }
+
+  @discardableResult
   public func height(_ height: CGFloat) -> Self {
     heightAnchor.constraint(equalToConstant: height).isActive = true
     frame.size.height = height
+    return self
+  }
+
+  @discardableResult
+  public func height(lessThanOrEqual height: CGFloat) -> Self {
+    heightAnchor.constraint(lessThanOrEqualToConstant: height).isActive = true
+    frame.size.height = height
+    return self
+  }
+
+  @discardableResult
+  public func height(greaterThanOrEqual height: CGFloat) -> Self {
+    heightAnchor.constraint(greaterThanOrEqualToConstant: height).isActive = true
+    frame.size.width = height
     return self
   }
 
@@ -435,6 +463,22 @@ extension UIView {
   public func pinEdges(to other: UIView, margins insets: UIEdgeInsets = .zero) -> Self {
     layout { proxy in
       proxy.edges == other.edgesAnchor - insets
+    }
+  }
+
+  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
+  @discardableResult
+  public func addSubview(_ view: UIView, safePaddings insets: UIEdgeInsets) -> Self {
+    addSubview(view)
+    view.pinSafeEdges(to: self, margins: insets)
+    return self
+  }
+
+  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
+  @discardableResult
+  public func pinSafeEdges(to other: UIView, margins insets: UIEdgeInsets = .zero) -> Self {
+    layout { proxy in
+      proxy.edges == other.safeEdgesAnchor - insets
     }
   }
 }
