@@ -194,11 +194,11 @@ extension UIImage {
     // Flip image one more time if needed to, this is to prevent flipped image
     switch imageOrientation {
     case .upMirrored, .downMirrored:
-      transform.translatedBy(x: size.width, y: 0)
-      transform.scaledBy(x: -1, y: 1)
+      transform = transform.translatedBy(x: size.width, y: 0)
+      transform = transform.scaledBy(x: -1, y: 1)
     case .leftMirrored, .rightMirrored:
-      transform.translatedBy(x: size.height, y: 0)
-      transform.scaledBy(x: -1, y: 1)
+      transform = transform.translatedBy(x: size.height, y: 0)
+      transform = transform.scaledBy(x: -1, y: 1)
     case .up, .down, .left, .right:
       break
     @unknown default:
