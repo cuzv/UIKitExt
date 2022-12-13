@@ -166,7 +166,9 @@ extension UIWindow {
       .removeDuplicates()
       .map(\.userInterfaceStyle)
       .print("∆preferredColorScheme")
-      .assign(to: \.overrideUserInterfaceStyle, on: self)
+      .sink(receiveValue: { [weak self] style in
+        self?.overrideUserInterfaceStyle = style
+      })
 
     let swipe = UISwipeGestureRecognizer(
       target: self,
