@@ -1,8 +1,15 @@
 #if !(os(iOS) && (arch(i386) || arch(arm)))
 import UIKit
 import Combine
+import SwiftUI
 
+// MARK: - ColorScheme
+
+/// Defining dynamic colors in Swift
+///
 /// Stolen from https://github.com/Ranchero-Software/NetNewsWire
+///
+/// See also https://www.swiftbysundell.com/articles/defining-dynamic-colors-in-swift/
 @objc public enum ColorScheme: Int {
   case automatic = 0
   case light = 1
@@ -74,7 +81,7 @@ extension UserDefaults {
   }
 }
 
-// MARK: -
+// MARK: - UIWindow
 
 @available(iOS 13.0, *)
 extension UIWindow {
@@ -190,7 +197,7 @@ extension UIWindow {
   }
 }
 
-// MARK: -
+// MARK: - Color & Image
 
 infix operator |: AdditionPrecedence
 
@@ -204,6 +211,23 @@ extension UIColor {
   }
 
   public static func | (light: UIColor, dark: UIColor) -> UIColor {
+    union(light: light, dark: dark)
+  }
+}
+
+@available(iOS 13.0, *)
+extension Color {
+  public static func union(light: Color, dark: Color) -> Color {
+    if #available(iOS 15.0, *) {
+      return .init(uiColor: .union(light: .init(light), dark: .init(dark)))
+    } else if #available(iOS 14.0, *) {
+      return .init(.union(light: .init(light), dark: .init(dark)))
+    } else {
+      return light
+    }
+  }
+
+  public static func | (light: Color, dark: Color) -> Color {
     union(light: light, dark: dark)
   }
 }
