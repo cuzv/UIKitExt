@@ -31,6 +31,10 @@ extension UIImage {
     withRenderingMode(.alwaysOriginal)
   }
 
+  public var template: UIImage {
+    withRenderingMode(.alwaysTemplate)
+  }
+
   public var decompressed: UIImage {
     UIGraphicsImageRenderer(canvasSize: size).image { _ in
       draw(at: .zero)
