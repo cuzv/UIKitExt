@@ -86,9 +86,9 @@ extension UserDefaults {
 @available(iOS 13.0, *)
 extension UIWindow {
   public static func allowsPreferredColorScheme() {
-    Self.swizzleInitFromWindowSceneOnce
-    Self.swizzleInitFromFrameOnce
-    Self.swizzleInitFromCoderOnce
+    swizzleInitFromWindowSceneOnce
+    swizzleInitFromFrameOnce
+    swizzleInitFromCoderOnce
   }
 
   private static let swizzleInitFromWindowSceneOnce: Void = {

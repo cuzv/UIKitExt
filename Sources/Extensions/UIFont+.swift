@@ -30,52 +30,46 @@ extension UIFont {
 // MARK: - Sizing
 
 public extension UIFont {
-  static var sizeScale: CGFloat = 1.0
-
   @available(iOS 7.0, *)
   class func system(_ style: UIFont.TextStyle) -> UIFont {
-    let font = preferredFont(forTextStyle: style)
-    let scaled = font.withSize(font.pointSize * sizeScale)
-    return scaled
+    preferredFont(forTextStyle: style)
   }
 
   @available(iOS 10.0, *)
   class func system(_ style: UIFont.TextStyle, compatibleWith traitCollection: UITraitCollection?) -> UIFont {
-    let font = preferredFont(forTextStyle: style, compatibleWith: traitCollection)
-    let scaled = font.withSize(font.pointSize * sizeScale)
-    return scaled
+    preferredFont(forTextStyle: style, compatibleWith: traitCollection)
   }
 
   class func system(size: CGFloat) -> UIFont {
-    systemFont(ofSize: size * sizeScale)
+    systemFont(ofSize: size)
   }
 
   class func boldSystem(size: CGFloat) -> UIFont {
-    boldSystemFont(ofSize: size * sizeScale)
+    boldSystemFont(ofSize: size)
   }
 
   class func italicSystem(size: CGFloat) -> UIFont {
-    italicSystemFont(ofSize: size * sizeScale)
+    italicSystemFont(ofSize: size)
   }
 
   @available(iOS 8.2, *)
   class func system(size: CGFloat, weight: UIFont.Weight) -> UIFont {
-    systemFont(ofSize: size * sizeScale, weight: weight)
+    systemFont(ofSize: size, weight: weight)
   }
 
   @available(iOS 9.0, *)
   class func monospacedDigitSystem(size: CGFloat, weight: UIFont.Weight) -> UIFont {
-    monospacedDigitSystemFont(ofSize: size * sizeScale, weight: weight)
+    monospacedDigitSystemFont(ofSize: size, weight: weight)
   }
 
   @available(iOS 16.0, *)
   class func system(size: CGFloat, weight: UIFont.Weight, width: UIFont.Width) -> UIFont {
-    systemFont(ofSize: size * sizeScale, weight: weight, width: width)
+    systemFont(ofSize: size, weight: weight, width: width)
   }
 
   @available(iOS 13.0, *)
   class func monospacedSystem(size: CGFloat, weight: UIFont.Weight) -> UIFont {
-    monospacedSystemFont(ofSize: size * sizeScale, weight: weight)
+    monospacedSystemFont(ofSize: size, weight: weight)
   }
 }
 
