@@ -21,45 +21,75 @@ extension UIFont {
     let descriptor = fontDescriptor.withDesign(design) ?? fontDescriptor
     return .init(descriptor: descriptor, size: 0)
   }
+
+  public func relative(to style: TextStyle) -> UIFont {
+    UIFontMetrics(forTextStyle: style).scaledFont(for: self)
+  }
+}
+
+// MARK: - Sizing
+
+public extension UIFont {
+  static var sizeScale: CGFloat = 1.0
+
+  @available(iOS 7.0, *)
+  class func system(_ style: UIFont.TextStyle) -> UIFont {
+    let font = preferredFont(forTextStyle: style)
+    let scaled = font.withSize(font.pointSize * sizeScale)
+    return scaled
+  }
+
+  @available(iOS 10.0, *)
+  class func system(_ style: UIFont.TextStyle, compatibleWith traitCollection: UITraitCollection?) -> UIFont {
+    let font = preferredFont(forTextStyle: style, compatibleWith: traitCollection)
+    let scaled = font.withSize(font.pointSize * sizeScale)
+    return scaled
+  }
+
+  class func system(size: CGFloat) -> UIFont {
+    systemFont(ofSize: size * sizeScale)
+  }
+
+  class func boldSystem(size: CGFloat) -> UIFont {
+    boldSystemFont(ofSize: size * sizeScale)
+  }
+
+  class func italicSystem(size: CGFloat) -> UIFont {
+    italicSystemFont(ofSize: size * sizeScale)
+  }
+
+  @available(iOS 8.2, *)
+  class func system(size: CGFloat, weight: UIFont.Weight) -> UIFont {
+    systemFont(ofSize: size * sizeScale, weight: weight)
+  }
+
+  @available(iOS 9.0, *)
+  class func monospacedDigitSystem(size: CGFloat, weight: UIFont.Weight) -> UIFont {
+    monospacedDigitSystemFont(ofSize: size * sizeScale, weight: weight)
+  }
+
+  @available(iOS 16.0, *)
+  class func system(size: CGFloat, weight: UIFont.Weight, width: UIFont.Width) -> UIFont {
+    systemFont(ofSize: size * sizeScale, weight: weight, width: width)
+  }
+
+  @available(iOS 13.0, *)
+  class func monospacedSystem(size: CGFloat, weight: UIFont.Weight) -> UIFont {
+    monospacedSystemFont(ofSize: size * sizeScale, weight: weight)
+  }
 }
 
 // MARK: - Fonts variables
 
 extension UIFont {
-  public static let size8: UIFont = .systemFont(ofSize: 8.0)
-  public static let size9: UIFont = .systemFont(ofSize: 9.0)
-  public static let size10: UIFont = .systemFont(ofSize: 10.0)
-  public static let size11: UIFont = .systemFont(ofSize: 11.0)
-  public static let size12: UIFont = .systemFont(ofSize: 12.0)
-  public static let size13: UIFont = .systemFont(ofSize: 13.0)
-  public static let size14: UIFont = .systemFont(ofSize: 14.0)
-  public static let size15: UIFont = .systemFont(ofSize: 15.0)
-  public static let size16: UIFont = .systemFont(ofSize: 16.0)
-  public static let size17: UIFont = .systemFont(ofSize: 17.0)
-  public static let size18: UIFont = .systemFont(ofSize: 18.0)
-  public static let size19: UIFont = .systemFont(ofSize: 19.0)
-  public static let size20: UIFont = .systemFont(ofSize: 20.0)
-  public static let size21: UIFont = .systemFont(ofSize: 21.0)
-  public static let size22: UIFont = .systemFont(ofSize: 22.0)
-  public static let size23: UIFont = .systemFont(ofSize: 23.0)
-  public static let size24: UIFont = .systemFont(ofSize: 24.0)
-  public static let size26: UIFont = .systemFont(ofSize: 26.0)
-  public static let size28: UIFont = .systemFont(ofSize: 28.0)
-  public static let size30: UIFont = .systemFont(ofSize: 30.0)
-  public static let size32: UIFont = .systemFont(ofSize: 32.0)
-  public static let size34: UIFont = .systemFont(ofSize: 34.0)
-  public static let size36: UIFont = .systemFont(ofSize: 36.0)
-  public static let size38: UIFont = .systemFont(ofSize: 38.0)
-  public static let size40: UIFont = .systemFont(ofSize: 40.0)
-
-  public static let headline: UIFont = .preferredFont(forTextStyle: .headline)
-  public static let subheadline: UIFont = .preferredFont(forTextStyle: .subheadline)
-  public static let body: UIFont = .preferredFont(forTextStyle: .body)
-  public static let caption2: UIFont = .preferredFont(forTextStyle: .caption2)
-  public static let caption1: UIFont = .preferredFont(forTextStyle: .caption1)
-  public static let footnote: UIFont = .preferredFont(forTextStyle: .footnote)
-  public static let callout: UIFont = .preferredFont(forTextStyle: .callout)
-  public static let title3: UIFont = .preferredFont(forTextStyle: .title3)
-  public static let title2: UIFont = .preferredFont(forTextStyle: .title2)
-  public static let title1: UIFont = .preferredFont(forTextStyle: .title1)
+  public static var headline: UIFont = .system(.headline)
+  public static var subheadline: UIFont = .system(.subheadline)
+  public static var body: UIFont = .system(.body)
+  public static var caption2: UIFont = .system(.caption2)
+  public static var caption1: UIFont = .system(.caption1)
+  public static var footnote: UIFont = .system(.footnote)
+  public static var callout: UIFont = .system(.callout)
+  public static var title3: UIFont = .system(.title3)
+  public static var title2: UIFont = .system(.title2)
+  public static var title1: UIFont = .system(.title1)
 }
