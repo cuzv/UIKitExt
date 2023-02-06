@@ -76,14 +76,14 @@ public extension UIFont {
 // MARK: - Fonts variables
 
 extension UIFont {
-  public static var headline: UIFont = .system(.headline)
-  public static var subheadline: UIFont = .system(.subheadline)
-  public static var body: UIFont = .system(.body)
-  public static var caption2: UIFont = .system(.caption2)
-  public static var caption1: UIFont = .system(.caption1)
-  public static var footnote: UIFont = .system(.footnote)
-  public static var callout: UIFont = .system(.callout)
-  public static var title3: UIFont = .system(.title3)
-  public static var title2: UIFont = .system(.title2)
-  public static var title1: UIFont = .system(.title1)
+  public static var headline: UIFont { .system(.headline) }
+  public static var subheadline: UIFont { .system(.subheadline) }
+  public static var body: UIFont { .system(.body) }
+  public static var caption2: UIFont { .system(.caption2) }
+  public static var caption1: UIFont { .system(.caption1) }
+  public static var footnote: UIFont { .system(.footnote) }
+  public static var callout: UIFont { .system(.callout) }
+  public static var title3: UIFont { .system(.title3) }
+  public static var title2: UIFont { .system(.title2) }
+  public static var title1: UIFont { .system(.title1) }
 }
