@@ -2,27 +2,41 @@ import UIKit
 
 // MARK: - Gen Font
 
-extension UIFont {
-  public func withWeight(_ weight: Weight) -> UIFont {
-    let originalDescriptor = fontDescriptor
-    var traits = originalDescriptor.object(forKey: .traits) as! [String: Any]
-    traits[UIFontDescriptor.TraitKey.weight.rawValue] = weight.rawValue
-    let artificalDescriptor = originalDescriptor.addingAttributes([.traits: traits])
-    return .init(descriptor: artificalDescriptor, size: 0)
+public extension UIFont {
+  /// Only system fonts are in effect
+  func with(weight: Weight) -> UIFont {
+    let descriptor = fontDescriptor.addingAttributes([
+      .traits : [
+        UIFontDescriptor.TraitKey.weight: weight,
+      ]
+    ])
+    return UIFont(descriptor: descriptor, size: 0)
   }
 
-  public func withSymbolicTraits(_ symbolicTraits: UIFontDescriptor.SymbolicTraits) -> UIFont {
+  /// Only system fonts are in effect
+  func with(width: UIFont.Width) -> UIFont {
+    let descriptor = fontDescriptor.addingAttributes([
+      .traits : [
+        UIFontDescriptor.TraitKey.width: width,
+      ]
+    ])
+    return UIFont(descriptor: descriptor, size: 0)
+  }
+
+  /// Only system fonts are in effect
+  func with(symbolicTraits: UIFontDescriptor.SymbolicTraits) -> UIFont {
     let descriptor = fontDescriptor.withSymbolicTraits(symbolicTraits) ?? fontDescriptor
     return .init(descriptor: descriptor, size: 0)
   }
 
+  /// Only system fonts are in effect
   @available(iOS 13.0, *)
-  public func withDesign(_ design: UIFontDescriptor.SystemDesign) -> UIFont {
+  func with(design: UIFontDescriptor.SystemDesign) -> UIFont {
     let descriptor = fontDescriptor.withDesign(design) ?? fontDescriptor
     return .init(descriptor: descriptor, size: 0)
   }
 
-  public func relative(to style: TextStyle) -> UIFont {
+  func relative(to style: TextStyle) -> UIFont {
     UIFontMetrics(forTextStyle: style).scaledFont(for: self)
   }
 }
@@ -86,4 +100,78 @@ extension UIFont {
   public static var title3: UIFont { .system(.title3) }
   public static var title2: UIFont { .system(.title2) }
   public static var title1: UIFont { .system(.title1) }
+}
+
+// MARK: - TextFontDescriptor
+
+@available(iOS 13.0, *)
+public struct TextFontDescriptor {
+  let family: String?
+  let size: CGFloat
+  let style: UIFont.TextStyle
+  let weight: UIFont.Weight
+  let width: UIFont.Width
+  let design: UIFontDescriptor.SystemDesign
+
+  public init(family: String? = nil, size: CGFloat = 0, style: UIFont.TextStyle = .body, weight: UIFont.Weight = .regular, width: UIFont.Width = .init(rawValue: 0), design: UIFontDescriptor.SystemDesign = .default) {
+    self.family = family
+    self.size = size
+    self.style = style
+    self.weight = weight
+    self.width = width
+    self.design = design
+  }
+
+  public var uiFont: UIFont {
+    let descriptor: UIFontDescriptor
+
+    if let family = family {
+      // Custom font
+      descriptor = UIFontDescriptor(fontAttributes: [
+        .family: family,
+        .size : size,
+        .traits: [
+          UIFontDescriptor.TraitKey.weight: weight,
+          UIFontDescriptor.TraitKey.width: width,
+        ],
+      ])
+    } else {
+      // System font
+      let styles: [UIFont.TextStyle] = [
+        .largeTitle, .title1, .title2, .title3,
+        .headline, .subheadline, .body,
+        .callout, .footnote, .caption1, .caption2,
+      ]
+
+      if styles.contains(style) {
+        descriptor = UIFont.preferredFont(forTextStyle: style)
+          .fontDescriptor
+          .addingAttributes([
+            .traits : [
+              UIFontDescriptor.TraitKey.weight: weight,
+              UIFontDescriptor.TraitKey.width: width,
+            ]
+          ])
+      } else {
+        if #available(iOS 16.0, *) {
+          descriptor = UIFont.systemFont(ofSize: size, weight: weight, width: width)
+            .fontDescriptor
+        } else {
+          descriptor = UIFont.systemFont(ofSize: size, weight: weight)
+            .fontDescriptor
+            .addingAttributes([.traits : [UIFontDescriptor.TraitKey.width: width]])
+        }
+      }
+    }
+
+    let font = UIFont(descriptor: (descriptor.withDesign(design) ?? descriptor), size: 0)
+    return UIFontMetrics(forTextStyle: style).scaledFont(for: font)
+  }
+}
+
+@available(iOS 13.0, *)
+extension UIFont {
+  public static func new(_ descriptor: TextFontDescriptor) -> UIFont {
+    descriptor.uiFont
+  }
 }
