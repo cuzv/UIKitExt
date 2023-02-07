@@ -20,5 +20,6 @@ extension UILabel {
     // backgroundColor set to `nil` not working as doc says, use `.clear` instead
     self.backgroundColor = backgroundColor
     self.translatesAutoresizingMaskIntoConstraints = false
+    self.adjustsFontForContentSizeCategory = true
   }
 }

@@ -19,10 +19,12 @@ extension UIButton {
     self.setTitleColor(titleColor, for: .normal)
     self.backgroundColor = backgroundColor
     self.titleLabel?.font = font
+    self.titleLabel?.adjustsFontForContentSizeCategory = true
     self.setImage(image, for: .normal)
     self.setBackgroundImage(backgroundImage, for: .normal)
     self.showsTouchWhenHighlighted = showsTouchWhenHighlighted
     self.translatesAutoresizingMaskIntoConstraints = false
+    self.adjustsImageSizeForAccessibilityContentSizeCategory = true
     if let value = layoutAxisAlignment { self.layoutAxisAlignment = value }
     if let value = paddings { self.paddings = value }
     if let value = contentSpacing { self.contentSpacing = value }
