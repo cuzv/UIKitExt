@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-final public class IBAttributedButton: UIButton, TouchesExpandable {
+final public class IBAttributedButton: UIButton, HitTestSlop {
 
   // MARK: - Attributed String
 
@@ -41,21 +41,21 @@ final public class IBAttributedButton: UIButton, TouchesExpandable {
     }
   }
 
-  // MARK: - TouchesExpandable
+  // MARK: - HitTestSlop
 
-  @IBInspectable public var horizontalTouchesMargin: CGPoint = .zero
-  @IBInspectable public var verticalTouchesMargin: CGPoint = .zero
+  @IBInspectable public var horizontalHitTestSlop: CGPoint = .zero
+  @IBInspectable public var verticalHitTestSlop: CGPoint = .zero
 
-  public var touchesMargin: UIEdgeInsets {
+  public var hitTestSlop: UIEdgeInsets {
     .init(
-      top: verticalTouchesMargin.x,
-      left: horizontalTouchesMargin.x,
-      bottom: verticalTouchesMargin.y,
-      right: horizontalTouchesMargin.y
+      top: verticalHitTestSlop.x,
+      left: horizontalHitTestSlop.x,
+      bottom: verticalHitTestSlop.y,
+      right: horizontalHitTestSlop.y
     )
   }
 
   public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-    judgeWhetherInsideInclude(point: point, with: event)
+    judgeWhetherInclude(point: point, with: event)
   }
 }
