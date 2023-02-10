@@ -167,6 +167,17 @@ public struct TextFontDescriptor {
     let font = UIFont(descriptor: (descriptor.withDesign(design) ?? descriptor), size: 0)
     return UIFontMetrics(forTextStyle: style).scaledFont(for: font)
   }
+
+  public func with(family: String?, design: UIFontDescriptor.SystemDesign, scale: CGFloat) -> Self {
+    .init(
+      family: family,
+      size: size * scale,
+      style: style,
+      weight: weight,
+      width: width,
+      design: design
+    )
+  }
 }
 
 @available(iOS 13.0, *)
