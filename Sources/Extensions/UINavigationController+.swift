@@ -59,6 +59,9 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     if let gestureView = gestureRecognizer.view {
       let location = gestureRecognizer.location(in: gestureView)
       if let view = gestureView.hitTest(location, with: nil) {
+        if view.tag == 0xdead {
+          return false
+        }
         if view.isKind(of: UIControl.self) && !view.isKind(of: UIButton.self) {
           return false
         }
@@ -75,6 +78,9 @@ extension UINavigationController: UIGestureRecognizerDelegate {
       return false
     }
 
+    if otherGestureRecognizer.view?.tag == 0xdead {
+      return false
+    }
     if let view = otherGestureRecognizer.view as? SloppyPopSupport, !view.isSloppyPopEnabled {
       return false
     }
