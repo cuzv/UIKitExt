@@ -58,7 +58,7 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     }
     if let gestureView = gestureRecognizer.view {
       let location = gestureRecognizer.location(in: gestureView)
-      if let view = view.hitTest(location, with: nil) {
+      if let view = gestureView.hitTest(location, with: nil) {
         if view.isKind(of: UIControl.self) && !view.isKind(of: UIButton.self) {
           return false
         }
