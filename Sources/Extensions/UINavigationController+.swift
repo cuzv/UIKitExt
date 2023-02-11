@@ -32,7 +32,7 @@ extension UINavigationController {
 
 // ref: https://stackoverflow.com/a/60598558/3797903
 extension UINavigationController: UIGestureRecognizerDelegate {
-  public func enableFullWidthBackGesture() {
+  public func configureWithSloppyPop() {
     // The trick here is to wire up our full-width `fullWidthBackGestureRecognizer` to execute the same handler as
     // the system `interactivePopGestureRecognizer`. That's done by assigning the same "targets" (effectively
     // object and selector) of the system one to our gesture recognizer.
@@ -50,10 +50,9 @@ extension UINavigationController: UIGestureRecognizerDelegate {
   }
 
   public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-    let isSystemSwipeToBackEnabled = interactivePopGestureRecognizer?.isEnabled ?? false
-    let isThereStackedViewControllers = viewControllers.count > 1
-    let result = isSystemSwipeToBackEnabled && isThereStackedViewControllers
-    return result
+    viewControllers.count > 1 &&
+    (interactivePopGestureRecognizer?.isEnabled ?? false) &&
+    ((gestureRecognizer.view as? SloppyPopSupport)?.isSloppyPopEnabled ?? true)
   }
 
   public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -89,4 +88,8 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 
     return false
   }
+}
+
+public protocol SloppyPopSupport {
+  var isSloppyPopEnabled: Bool { get }
 }
