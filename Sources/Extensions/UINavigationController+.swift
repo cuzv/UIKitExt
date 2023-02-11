@@ -50,13 +50,32 @@ extension UINavigationController: UIGestureRecognizerDelegate {
   }
 
   public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-    viewControllers.count > 1 &&
-    (interactivePopGestureRecognizer?.isEnabled ?? false) &&
-    ((gestureRecognizer.view as? SloppyPopSupport)?.isSloppyPopEnabled ?? true)
+    if viewControllers.count <= 1 {
+      return false
+    }
+    if !(interactivePopGestureRecognizer?.isEnabled ?? false) {
+      return false
+    }
+    if let gestureView = gestureRecognizer.view {
+      let location = gestureRecognizer.location(in: gestureView)
+      if let view = view.hitTest(location, with: nil) {
+        if view.isKind(of: UIControl.self) && !view.isKind(of: UIButton.self) {
+          return false
+        }
+        if let view = view as? SloppyPopSupport, !view.isSloppyPopEnabled {
+          return false
+        }
+      }
+    }
+    return true
   }
 
   public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
     guard let gestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer else {
+      return false
+    }
+
+    if let view = otherGestureRecognizer.view as? SloppyPopSupport, !view.isSloppyPopEnabled {
       return false
     }
 
