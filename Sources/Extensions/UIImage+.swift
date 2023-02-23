@@ -13,6 +13,31 @@ extension UIImage {
     }
   }
 
+  public static func create(
+    light: UIColor,
+    dark: UIColor,
+    size: CGSize = .init(width: 1, height: 1),
+    cornerRadius: CGFloat = 0
+  ) -> UIImage {
+    .create(color: light, size: size, cornerRadius: cornerRadius) | .create(color: dark, size: size, cornerRadius: cornerRadius)
+  }
+
+  public func withAlpha(_ alpha: CGFloat) -> UIImage {
+    UIGraphicsImageRenderer(canvasSize: size).image { context in
+      draw(at: .zero, blendMode: .normal, alpha: alpha)
+    }
+  }
+
+  @available(iOS 12.0, *)
+  public var resolvedTraitImages: (light: UIImage, dark: UIImage)? {
+    if let imageAsset = imageAsset {
+      let light = imageAsset.image(with: .init(userInterfaceStyle: .light))
+      let dark = imageAsset.image(with: .init(userInterfaceStyle: .dark))
+      return (light, dark)
+    }
+    return nil
+  }
+
   public var isQRCode: Bool {
     if let CIImage = CIImage(image: self) {
       let detector = CIDetector(

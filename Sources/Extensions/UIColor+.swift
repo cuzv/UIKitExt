@@ -109,3 +109,14 @@ extension UIColor {
     }
   }
 }
+
+// MARK: - Dark mode
+
+extension UIColor {
+  @available(iOS 13.0, *)
+  public var resolvedTraitColors: (light: UIColor, dark: UIColor) {
+    let light = resolvedColor(with: .init(userInterfaceStyle: .light))
+    let dark = resolvedColor(with: .init(userInterfaceStyle: .dark))
+    return (light, dark)
+  }
+}
