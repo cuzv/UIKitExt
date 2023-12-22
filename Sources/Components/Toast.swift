@@ -328,3 +328,40 @@ extension Toast {
     }
   }
 }
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *)
+public extension Task {
+  @discardableResult
+  static func toast(
+    priority: TaskPriority? = nil,
+    operation: @escaping @Sendable () async throws -> Void
+  ) -> Self
+  where Success == Void, Failure == Never {
+    .init(priority: priority) {
+      do {
+        try await operation()
+      } catch {
+        await MainActor.run {
+          Toast(text: error.localizedDescription).show()
+        }
+      }
+    }
+  }
+
+  @discardableResult
+  static func detachedToast(
+    priority: TaskPriority? = nil,
+    operation: @escaping @Sendable () async throws -> Void
+  ) -> Self
+  where Success == Void, Failure == Never {
+    .detached(priority: priority) {
+      do {
+        try await operation()
+      } catch {
+        await MainActor.run {
+          Toast(text: error.localizedDescription).show()
+        }
+      }
+    }
+  }
+}
