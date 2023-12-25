@@ -397,6 +397,11 @@ extension UIView {
     frame.size = size
     return self
   }
+  
+  @discardableResult
+  public func size(_ width: CGFloat, _ height: CGFloat) -> Self {
+    size(.init(width: width, height: height))
+  }
 
   @discardableResult
   public func width(
