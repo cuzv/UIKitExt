@@ -9,11 +9,11 @@ extension NotificationCenter {
   }
 
   public struct KeyboardPayload {
-    let beginFrame: CGRect
-    let endFrame: CGRect
-    let curve: UIView.AnimationCurve
-    let duration: TimeInterval
-    let isLocal: Bool
+    public let beginFrame: CGRect
+    public let endFrame: CGRect
+    public let curve: UIView.AnimationCurve
+    public let duration: TimeInterval
+    public let isLocal: Bool
   }
 }
 

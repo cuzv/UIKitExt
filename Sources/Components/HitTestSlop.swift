@@ -1,5 +1,19 @@
-public protocol HitTestSlop {
+public protocol HitTestSlop: AnyObject {
   var hitTestSlop: UIEdgeInsets { get }
+}
+
+public protocol HitTestSlopSetProvider: HitTestSlop {
+  var horizontalHitTestSlop: CGPoint { get set}
+  var verticalHitTestSlop: CGPoint { get set}
+}
+
+public extension HitTestSlopSetProvider {
+  @discardableResult
+  func hitTestSlop(_ slop: UIEdgeInsets) -> Self {
+    horizontalHitTestSlop = .init(x: slop.left, y: slop.right)
+    verticalHitTestSlop = .init(x: slop.top, y: slop.bottom)
+    return self
+  }
 }
 
 import UIKit
@@ -21,7 +35,7 @@ extension HitTestSlop where Self: UIView {
 
 /// The following lines show you how you use this protocol in you own project.
 
-open class HitTestSlopView: UIView, HitTestSlop {
+open class HitTestSlopView: UIView, HitTestSlopSetProvider {
   @IBInspectable open var horizontalHitTestSlop: CGPoint = .zero
   @IBInspectable open var verticalHitTestSlop: CGPoint = .zero
 
@@ -39,7 +53,7 @@ open class HitTestSlopView: UIView, HitTestSlop {
   }
 }
 
-open class HitTestSlopButton: UIButton, HitTestSlop {
+open class HitTestSlopButton: UIButton, HitTestSlopSetProvider {
   @IBInspectable open var horizontalHitTestSlop: CGPoint = .zero
   @IBInspectable open var verticalHitTestSlop: CGPoint = .zero
 
@@ -57,7 +71,7 @@ open class HitTestSlopButton: UIButton, HitTestSlop {
   }
 }
 
-open class HitTestSlopImageView: UIImageView, HitTestSlop {
+open class HitTestSlopImageView: UIImageView, HitTestSlopSetProvider {
   @IBInspectable open var horizontalHitTestSlop: CGPoint = .zero
   @IBInspectable open var verticalHitTestSlop: CGPoint = .zero
 
