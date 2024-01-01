@@ -329,6 +329,9 @@ extension UIView {
 
   @discardableResult
   public func relayout(using closure: (LayoutProxy) -> Void) -> Self {
+    let constraints = superview?.constraints.filter { constraint in
+      constraint.firstItem as? Self == self || constraint.secondItem as? Self == self
+    } ?? []
     NSLayoutConstraint.deactivate(constraints)
     closure(LayoutProxy(target: self))
     updateConstraintsIfNeeded()
