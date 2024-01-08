@@ -41,4 +41,10 @@ final public class PaddingLabel: UILabel {
     set { paddings.bottom = newValue }
     get { return paddings.bottom }
   }
+  
+  @discardableResult
+  public func paddings(_ value: UIEdgeInsets) -> Self {
+    paddings = value
+    return self
+  }
 }
