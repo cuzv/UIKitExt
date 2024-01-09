@@ -487,3 +487,36 @@ extension UIView {
     }
   }
 }
+
+public extension UIView {
+  @discardableResult
+  func padding(_ value: UIEdgeInsets) -> UIView {
+    UIView()
+      .useConstraints()
+      .addSubview(self, paddings: value)
+  }
+  
+  @discardableResult
+  func overlay(_ view: UIView, alignment: Flex.OverlayAlignment = .center, offset: CGPoint = .zero) -> Self {
+    addSubview(view) { proxy in
+      switch alignment {
+      case .center:
+        proxy.centerX == proxy.superview.centerXAnchor + offset.x
+        proxy.centerY == proxy.superview.centerYAnchor + offset.y
+      case .topLeading:
+        proxy.centerX == proxy.superview.leadingAnchor + offset.x
+        proxy.centerY == proxy.superview.topAnchor + offset.y
+      case .topTrailing:
+        proxy.centerX == proxy.superview.trailingAnchor + offset.x
+        proxy.centerY == proxy.superview.topAnchor + offset.y
+      case .bottomLeading:
+        proxy.centerX == proxy.superview.leadingAnchor + offset.x
+        proxy.centerY == proxy.superview.bottomAnchor + offset.y
+      case .botomTrailing:
+        proxy.centerX == proxy.superview.trailingAnchor + offset.x
+        proxy.centerY == proxy.superview.bottomAnchor + offset.y
+      }
+    }
+  }
+}
+
