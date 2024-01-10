@@ -40,7 +40,11 @@ public extension Navigation where Base: UIViewController {
       let it = UILabel()
       it.translatesAutoresizingMaskIntoConstraints = false
       it.font = .preferredFont(forTextStyle: .headline)
-      it.textColor = .label
+      if #available(iOS 13.0, *) {
+        it.textColor = .label
+      } else {
+        it.textColor = .black
+      }
       it.textAlignment = .center
       nav.addSubview(it)
       NSLayoutConstraint.activate([
