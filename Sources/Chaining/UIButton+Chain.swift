@@ -343,3 +343,18 @@ public extension UIButton {
     return self
   }
 }
+
+@available(iOS 15.0, *)
+public extension UIButton {
+  @discardableResult
+  func configuration(_ value: Configuration) -> Self {
+    configuration = value
+    return self
+  }
+
+  @discardableResult
+  func configurationUpdateHandler(_ handler: @escaping ConfigurationUpdateHandler) -> Self {
+    configurationUpdateHandler = handler
+    return self
+  }
+}
