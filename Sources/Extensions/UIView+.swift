@@ -164,6 +164,7 @@ extension UIView {
 
 // MRARK: - Layer Property
 
+#if !DISABLE_LAYER_PROPERTY_PROXY
 extension UIView {
   @IBInspectable public var opacity: Float {
     get { return layer.opacity }
@@ -261,6 +262,7 @@ extension UIView {
     set { layer.shouldRasterize = newValue }
   }
 }
+#endif
 
 // MARK: - Border
 
