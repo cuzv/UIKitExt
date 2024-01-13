@@ -88,6 +88,58 @@ public extension Flex {
       )
     }
   }
+
+  final class Scroll: UIScrollView {
+    public convenience init(
+      axis: NSLayoutConstraint.Axis,
+      contentInset: UIEdgeInsets = .zero,
+      contentInsetAdjustmentBehavior: ContentInsetAdjustmentBehavior = .never,
+      backgroundColor: UIColor? = nil,
+      showsHorizontalScrollIndicator: Bool? = nil,
+      showsVerticalScrollIndicator: Bool? = nil,
+      alwaysBounceHorizontal: Bool? = nil,
+      alwaysBounceVertical: Bool? = nil,
+      paddings: NSDirectionalEdgeInsets = .zero,
+      @LayoutSpecBuilder content: () -> [UIView]
+    ) {
+      self.init(
+        contentInset: contentInset,
+        contentInsetAdjustmentBehavior: contentInsetAdjustmentBehavior,
+        backgroundColor: backgroundColor,
+        showsHorizontalScrollIndicator: showsHorizontalScrollIndicator ?? (axis == .horizontal),
+        showsVerticalScrollIndicator: showsVerticalScrollIndicator ?? (axis == .vertical),
+        alwaysBounceHorizontal: alwaysBounceHorizontal ?? (axis == .horizontal),
+        alwaysBounceVertical: alwaysBounceVertical ?? (axis == .vertical)
+      )
+
+      switch axis {
+      case .horizontal:
+        addSubview(
+          Flex.Row(
+            paddings: paddings,
+            content: content
+          ),
+          layout: { proxy in
+            proxy.edges == proxy.superview.edgesAnchor
+            proxy.height == proxy.superview.heightAnchor
+          }
+        )
+      case .vertical:
+        addSubview(
+          Flex.Column(
+            paddings: paddings,
+            content: content
+          ),
+          layout: { proxy in
+            proxy.edges == proxy.superview.edgesAnchor
+            proxy.width == proxy.superview.widthAnchor
+          }
+        )
+      @unknown default:
+        break
+      }
+    }
+  }
 }
 
 public extension UIStackView {
@@ -103,7 +155,8 @@ public extension UIStackView {
       axis: axis,
       alignment: align.alignment(axis: axis),
       distribution: justify.distribution,
-      spacing: spacing
+      spacing: spacing,
+      paddings: paddings
     )
 
     var leadingView: UIView?
@@ -278,6 +331,33 @@ public extension UIView {
       justify: justify,
       align: align,
       spacing: spacing,
+      paddings: paddings
+    ) {
+      self
+    }
+  }
+
+  @discardableResult
+  func inScroll(
+    axis: NSLayoutConstraint.Axis,
+    contentInset: UIEdgeInsets = .zero,
+    contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior = .never,
+    backgroundColor: UIColor? = nil,
+    showsHorizontalScrollIndicator: Bool? = nil,
+    showsVerticalScrollIndicator: Bool? = nil,
+    alwaysBounceHorizontal: Bool? = nil,
+    alwaysBounceVertical: Bool? = nil,
+    paddings: NSDirectionalEdgeInsets = .zero
+  ) -> Flex.Scroll {
+    .init(
+      axis: axis,
+      contentInset: contentInset,
+      contentInsetAdjustmentBehavior: contentInsetAdjustmentBehavior,
+      backgroundColor: backgroundColor,
+      showsHorizontalScrollIndicator: showsHorizontalScrollIndicator,
+      showsVerticalScrollIndicator: showsVerticalScrollIndicator,
+      alwaysBounceHorizontal: alwaysBounceHorizontal,
+      alwaysBounceVertical: alwaysBounceVertical,
       paddings: paddings
     ) {
       self

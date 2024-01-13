@@ -490,13 +490,6 @@ public extension UIView {
 
 public extension UIView {
   @discardableResult
-  func padding(_ value: UIEdgeInsets) -> UIView {
-    UIView()
-      .useConstraints()
-      .addSubview(self, paddings: value)
-  }
-
-  @discardableResult
   func overlay(_ view: UIView, alignment: Flex.OverlayAlignment = .center, offset: CGPoint = .zero) -> Self {
     addSubview(view) { proxy in
       switch alignment {
@@ -517,5 +510,35 @@ public extension UIView {
         proxy.centerY == proxy.superview.bottomAnchor + offset.y
       }
     }
+  }
+
+  @discardableResult
+  func inView(
+    _ view: UIView? = nil,
+    paddings insets: UIEdgeInsets = .zero,
+    relation: Relation = .superView
+  ) -> UIView {
+    let container = (
+      view ?? UIView().useConstraints()
+    )
+
+    switch relation {
+    case .safeArea:
+      return container.addSubview(self, safePaddings: insets)
+    case .superView:
+      return container.addSubview(self, paddings: insets)
+    }
+  }
+
+  @discardableResult
+  func padding(_ value: UIEdgeInsets) -> UIView {
+    inView(paddings: value)
+  }
+}
+
+public extension UIView {
+  enum Relation {
+    case safeArea
+    case superView
   }
 }
