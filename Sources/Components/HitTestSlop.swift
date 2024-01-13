@@ -3,8 +3,8 @@ public protocol HitTestSlop: AnyObject {
 }
 
 public protocol HitTestSlopSetProvider: HitTestSlop {
-  var horizontalHitTestSlop: CGPoint { get set}
-  var verticalHitTestSlop: CGPoint { get set}
+  var horizontalHitTestSlop: CGPoint { get set }
+  var verticalHitTestSlop: CGPoint { get set }
 }
 
 public extension HitTestSlopSetProvider {
@@ -16,12 +16,12 @@ public extension HitTestSlopSetProvider {
   }
 }
 
-import UIKit
 import CoreGraphics
+import UIKit
 
-extension HitTestSlop where Self: UIView {
+public extension HitTestSlop where Self: UIView {
   /// Call when override `point(inside:with:)`
-  public func judgeWhetherInclude(point: CGPoint, with event: UIEvent?) -> Bool {
+  func judgeWhetherInclude(point: CGPoint, with event: UIEvent?) -> Bool {
     if !isUserInteractionEnabled || alpha == 0 || isHidden {
       return false
     }
@@ -48,7 +48,7 @@ open class HitTestSlopView: UIView, HitTestSlopSetProvider {
     )
   }
 
-  open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+  override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
     judgeWhetherInclude(point: point, with: event)
   }
 }
@@ -66,7 +66,7 @@ open class HitTestSlopButton: UIButton, HitTestSlopSetProvider {
     )
   }
 
-  open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+  override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
     judgeWhetherInclude(point: point, with: event)
   }
 }
@@ -84,7 +84,7 @@ open class HitTestSlopImageView: UIImageView, HitTestSlopSetProvider {
     )
   }
 
-  open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+  override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
     judgeWhetherInclude(point: point, with: event)
   }
 }

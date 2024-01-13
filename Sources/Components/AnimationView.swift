@@ -1,6 +1,6 @@
-import UIKit
 import CoreGraphics
 import QuartzCore
+import UIKit
 
 open class AnimationView: UIView {
   @IBInspectable open var resumeWhileAwake: Bool = true
@@ -10,7 +10,7 @@ open class AnimationView: UIView {
     }
   }
 
-  public override init(frame: CGRect) {
+  override public init(frame: CGRect) {
     super.init(frame: frame)
     setup()
   }
@@ -42,14 +42,14 @@ open class AnimationView: UIView {
     }
   }
 
-  open override func didMoveToWindow() {
+  override open func didMoveToWindow() {
     super.didMoveToWindow()
     updateAnimation()
   }
 
   @objc private func updateAnimation() {
     if resumeWhileAwake {
-      if nil != window && isAnimating {
+      if window != nil, isAnimating {
         isAnimating.toggle()
         isAnimating.toggle()
       }
@@ -84,7 +84,7 @@ public final class SpinView: AnimationView {
   }
 }
 
-final public class BreathView: AnimationView {
+public final class BreathView: AnimationView {
   override public func startAnimating() {
     let start = layer.opacity
     let end = abs(1.0 - start)

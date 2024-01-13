@@ -1,7 +1,7 @@
 import UIKit
 
-extension UIButton {
-  public convenience init(
+public extension UIButton {
+  convenience init(
     type buttonType: ButtonType = .system,
     title: String,
     titleColor: UIColor? = .foreground,
@@ -15,23 +15,23 @@ extension UIButton {
     contentSpacing: CGFloat? = nil
   ) {
     self.init(type: buttonType)
-    self.setTitle(title, for: .normal)
-    self.setTitleColor(titleColor, for: .normal)
     self.backgroundColor = backgroundColor
-    self.titleLabel?.font = font
-    self.titleLabel?.adjustsFontForContentSizeCategory = true
-    self.setImage(image, for: .normal)
-    self.setBackgroundImage(backgroundImage, for: .normal)
     self.showsTouchWhenHighlighted = showsTouchWhenHighlighted
-    self.translatesAutoresizingMaskIntoConstraints = false
-    self.adjustsImageSizeForAccessibilityContentSizeCategory = true
+    setTitle(title, for: .normal)
+    setTitleColor(titleColor, for: .normal)
+    setImage(image, for: .normal)
+    setBackgroundImage(backgroundImage, for: .normal)
+    titleLabel?.font = font
+    titleLabel?.adjustsFontForContentSizeCategory = true
+    translatesAutoresizingMaskIntoConstraints = false
+    adjustsImageSizeForAccessibilityContentSizeCategory = true
     if let value = layoutAxisAlignment { self.layoutAxisAlignment = value }
     if let value = paddings { self.paddings = value }
     if let value = contentSpacing { self.contentSpacing = value }
   }
 }
 
-private struct _UIButtonAssociatedKey {
+private enum _UIButtonAssociatedKey {
   public static var layoutAxisAlignment: Void?
   public static var contentSpacing: Void?
   public static var paddings: Void?
@@ -39,15 +39,15 @@ private struct _UIButtonAssociatedKey {
 
 /// FYI: https://noahgilmore.com/blog/uibutton-padding/
 /// FYI: http://shinancao.cn/2016/12/15/iOS-UIButton-EdgeInsets/
-extension UIButton {
-  public enum LayoutAxisAlignment: Int {
-    case horizontalConventional     = 1
-    case horizontalUnconventional   = 2
-    case verticalConventional       = 4
-    case verticalUnconventional     = 8
+public extension UIButton {
+  enum LayoutAxisAlignment: Int {
+    case horizontalConventional = 1
+    case horizontalUnconventional = 2
+    case verticalConventional = 4
+    case verticalUnconventional = 8
   }
 
-  public var layoutAxisAlignment: LayoutAxisAlignment {
+  var layoutAxisAlignment: LayoutAxisAlignment {
     get {
       objc_getAssociatedObject(self, &_UIButtonAssociatedKey.layoutAxisAlignment) as? LayoutAxisAlignment ?? .horizontalConventional
     }
@@ -65,12 +65,12 @@ extension UIButton {
   /// - horizontalUnconventional   = 2
   /// - verticalConventional       = 4
   /// - verticalUnconventional     = 8
-  @IBInspectable public var layoutAxisAlignmentRawValue: Int {
+  @IBInspectable var layoutAxisAlignmentRawValue: Int {
     get { layoutAxisAlignment.rawValue }
     set { layoutAxisAlignment = LayoutAxisAlignment(rawValue: newValue) ?? .horizontalConventional }
   }
 
-  @IBInspectable public var contentSpacing: CGFloat {
+  @IBInspectable var contentSpacing: CGFloat {
     get { objc_getAssociatedObject(self, &_UIButtonAssociatedKey.contentSpacing) as? CGFloat ?? 0.0 }
     set {
       objc_setAssociatedObject(
@@ -82,7 +82,7 @@ extension UIButton {
     }
   }
 
-  public var paddings: UIEdgeInsets {
+  var paddings: UIEdgeInsets {
     get { objc_getAssociatedObject(self, &_UIButtonAssociatedKey.paddings) as? UIEdgeInsets ?? .zero }
     set {
       objc_setAssociatedObject(
@@ -94,7 +94,7 @@ extension UIButton {
     }
   }
 
-  @IBInspectable public var paddingsRectValue: CGRect {
+  @IBInspectable var paddingsRectValue: CGRect {
     get {
       .init(
         x: paddings.top,
@@ -114,18 +114,19 @@ extension UIButton {
   }
 
   @discardableResult
-  public func layoutDidChange() -> Self {
-    let titleSize: CGSize
-    if let font = titleLabel?.font,
-       let size = currentTitle?.size(withAttributes: [.font: font]) {
-      titleSize = size
+  func layoutDidChange() -> Self {
+    let titleSize: CGSize = if
+      let font = titleLabel?.font,
+      let size = currentTitle?.size(withAttributes: [.font: font])
+    {
+      size
     } else {
-      titleSize = .zero
+      .zero
     }
 
     let imageSize = imageView?.image?.size ?? .zero
 
-    if titleSize == .zero && imageSize == .zero {
+    if titleSize == .zero, imageSize == .zero {
       return self
     }
 
@@ -146,13 +147,16 @@ extension UIButton {
       // H: |-(padding)-[image]-(spacing)-[title]-(padding)-|
       imageEdgeInsets = UIEdgeInsets(
         top: 0, left: -halfSpacing * factor,
-        bottom: 0, right: halfSpacing * factor)
+        bottom: 0, right: halfSpacing * factor
+      )
       titleEdgeInsets = UIEdgeInsets(
         top: 0, left: halfSpacing * factor,
-        bottom: 0, right: -halfSpacing * factor)
+        bottom: 0, right: -halfSpacing * factor
+      )
       contentEdgeInsets = UIEdgeInsets(
         top: contentMargin.top, left: halfSpacing + contentMargin.left,
-        bottom: contentMargin.bottom, right: halfSpacing + contentMargin.right)
+        bottom: contentMargin.bottom, right: halfSpacing + contentMargin.right
+      )
     case .horizontalUnconventional:
       // H: |-(padding)-[title]-(spacing)-[image]-(padding)-|
       let imageWidth = imageSize.width
@@ -160,13 +164,16 @@ extension UIButton {
 
       imageEdgeInsets = UIEdgeInsets(
         top: 0, left: (titleWidth + halfSpacing) * factor,
-        bottom: 0, right: -(titleWidth + halfSpacing) * factor)
+        bottom: 0, right: -(titleWidth + halfSpacing) * factor
+      )
       titleEdgeInsets = UIEdgeInsets(
         top: 0, left: -(imageWidth + halfSpacing) * factor,
-        bottom: 0, right: (imageWidth + halfSpacing) * factor)
+        bottom: 0, right: (imageWidth + halfSpacing) * factor
+      )
       contentEdgeInsets = UIEdgeInsets(
         top: contentMargin.top, left: halfSpacing + contentMargin.left,
-        bottom: contentMargin.bottom, right: halfSpacing + contentMargin.right)
+        bottom: contentMargin.bottom, right: halfSpacing + contentMargin.right
+      )
     case .verticalConventional:
       // V: |-(padding)-[image]-(spacing)-[title]-(padding)-|
       let imageWidth = imageSize.width
@@ -178,12 +185,14 @@ extension UIButton {
         top: -(titleHeight * 0.5 + halfSpacing),
         left: titleWidth * 0.5 * factor,
         bottom: titleHeight * 0.5 + halfSpacing,
-        right: -(titleWidth * 0.5) * factor)
+        right: -(titleWidth * 0.5) * factor
+      )
       titleEdgeInsets = UIEdgeInsets(
         top: imageHeight * 0.5 + halfSpacing,
         left: -(imageWidth * 0.5) * factor,
         bottom: -(imageHeight * 0.5 + halfSpacing),
-        right: imageWidth * 0.5 * factor)
+        right: imageWidth * 0.5 * factor
+      )
 
       let padding = min(imageWidth, titleWidth) * 0.5
       let margin = min(imageHeight, titleHeight) * 0.5
@@ -192,7 +201,8 @@ extension UIButton {
         top: contentMargin.top + margin + halfSpacing,
         left: contentMargin.left - padding,
         bottom: contentMargin.bottom + margin + halfSpacing,
-        right: contentMargin.right - padding)
+        right: contentMargin.right - padding
+      )
     case .verticalUnconventional:
       // V: |-(padding)-[title]-(spacing)-[image]-(padding)-|
       let imageWidth = imageSize.width
@@ -201,15 +211,17 @@ extension UIButton {
       let titleHeight = titleSize.height
 
       imageEdgeInsets = UIEdgeInsets(
-        top: (titleHeight * 0.5 + halfSpacing),
+        top: titleHeight * 0.5 + halfSpacing,
         left: titleWidth * 0.5 * factor,
-        bottom: -((titleHeight * 0.5 + halfSpacing)),
-        right: -(titleWidth * 0.5) * factor)
+        bottom: -(titleHeight * 0.5 + halfSpacing),
+        right: -(titleWidth * 0.5) * factor
+      )
       titleEdgeInsets = UIEdgeInsets(
         top: -(imageHeight * 0.5 + halfSpacing),
         left: -(imageWidth * 0.5) * factor,
         bottom: imageHeight * 0.5 + halfSpacing,
-        right: imageWidth * 0.5 * factor)
+        right: imageWidth * 0.5 * factor
+      )
 
       let padding = min(imageWidth, titleWidth) * 0.5
       let margin = min(imageHeight, titleHeight) * 0.5
@@ -218,28 +230,29 @@ extension UIButton {
         top: contentMargin.top + margin + halfSpacing,
         left: contentMargin.left - padding,
         bottom: contentMargin.bottom + margin + halfSpacing,
-        right: contentMargin.right - padding)
+        right: contentMargin.right - padding
+      )
     }
 
     return self
   }
 }
 
-extension UIButton {
+public extension UIButton {
   @discardableResult
-  public func layoutAxisAlignment(_ value: LayoutAxisAlignment) -> Self {
+  func layoutAxisAlignment(_ value: LayoutAxisAlignment) -> Self {
     layoutAxisAlignment = value
     return self
   }
 
   @discardableResult
-  public func contentSpacing(_ value: CGFloat) -> Self {
+  func contentSpacing(_ value: CGFloat) -> Self {
     contentSpacing = value
     return self
   }
 
   @discardableResult
-  public func paddings(_ value: UIEdgeInsets) -> Self {
+  func paddings(_ value: UIEdgeInsets) -> Self {
     paddings = value
     return self
   }

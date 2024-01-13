@@ -25,7 +25,7 @@ extension UICollectionView: MultipleSelectable {
 
     if !enabled, let indexPaths = indexPathsForSelectedItems {
       indexPaths
-        .map({ ($0, animated) })
+        .map { ($0, animated) }
         .forEach(deselectItem(at:animated:))
     }
   }

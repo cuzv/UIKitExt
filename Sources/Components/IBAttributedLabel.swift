@@ -1,6 +1,6 @@
 import UIKit
 
-final public class IBAttributedLabel: UILabel {
+public final class IBAttributedLabel: UILabel {
   @IBInspectable public var character: Double = 0 { didSet { updateAttributes() } }
   @IBInspectable public var line: CGFloat = 0 { didSet { updateAttributes() } }
   @IBInspectable public var paragraph: CGFloat = 0 { didSet { updateAttributes() } }
@@ -13,7 +13,7 @@ final public class IBAttributedLabel: UILabel {
   }
 
   private func updateAttributes() {
-    guard let text = text, !text.isEmpty else {
+    guard let text, !text.isEmpty else {
       return
     }
 
@@ -32,7 +32,7 @@ final public class IBAttributedLabel: UILabel {
 
     var attributes: [NSAttributedString.Key: Any] = [
       .kern: NSNumber(value: character),
-      .paragraphStyle: paragraphStyle
+      .paragraphStyle: paragraphStyle,
     ]
     if let color = textColor {
       attributes[.foregroundColor] = color

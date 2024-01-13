@@ -1,10 +1,10 @@
 #if !(os(iOS) && (arch(i386) || arch(arm)))
-import UIKit
 import Combine
+import UIKit
 
-extension UITextView {
+public extension UITextView {
   @available(iOS 13.0, *)
-  public func limitCharacter(count: Int, handler: @escaping (Int) -> Void) -> AnyCancellable {
+  func limitCharacter(count: Int, handler: @escaping (Int) -> Void) -> AnyCancellable {
     NotificationCenter.default.publisher(for: UITextView.textDidChangeNotification).sink { notification in
       guard
         let textView = notification.object as? UITextView,
@@ -14,7 +14,7 @@ extension UITextView {
       }
 
       let currentCount = text.count
-      if currentCount > count && nil == textView.markedTextRange {
+      if currentCount > count, textView.markedTextRange == nil {
         let lower = text.index(text.startIndex, offsetBy: 0)
         let upper = text.index(text.startIndex, offsetBy: count)
         textView.text = String(text[lower ..< upper])

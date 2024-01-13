@@ -2,7 +2,7 @@ import UIKit
 
 /// https://johncodeos.com/how-to-add-padding-in-uilabel-in-ios-using-swift/
 @IBDesignable
-final public class PaddingLabel: UILabel {
+public final class PaddingLabel: UILabel {
   public var paddings = UIEdgeInsets.zero {
     didSet { invalidateIntrinsicContentSize() }
   }
@@ -21,27 +21,27 @@ final public class PaddingLabel: UILabel {
   @IBInspectable
   public var paddingLeft: CGFloat {
     set { paddings.left = newValue }
-    get { return paddings.left }
+    get { paddings.left }
   }
 
   @IBInspectable
   public var paddingRight: CGFloat {
     set { paddings.right = newValue }
-    get { return paddings.right }
+    get { paddings.right }
   }
 
   @IBInspectable
   public var paddingTop: CGFloat {
     set { paddings.top = newValue }
-    get { return paddings.top }
+    get { paddings.top }
   }
 
   @IBInspectable
   public var paddingBottom: CGFloat {
     set { paddings.bottom = newValue }
-    get { return paddings.bottom }
+    get { paddings.bottom }
   }
-  
+
   @discardableResult
   public func paddings(_ value: UIEdgeInsets) -> Self {
     paddings = value

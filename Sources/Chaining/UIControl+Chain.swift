@@ -1,26 +1,26 @@
 import UIKit
 
-extension UIControl {
+public extension UIControl {
   @discardableResult
-  public func enabled(_ enabled: Bool) -> Self {
+  func enabled(_ enabled: Bool) -> Self {
     isEnabled = enabled
     return self
   }
 
   @discardableResult
-  public func selected(_ selected: Bool) -> Self {
+  func selected(_ selected: Bool) -> Self {
     isSelected = selected
     return self
   }
 
   @discardableResult
-  public func highlighted(_ highlighted: Bool) -> Self {
+  func highlighted(_ highlighted: Bool) -> Self {
     isHighlighted = highlighted
     return self
   }
 
   @discardableResult
-  public func contentVerticalAlignment(
+  func contentVerticalAlignment(
     _ alignment: ContentVerticalAlignment
   ) -> Self {
     contentVerticalAlignment = alignment
@@ -28,7 +28,7 @@ extension UIControl {
   }
 
   @discardableResult
-  public func contentHorizontalAlignment(
+  func contentHorizontalAlignment(
     _ alignment: ContentHorizontalAlignment
   ) -> Self {
     contentHorizontalAlignment = alignment
@@ -36,7 +36,7 @@ extension UIControl {
   }
 
   @discardableResult
-  public func target(
+  func target(
     _ target: Any?, action: Selector, for events: Event
   ) -> Self {
     addTarget(target, action: action, for: events)

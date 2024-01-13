@@ -3,13 +3,16 @@ import UIKit
 public protocol LayoutAnchor {
   func constraint(
     equalTo anchor: Self,
-    constant: CGFloat) -> NSLayoutConstraint
+    constant: CGFloat
+  ) -> NSLayoutConstraint
   func constraint(
     greaterThanOrEqualTo anchor: Self,
-    constant: CGFloat) -> NSLayoutConstraint
+    constant: CGFloat
+  ) -> NSLayoutConstraint
   func constraint(
     lessThanOrEqualTo anchor: Self,
-    constant: CGFloat) -> NSLayoutConstraint
+    constant: CGFloat
+  ) -> NSLayoutConstraint
 }
 
 public protocol LayoutDimension: LayoutAnchor {
@@ -20,15 +23,18 @@ public protocol LayoutDimension: LayoutAnchor {
   func constraint(
     equalTo anchor: Self,
     multiplier m: CGFloat,
-    constant c: CGFloat) -> NSLayoutConstraint
+    constant c: CGFloat
+  ) -> NSLayoutConstraint
   func constraint(
     greaterThanOrEqualTo anchor: Self,
     multiplier m: CGFloat,
-    constant c: CGFloat) -> NSLayoutConstraint
+    constant c: CGFloat
+  ) -> NSLayoutConstraint
   func constraint(
     lessThanOrEqualTo anchor: Self,
     multiplier m: CGFloat,
-    constant c: CGFloat) -> NSLayoutConstraint
+    constant c: CGFloat
+  ) -> NSLayoutConstraint
 }
 
 extension NSLayoutAnchor: LayoutAnchor {}
@@ -207,40 +213,40 @@ public class LayoutProxy {
 
   public var superview: UIView {
     if let superview = target.superview {
-      return superview
+      superview
     } else {
       fatalError("Must add to a superview before get it")
     }
   }
 }
 
-extension UIView {
-  public struct SizeAnchorPack {
+public extension UIView {
+  struct SizeAnchorPack {
     let widthAnchor: NSLayoutDimension
     let heightAnchor: NSLayoutDimension
   }
 
-  public var sizeAnchor: SizeAnchorPack {
+  var sizeAnchor: SizeAnchorPack {
     .init(widthAnchor: widthAnchor, heightAnchor: heightAnchor)
   }
 
-  public struct CenterAnchorPack {
+  struct CenterAnchorPack {
     let centerXAnchor: NSLayoutXAxisAnchor
     let centerYAnchor: NSLayoutYAxisAnchor
   }
 
-  public var centerAnchor: CenterAnchorPack {
+  var centerAnchor: CenterAnchorPack {
     .init(centerXAnchor: centerXAnchor, centerYAnchor: centerYAnchor)
   }
 
-  public struct EdgesPack {
+  struct EdgesPack {
     let leading: NSLayoutXAxisAnchor
     let trailing: NSLayoutXAxisAnchor
     let top: NSLayoutYAxisAnchor
     let bottom: NSLayoutYAxisAnchor
   }
 
-  public var edgesAnchor: EdgesPack {
+  var edgesAnchor: EdgesPack {
     .init(
       leading: leadingAnchor,
       trailing: trailingAnchor,
@@ -250,7 +256,7 @@ extension UIView {
   }
 
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
-  public var safeEdgesAnchor: EdgesPack {
+  var safeEdgesAnchor: EdgesPack {
     .init(
       leading: safeAreaLayoutGuide.leadingAnchor,
       trailing: safeAreaLayoutGuide.trailingAnchor,
@@ -259,7 +265,7 @@ extension UIView {
     )
   }
 
-  public var marginEdgesAnchor: EdgesPack {
+  var marginEdgesAnchor: EdgesPack {
     .init(
       leading: layoutMarginsGuide.leadingAnchor,
       trailing: layoutMarginsGuide.trailingAnchor,
@@ -268,67 +274,67 @@ extension UIView {
     )
   }
 
-  public struct EdgesMarginPack {
+  struct EdgesMarginPack {
     let edges: EdgesPack
     let margin: UIEdgeInsets
   }
 }
 
-extension UIView {
-  public var marginLeadingAnchor: NSLayoutXAxisAnchor {
+public extension UIView {
+  var marginLeadingAnchor: NSLayoutXAxisAnchor {
     layoutMarginsGuide.leadingAnchor
   }
 
-  public var marginTrailingAnchor: NSLayoutXAxisAnchor {
+  var marginTrailingAnchor: NSLayoutXAxisAnchor {
     layoutMarginsGuide.trailingAnchor
   }
 
-  public var marginTopAnchor: NSLayoutYAxisAnchor {
+  var marginTopAnchor: NSLayoutYAxisAnchor {
     layoutMarginsGuide.topAnchor
   }
 
-  public var marginBottomAnchor: NSLayoutYAxisAnchor {
+  var marginBottomAnchor: NSLayoutYAxisAnchor {
     layoutMarginsGuide.bottomAnchor
   }
 
   @available(iOS 11.0, *)
-  public var safeLeadingAnchor: NSLayoutXAxisAnchor {
+  var safeLeadingAnchor: NSLayoutXAxisAnchor {
     safeAreaLayoutGuide.leadingAnchor
   }
 
   @available(iOS 11.0, *)
-  public var safeTrailingAnchor: NSLayoutXAxisAnchor {
+  var safeTrailingAnchor: NSLayoutXAxisAnchor {
     safeAreaLayoutGuide.trailingAnchor
   }
 
   @available(iOS 11.0, *)
-  public var safeTopAnchor: NSLayoutYAxisAnchor {
+  var safeTopAnchor: NSLayoutYAxisAnchor {
     safeAreaLayoutGuide.topAnchor
   }
 
   @available(iOS 11.0, *)
-  public var safeBottomAnchor: NSLayoutYAxisAnchor {
+  var safeBottomAnchor: NSLayoutYAxisAnchor {
     safeAreaLayoutGuide.bottomAnchor
   }
 }
 
-extension UIView {
+public extension UIView {
   @discardableResult
-  public func addSubview(_ view: UIView, layout: (LayoutProxy) -> Void) -> Self {
+  func addSubview(_ view: UIView, layout: (LayoutProxy) -> Void) -> Self {
     addSubview(view)
     view.layout(using: layout)
     return self
   }
 
   @discardableResult
-  public func layout(using closure: (LayoutProxy) -> Void) -> Self {
+  func layout(using closure: (LayoutProxy) -> Void) -> Self {
     translatesAutoresizingMaskIntoConstraints = false
     closure(LayoutProxy(target: self))
     return self
   }
 
   @discardableResult
-  public func relayout(using closure: (LayoutProxy) -> Void) -> Self {
+  func relayout(using closure: (LayoutProxy) -> Void) -> Self {
     let constraints = superview?.constraints.filter { constraint in
       constraint.firstItem as? Self == self || constraint.secondItem as? Self == self
     } ?? []
@@ -339,7 +345,7 @@ extension UIView {
   }
 
   @discardableResult
-  public func addSubviews(
+  func addSubviews(
     _ pairs: (view: UIView, layout: (LayoutProxy) -> Void)...
   ) -> Self {
     for pair in pairs {
@@ -350,7 +356,7 @@ extension UIView {
   }
 
   @discardableResult
-  public func addSubviews(
+  func addSubviews(
     _ pairs: [(view: UIView, layout: (LayoutProxy) -> Void)]
   ) -> Self {
     for pair in pairs {
@@ -361,9 +367,9 @@ extension UIView {
   }
 }
 
-extension UIStackView {
+public extension UIStackView {
   @discardableResult
-  public func addArrangedSubview(
+  func addArrangedSubview(
     _ view: UIView,
     layout: (LayoutProxy) -> Void
   ) -> Self {
@@ -373,7 +379,7 @@ extension UIStackView {
   }
 
   @discardableResult
-  public func addArrangedSubviews(
+  func addArrangedSubviews(
     _ pairs: (view: UIView, layout: (LayoutProxy) -> Void)...
   ) -> Self {
     for pair in pairs {
@@ -384,7 +390,7 @@ extension UIStackView {
   }
 
   @discardableResult
-  public func addArrangedSubviews(
+  func addArrangedSubviews(
     _ pairs: [(view: UIView, layout: (LayoutProxy) -> Void)]
   ) -> Self {
     for pair in pairs {
@@ -395,49 +401,49 @@ extension UIStackView {
   }
 }
 
-public func +<Anchor: LayoutAnchor>(
+public func + <Anchor: LayoutAnchor>(
   lhs: Anchor,
   rhs: CGFloat
 ) -> LayoutAnchorPack<Anchor> {
   .init(anchor: lhs, constant: rhs)
 }
 
-public func -<Anchor: LayoutAnchor>(
+public func - <Anchor: LayoutAnchor>(
   lhs: Anchor,
   rhs: CGFloat
 ) -> LayoutAnchorPack<Anchor> {
   .init(anchor: lhs, constant: -rhs)
 }
 
-public func +<Anchor: LayoutDimension>(
+public func + <Anchor: LayoutDimension>(
   lhs: Anchor,
   rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
   .init(anchor: lhs, multiplier: 1, constant: rhs)
 }
 
-public func -<Anchor: LayoutDimension>(
+public func - <Anchor: LayoutDimension>(
   lhs: Anchor,
   rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
   .init(anchor: lhs, multiplier: 1, constant: -rhs)
 }
 
-public func *<Anchor: LayoutDimension>(
+public func * <Anchor: LayoutDimension>(
   lhs: Anchor,
-  rhs: CGFloat)
--> LayoutDimensionPack<Anchor> {
+  rhs: CGFloat
+) -> LayoutDimensionPack<Anchor> {
   .init(anchor: lhs, multiplier: rhs, constant: 0)
 }
 
-public func /<Anchor: LayoutDimension>(
+public func / <Anchor: LayoutDimension>(
   lhs: Anchor,
   rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
   .init(anchor: lhs, multiplier: 1.0 / rhs, constant: 0)
 }
 
-public func +<Anchor: LayoutDimension>(
+public func + <Anchor: LayoutDimension>(
   lhs: LayoutDimensionPack<Anchor>,
   rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
@@ -448,7 +454,7 @@ public func +<Anchor: LayoutDimension>(
   )
 }
 
-public func -<Anchor: LayoutDimension>(
+public func - <Anchor: LayoutDimension>(
   lhs: LayoutDimensionPack<Anchor>,
   rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
@@ -459,21 +465,21 @@ public func -<Anchor: LayoutDimension>(
   )
 }
 
-public func *<Anchor: LayoutDimension>(
+public func * <Anchor: LayoutDimension>(
   lhs: LayoutDimensionBox<Anchor>,
   rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
   .init(anchor: lhs.anchor, multiplier: rhs, constant: 0)
 }
 
-public func /<Anchor: LayoutDimension>(
+public func / <Anchor: LayoutDimension>(
   lhs: LayoutDimensionBox<Anchor>,
   rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
   .init(anchor: lhs.anchor, multiplier: 1.0 / rhs, constant: 0)
 }
 
-public func -(
+public func - (
   lhs: UIView.EdgesPack,
   rhs: UIEdgeInsets
 ) -> UIView.EdgesMarginPack {
@@ -481,7 +487,7 @@ public func -(
 }
 
 @discardableResult
-public func ==<Anchor: LayoutAnchor>(
+public func == <Anchor: LayoutAnchor>(
   lhs: LayoutAnchorBox<Anchor>,
   rhs: LayoutAnchorPack<Anchor>
 ) -> NSLayoutConstraint {
@@ -489,7 +495,7 @@ public func ==<Anchor: LayoutAnchor>(
 }
 
 @discardableResult
-public func ==<Anchor: LayoutAnchor>(
+public func == <Anchor: LayoutAnchor>(
   lhs: LayoutAnchorBox<Anchor>,
   rhs: Anchor
 ) -> NSLayoutConstraint {
@@ -497,7 +503,7 @@ public func ==<Anchor: LayoutAnchor>(
 }
 
 @discardableResult
-public func >=<Anchor: LayoutAnchor>(
+public func >= <Anchor: LayoutAnchor>(
   lhs: LayoutAnchorBox<Anchor>,
   rhs: LayoutAnchorPack<Anchor>
 ) -> NSLayoutConstraint {
@@ -505,7 +511,7 @@ public func >=<Anchor: LayoutAnchor>(
 }
 
 @discardableResult
-public func >=<Anchor: LayoutAnchor>(
+public func >= <Anchor: LayoutAnchor>(
   lhs: LayoutAnchorBox<Anchor>,
   rhs: Anchor
 ) -> NSLayoutConstraint {
@@ -513,7 +519,7 @@ public func >=<Anchor: LayoutAnchor>(
 }
 
 @discardableResult
-public func <=<Anchor: LayoutAnchor>(
+public func <= <Anchor: LayoutAnchor>(
   lhs: LayoutAnchorBox<Anchor>,
   rhs: LayoutAnchorPack<Anchor>
 ) -> NSLayoutConstraint {
@@ -521,7 +527,7 @@ public func <=<Anchor: LayoutAnchor>(
 }
 
 @discardableResult
-public func <=<Anchor: LayoutAnchor>(
+public func <= <Anchor: LayoutAnchor>(
   lhs: LayoutAnchorBox<Anchor>,
   rhs: Anchor
 ) -> NSLayoutConstraint {
@@ -529,15 +535,15 @@ public func <=<Anchor: LayoutAnchor>(
 }
 
 @discardableResult
-public func ==<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>,
+public func == (
+  lhs: LayoutDimensionBox<some LayoutDimension>,
   rhs: CGFloat
 ) -> NSLayoutConstraint {
   lhs.equalToConstant(rhs)
 }
 
 @discardableResult
-public func ==<Anchor: LayoutDimension>(
+public func == <Anchor: LayoutDimension>(
   lhs: LayoutDimensionBox<Anchor>,
   rhs: Anchor
 ) -> NSLayoutConstraint {
@@ -545,7 +551,7 @@ public func ==<Anchor: LayoutDimension>(
 }
 
 @discardableResult
-public func ==<Anchor: LayoutDimension>(
+public func == <Anchor: LayoutDimension>(
   lhs: LayoutDimensionBox<Anchor>,
   rhs: LayoutDimensionPack<Anchor>
 ) -> NSLayoutConstraint {
@@ -557,15 +563,15 @@ public func ==<Anchor: LayoutDimension>(
 }
 
 @discardableResult
-public func >=<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>,
+public func >= (
+  lhs: LayoutDimensionBox<some LayoutDimension>,
   rhs: CGFloat
 ) -> NSLayoutConstraint {
   lhs.greaterThanOrEqualToConstant(rhs)
 }
 
 @discardableResult
-public func >=<Anchor: LayoutDimension>(
+public func >= <Anchor: LayoutDimension>(
   lhs: LayoutDimensionBox<Anchor>,
   rhs: Anchor
 ) -> NSLayoutConstraint {
@@ -577,7 +583,7 @@ public func >=<Anchor: LayoutDimension>(
 }
 
 @discardableResult
-public func >=<Anchor: LayoutDimension>(
+public func >= <Anchor: LayoutDimension>(
   lhs: LayoutDimensionBox<Anchor>,
   rhs: LayoutDimensionPack<Anchor>
 ) -> NSLayoutConstraint {
@@ -589,15 +595,15 @@ public func >=<Anchor: LayoutDimension>(
 }
 
 @discardableResult
-public func <=<Anchor: LayoutDimension>(
-  lhs: LayoutDimensionBox<Anchor>,
+public func <= (
+  lhs: LayoutDimensionBox<some LayoutDimension>,
   rhs: CGFloat
 ) -> NSLayoutConstraint {
   lhs.lessThanOrEqualToConstant(rhs)
 }
 
 @discardableResult
-public func <=<Anchor: LayoutDimension>(
+public func <= <Anchor: LayoutDimension>(
   lhs: LayoutDimensionBox<Anchor>,
   rhs: Anchor
 ) -> NSLayoutConstraint {
@@ -609,7 +615,7 @@ public func <=<Anchor: LayoutDimension>(
 }
 
 @discardableResult
-public func <=<Anchor: LayoutDimension>(
+public func <= <Anchor: LayoutDimension>(
   lhs: LayoutDimensionBox<Anchor>,
   rhs: LayoutDimensionPack<Anchor>
 ) -> NSLayoutConstraint {
@@ -621,44 +627,44 @@ public func <=<Anchor: LayoutDimension>(
 }
 
 @discardableResult
-public func ==(
+public func == (
   lhs: LayoutProxy.SizePack,
   rhs: UIView.SizeAnchorPack
 ) -> [NSLayoutConstraint] {
-  return [
+  [
     lhs.width.equal(to: rhs.widthAnchor, multiplier: 1, constant: 0),
     lhs.height.equal(to: rhs.heightAnchor, multiplier: 1, constant: 0),
   ]
 }
 
 @discardableResult
-public func ==(
+public func == (
   lhs: LayoutProxy.SizePack,
   rhs: CGSize
 ) -> [NSLayoutConstraint] {
-  return [
+  [
     lhs.width.equalToConstant(rhs.width),
     lhs.height.equalToConstant(rhs.height),
   ]
 }
 
 @discardableResult
-public func ==(
+public func == (
   lhs: LayoutProxy.CenterPack,
   rhs: UIView.CenterAnchorPack
 ) -> [NSLayoutConstraint] {
-  return [
+  [
     lhs.centerX.equal(to: rhs.centerXAnchor),
     lhs.centerY.equal(to: rhs.centerYAnchor),
   ]
 }
 
 @discardableResult
-public func ==(
+public func == (
   lhs: LayoutProxy.EdgesPack,
   rhs: UIView.EdgesPack
 ) -> [NSLayoutConstraint] {
-  return [
+  [
     lhs.leading.equal(to: rhs.leading),
     lhs.trailing.equal(to: rhs.trailing),
     lhs.top.equal(to: rhs.top),
@@ -667,11 +673,11 @@ public func ==(
 }
 
 @discardableResult
-public func ==(
+public func == (
   lhs: LayoutProxy.EdgesPack,
   rhs: UIView.EdgesMarginPack
 ) -> [NSLayoutConstraint] {
-  return [
+  [
     lhs.leading.equal(to: rhs.edges.leading, offsetBy: rhs.margin.left),
     lhs.trailing.equal(to: rhs.edges.trailing, offsetBy: -rhs.margin.right),
     lhs.top.equal(to: rhs.edges.top, offsetBy: rhs.margin.top),

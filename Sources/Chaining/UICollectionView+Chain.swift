@@ -1,20 +1,20 @@
 import UIKit
 
-extension UICollectionView {
+public extension UICollectionView {
   @discardableResult
-  public func dataSource(_ source: UICollectionViewDataSource?) -> Self {
+  func dataSource(_ source: UICollectionViewDataSource?) -> Self {
     dataSource = source
     return self
   }
 
   @discardableResult
-  public func prefetchingEnabled(_ enabled: Bool) -> Self {
+  func prefetchingEnabled(_ enabled: Bool) -> Self {
     isPrefetchingEnabled = enabled
     return self
   }
 
   @discardableResult
-  public func prefetchDataSource(
+  func prefetchDataSource(
     _ source: UICollectionViewDataSourcePrefetching?
   ) -> Self {
     prefetchDataSource = source
@@ -22,19 +22,19 @@ extension UICollectionView {
   }
 
   @discardableResult
-  public func delegate(_ value: UICollectionViewDelegate?) -> Self {
+  func delegate(_ value: UICollectionViewDelegate?) -> Self {
     delegate = value
     return self
   }
 
   @discardableResult
-  public func backgroundView(_ view: UIView?) -> Self {
+  func backgroundView(_ view: UIView?) -> Self {
     backgroundView = view
     return self
   }
 
   @discardableResult
-  public func collectionViewLayout(
+  func collectionViewLayout(
     _ layout: UICollectionViewLayout,
     animated: Bool
   ) -> Self {
@@ -44,74 +44,74 @@ extension UICollectionView {
 
   @available(iOS 11.0, *)
   @discardableResult
-  public func dragDelegate(_ delegate: UICollectionViewDragDelegate?) -> Self {
+  func dragDelegate(_ delegate: UICollectionViewDragDelegate?) -> Self {
     dragDelegate = delegate
     return self
   }
 
   @available(iOS 11.0, *)
   @discardableResult
-  public func dragInteractionEnabled(_ enabled: Bool) -> Self {
+  func dragInteractionEnabled(_ enabled: Bool) -> Self {
     dragInteractionEnabled = enabled
     return self
   }
 
   @available(iOS 11.0, *)
   @discardableResult
-  public func dropDelegate(_ delegate: UICollectionViewDropDelegate?) -> Self {
+  func dropDelegate(_ delegate: UICollectionViewDropDelegate?) -> Self {
     dropDelegate = delegate
     return self
   }
 
   @available(iOS 11.0, *)
   @discardableResult
-  public func reorderingCadence(_ cadence: ReorderingCadence) -> Self {
+  func reorderingCadence(_ cadence: ReorderingCadence) -> Self {
     reorderingCadence = cadence
     return self
   }
 
   @discardableResult
-  public func allowsSelection(_ allows: Bool) -> Self {
+  func allowsSelection(_ allows: Bool) -> Self {
     allowsSelection = allows
     return self
   }
 
   @discardableResult
-  public func allowsMultipleSelection(_ allows: Bool) -> Self {
+  func allowsMultipleSelection(_ allows: Bool) -> Self {
     allowsMultipleSelection = allows
     return self
   }
 
   @available(iOS 14.0, *)
   @discardableResult
-  public func allowsSelectionDuringEditing(_ allows: Bool) -> Self {
+  func allowsSelectionDuringEditing(_ allows: Bool) -> Self {
     allowsSelectionDuringEditing = allows
     return self
   }
 
   @available(iOS 14.0, *)
   @discardableResult
-  public func allowsMultipleSelectionDuringEditing(_ allows: Bool) -> Self {
+  func allowsMultipleSelectionDuringEditing(_ allows: Bool) -> Self {
     allowsMultipleSelectionDuringEditing = allows
     return self
   }
 
   @available(iOS 14.0, *)
   @discardableResult
-  public func selectionFollowsFocus(_ follows: Bool) -> Self {
+  func selectionFollowsFocus(_ follows: Bool) -> Self {
     selectionFollowsFocus = follows
     return self
   }
 
   @available(iOS 14.0, *)
   @discardableResult
-  public func editing(_ editing: Bool) -> Self {
+  func editing(_ editing: Bool) -> Self {
     isEditing = editing
     return self
   }
 
   @discardableResult
-  public func remembersLastFocusedIndexPath(_ remembers: Bool) -> Self {
+  func remembersLastFocusedIndexPath(_ remembers: Bool) -> Self {
     remembersLastFocusedIndexPath = remembers
     return self
   }

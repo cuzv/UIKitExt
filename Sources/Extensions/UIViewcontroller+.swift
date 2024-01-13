@@ -3,8 +3,8 @@ import UIKit
 // MARK: - TopMostVC
 
 /// http://stackoverflow.com/questions/24825123/get-the-current-view-controller-from-the-app-delegate
-extension UIViewController {
-  public func topMostViewController() -> UIViewController {
+public extension UIViewController {
+  func topMostViewController() -> UIViewController {
     if let vc = presentedViewController {
       return vc.topMostViewController()
     } else if let vc = self as? UISplitViewController {
@@ -29,10 +29,11 @@ extension UIViewController {
 }
 
 // MARK: - Adding/Removing a Child View Controller to/from Your Content
+
 // see https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/ImplementingaContainerViewController.html
 
-extension UIViewController {
-  public func addSub(_ childController: UIViewController) {
+public extension UIViewController {
+  func addSub(_ childController: UIViewController) {
     childController.loadViewIfNeeded()
 
     addChild(childController)
@@ -49,19 +50,19 @@ extension UIViewController {
     childController.didMove(toParent: self)
   }
 
-  public func removeFromSuper() {
+  func removeFromSuper() {
     willMove(toParent: nil)
     view.removeFromSuperview()
     removeFromParent()
   }
 
-  public func transition(
+  func transition(
     to next: UIViewController,
     duration: TimeInterval,
     options: UIView.AnimationOptions,
     completion: ((Bool) -> Void)? = nil
   ) {
-    if nil != presentedViewController {
+    if presentedViewController != nil {
       dismiss(animated: false, completion: nil)
     }
 

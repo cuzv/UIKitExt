@@ -1,8 +1,8 @@
 import UIKit
 
-extension UITableView {
+public extension UITableView {
   @available(iOS 11.0, tvOS 11.0, macCatalyst 11.0, *)
-  public convenience init(
+  convenience init(
     style: UITableView.Style,
     backgroundColor: UIColor? = nil,
     alwaysBounceHorizontal: Bool = false,
@@ -13,39 +13,39 @@ extension UITableView {
   ) {
     self.init(frame: .zero, style: style)
     self.backgroundColor = backgroundColor
-    self.clipsToBounds = true
-    self.scrollsToTop = true
-    self.bounces = true
-    self.bouncesZoom = true
     self.alwaysBounceHorizontal = alwaysBounceHorizontal
     self.alwaysBounceVertical = alwaysBounceVertical
     self.showsHorizontalScrollIndicator = showsHorizontalScrollIndicator
     self.showsVerticalScrollIndicator = showsVerticalScrollIndicator
     self.contentInsetAdjustmentBehavior = contentInsetAdjustmentBehavior
-    self.estimatedRowHeight = 0
-    self.estimatedSectionFooterHeight = 0
-    self.estimatedSectionHeaderHeight = 0
-    self.layoutMargins = .zero
-    self.separatorInset = .zero
-    self.tableHeaderView = UIView(
+    clipsToBounds = true
+    scrollsToTop = true
+    bounces = true
+    bouncesZoom = true
+    estimatedRowHeight = 0
+    estimatedSectionFooterHeight = 0
+    estimatedSectionHeaderHeight = 0
+    layoutMargins = .zero
+    separatorInset = .zero
+    tableHeaderView = UIView(
       frame: CGRect(x: 0, y: 0, width: 0, height: Double.leastNonzeroMagnitude)
     )
-    self.tableFooterView = UIView(
+    tableFooterView = UIView(
       frame: CGRect(x: 0, y: 0, width: 0, height: Double.leastNonzeroMagnitude)
     )
-    self.translatesAutoresizingMaskIntoConstraints = false
+    translatesAutoresizingMaskIntoConstraints = false
   }
 }
 
-extension UITableView {
-  func tv_scrollToTail(animated: Bool = true) {
+public extension UITableView {
+  internal func tv_scrollToTail(animated: Bool = true) {
     let section = numberOfSections - 1
     let lastIndexPath = IndexPath(item: numberOfRows(inSection: section) - 1, section: section)
     scrollToRow(at: lastIndexPath, at: .bottom, animated: animated)
   }
 
   @available(iOS 11.0, *)
-  public func reloadVisibleRows(completion: ((Bool) -> Void)? = nil) {
+  func reloadVisibleRows(completion: ((Bool) -> Void)? = nil) {
     if let indexPaths = indexPathsForVisibleRows {
       performBatchUpdates({
         reloadRows(at: indexPaths, with: .automatic)
@@ -53,36 +53,36 @@ extension UITableView {
     }
   }
 
-  public func deselectVisibleRows(animated: Bool = true) {
+  func deselectVisibleRows(animated: Bool = true) {
     indexPathsForVisibleRows?
-      .map({ ($0, animated) })
+      .map { ($0, animated) }
       .forEach(deselectRow(at:animated:))
   }
 
-  private var indexPathsForAll: LazySequence<FlattenSequence<LazyMapSequence<(Range<Int>), LazyMapSequence<(Range<Int>), IndexPath>>>> {
+  private var indexPathsForAll: LazySequence<FlattenSequence<LazyMapSequence<Range<Int>, LazyMapSequence<Range<Int>, IndexPath>>>> {
     (0 ..< numberOfSections)
       .lazy
       .flatMap { section in
         (0 ..< self.numberOfRows(inSection: section))
           .lazy
-          .map({ (section, $0) })
+          .map { (section, $0) }
           .map(IndexPath.init(item:section:))
       }
   }
 
-  public func selectAllRows(animated: Bool = false, scrollPosition: UITableView.ScrollPosition = .none) {
+  func selectAllRows(animated: Bool = false, scrollPosition: UITableView.ScrollPosition = .none) {
     indexPathsForAll
-      .map({ ($0, animated, scrollPosition) })
+      .map { ($0, animated, scrollPosition) }
       .forEach(selectRow(at:animated:scrollPosition:))
   }
 
-  public func deselectSelectedRows(animated: Bool = false) {
+  func deselectSelectedRows(animated: Bool = false) {
     indexPathsForSelectedRows?
-      .map({ ($0, animated) })
+      .map { ($0, animated) }
       .forEach(deselectRow(at:animated:))
   }
 
-  public var isAllSelected: Bool {
+  var isAllSelected: Bool {
     if let count = indexPathForSelectedRow?.count {
       return count == (0 ..< numberOfSections)
         .lazy
@@ -92,13 +92,13 @@ extension UITableView {
     return false
   }
 
-  public var sectionIndex: UIView? {
+  var sectionIndex: UIView? {
     subviews.filter { "\(Mirror(reflecting: $0).subjectType)" == "UITableViewIndex" }.last
   }
 }
 
-extension UITableView {
-  public func calculateSize(
+public extension UITableView {
+  func calculateSize(
     forDeployedCell cell: UITableViewCell,
     sectionInset: UIEdgeInsets? = nil
   ) -> CGSize {

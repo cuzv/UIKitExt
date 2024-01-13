@@ -1,7 +1,7 @@
 import UIKit
 
-extension UIView {
-  public struct Border {
+public extension UIView {
+  struct Border {
     public enum Edge: CaseIterable {
       case leading
       case trailing
@@ -19,9 +19,10 @@ extension UIView {
       edge: Edge,
       width: CGFloat? = nil,
       color: UIColor = UIColor(
-        red: 200/255.0,
-        green: 199/255.0,
-        blue: 204/255.0, alpha: 1),
+        red: 200 / 255.0,
+        green: 199 / 255.0,
+        blue: 204 / 255.0, alpha: 1
+      ),
       leading: CGFloat = 0,
       trailing: CGFloat = 0
     ) {
@@ -34,7 +35,7 @@ extension UIView {
   }
 
   @discardableResult
-  public func addBorder(_ border: Border) -> UIView {
+  func addBorder(_ border: Border) -> UIView {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
     view.backgroundColor = border.color
@@ -48,28 +49,28 @@ extension UIView {
         view.widthAnchor.constraint(equalToConstant: borderWidth),
         view.topAnchor.constraint(equalTo: topAnchor, constant: border.leading),
         view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -border.trailing),
-        view.leadingAnchor.constraint(equalTo: leadingAnchor)
+        view.leadingAnchor.constraint(equalTo: leadingAnchor),
       ])
     case .trailing:
       NSLayoutConstraint.activate([
         view.widthAnchor.constraint(equalToConstant: borderWidth),
         view.topAnchor.constraint(equalTo: topAnchor, constant: border.leading),
         view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -border.trailing),
-        view.trailingAnchor.constraint(equalTo: trailingAnchor)
+        view.trailingAnchor.constraint(equalTo: trailingAnchor),
       ])
     case .top:
       NSLayoutConstraint.activate([
         view.heightAnchor.constraint(equalToConstant: borderWidth),
         view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: border.leading),
         view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -border.trailing),
-        view.topAnchor.constraint(equalTo: topAnchor)
+        view.topAnchor.constraint(equalTo: topAnchor),
       ])
     case .bottom:
       NSLayoutConstraint.activate([
         view.heightAnchor.constraint(equalToConstant: borderWidth),
         view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: border.leading),
         view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -border.trailing),
-        view.bottomAnchor.constraint(equalTo: bottomAnchor)
+        view.bottomAnchor.constraint(equalTo: bottomAnchor),
       ])
     }
 

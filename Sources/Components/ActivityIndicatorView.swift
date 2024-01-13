@@ -1,14 +1,14 @@
 import UIKit
 
 public final class ActivityIndicatorView: UIActivityIndicatorView {
-  @IBOutlet public weak var connectedView: UIView?
+  @IBOutlet public var connectedView: UIView?
 
   override public init(frame: CGRect) {
     super.init(frame: frame)
     setup()
   }
 
-  required public init(coder: NSCoder) {
+  public required init(coder: NSCoder) {
     super.init(coder: coder)
     setup()
   }
@@ -34,9 +34,9 @@ public final class ActivityIndicatorView: UIActivityIndicatorView {
   }
 }
 
-extension UIActivityIndicatorView {
-  public var isActivating: Bool {
-    get { return isAnimating }
+public extension UIActivityIndicatorView {
+  var isActivating: Bool {
+    get { isAnimating }
     set { newValue ? startAnimating() : stopAnimating() }
   }
 }

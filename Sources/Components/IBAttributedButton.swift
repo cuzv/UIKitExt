@@ -1,8 +1,7 @@
 import Foundation
 import UIKit
 
-final public class IBAttributedButton: UIButton, HitTestSlop {
-
+public final class IBAttributedButton: UIButton, HitTestSlop {
   // MARK: - Attributed String
 
   @IBInspectable public var character: Double = 0 { didSet { updateAttributes() } }
@@ -25,7 +24,7 @@ final public class IBAttributedButton: UIButton, HitTestSlop {
 
     var attributes: [NSAttributedString.Key: Any] = [
       .kern: NSNumber(value: character),
-      .paragraphStyle: paragraphStyle
+      .paragraphStyle: paragraphStyle,
     ]
 
     let states: [UIControl.State] = [.normal, .disabled, .highlighted, .selected]
@@ -55,7 +54,7 @@ final public class IBAttributedButton: UIButton, HitTestSlop {
     )
   }
 
-  public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+  override public func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
     judgeWhetherInclude(point: point, with: event)
   }
 }

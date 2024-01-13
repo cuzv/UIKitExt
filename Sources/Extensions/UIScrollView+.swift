@@ -1,9 +1,9 @@
-import UIKit
 import CoreGraphics
+import UIKit
 
-extension UIScrollView {
+public extension UIScrollView {
   @available(iOS 11.0, tvOS 11.0, macCatalyst 11.0, *)
-  public convenience init(
+  convenience init(
     contentInset: UIEdgeInsets,
     contentInsetAdjustmentBehavior: ContentInsetAdjustmentBehavior = .never,
     backgroundColor: UIColor? = nil,
@@ -20,12 +20,12 @@ extension UIScrollView {
     self.showsVerticalScrollIndicator = showsVerticalScrollIndicator
     self.alwaysBounceHorizontal = alwaysBounceHorizontal
     self.alwaysBounceVertical = alwaysBounceVertical
-    self.translatesAutoresizingMaskIntoConstraints = false
+    translatesAutoresizingMaskIntoConstraints = false
   }
 }
 
-extension UIScrollView {
-  public var insetTop: CGFloat {
+public extension UIScrollView {
+  var insetTop: CGFloat {
     get { contentInset.top }
     set {
       var inset = contentInset
@@ -34,7 +34,7 @@ extension UIScrollView {
     }
   }
 
-  public var insetLeft: CGFloat {
+  var insetLeft: CGFloat {
     get { contentInset.left }
     set {
       var inset = contentInset
@@ -43,7 +43,7 @@ extension UIScrollView {
     }
   }
 
-  public var insetBottom: CGFloat {
+  var insetBottom: CGFloat {
     get { contentInset.bottom }
     set {
       var inset = contentInset
@@ -52,7 +52,7 @@ extension UIScrollView {
     }
   }
 
-  public var insetRight: CGFloat {
+  var insetRight: CGFloat {
     get { contentInset.right }
     set {
       var inset = contentInset
@@ -61,7 +61,7 @@ extension UIScrollView {
     }
   }
 
-  public var scrollIndicatorInsetTop: CGFloat {
+  var scrollIndicatorInsetTop: CGFloat {
     get { scrollIndicatorInsets.top }
     set {
       var inset = scrollIndicatorInsets
@@ -70,7 +70,7 @@ extension UIScrollView {
     }
   }
 
-  public var scrollIndicatorInsetLeft: CGFloat {
+  var scrollIndicatorInsetLeft: CGFloat {
     get { scrollIndicatorInsets.left }
     set {
       var inset = scrollIndicatorInsets
@@ -79,7 +79,7 @@ extension UIScrollView {
     }
   }
 
-  public var scrollIndicatorInsetBottom: CGFloat {
+  var scrollIndicatorInsetBottom: CGFloat {
     get { scrollIndicatorInsets.bottom }
     set {
       var inset = scrollIndicatorInsets
@@ -88,7 +88,7 @@ extension UIScrollView {
     }
   }
 
-  public var scrollIndicatorInsetRight: CGFloat {
+  var scrollIndicatorInsetRight: CGFloat {
     get { scrollIndicatorInsets.right }
     set {
       var inset = scrollIndicatorInsets
@@ -97,7 +97,7 @@ extension UIScrollView {
     }
   }
 
-  public var offsetX: CGFloat {
+  var offsetX: CGFloat {
     get { contentOffset.x }
     set {
       var offset = contentOffset
@@ -106,7 +106,7 @@ extension UIScrollView {
     }
   }
 
-  public var offsetY: CGFloat {
+  var offsetY: CGFloat {
     get { contentOffset.y }
     set {
       var offset = contentOffset
@@ -115,7 +115,7 @@ extension UIScrollView {
     }
   }
 
-  public var contentWidth: CGFloat {
+  var contentWidth: CGFloat {
     get { contentSize.width }
     set {
       var size = contentSize
@@ -124,7 +124,7 @@ extension UIScrollView {
     }
   }
 
-  public var contentHeight: CGFloat {
+  var contentHeight: CGFloat {
     get { contentSize.height }
     set {
       var size = contentSize
@@ -134,12 +134,12 @@ extension UIScrollView {
   }
 }
 
-extension UIScrollView {
-  public func scrollToHead(animated: Bool = true) {
+public extension UIScrollView {
+  func scrollToHead(animated: Bool = true) {
     scrollRectToVisible(.zero, animated: animated)
   }
 
-  public func scrollToTail(animated: Bool = true) {
+  func scrollToTail(animated: Bool = true) {
     if let collectionView = self as? UICollectionView {
       collectionView.cv_scrollToTail(animated: animated)
     } else if let tableView = self as? UITableView {
@@ -152,11 +152,11 @@ extension UIScrollView {
     }
   }
 
-  public var isZoomed: Bool {
+  var isZoomed: Bool {
     zoomScale != minimumZoomScale
   }
 
-  public func centerContents() {
+  func centerContents() {
     var top: CGFloat = 0, left: CGFloat = 0
     if contentSize.height < bounds.height {
       top = (bounds.height - contentSize.height) * 0.5
@@ -167,7 +167,7 @@ extension UIScrollView {
     contentInset = UIEdgeInsets(top: top, left: left, bottom: top, right: left)
   }
 
-  public var contentCenter: CGPoint {
+  var contentCenter: CGPoint {
     let (cWidth, cHeight) = (contentSize.width, contentSize.height)
     return CGPoint(
       x: cWidth + max(0, bounds.width - cWidth),

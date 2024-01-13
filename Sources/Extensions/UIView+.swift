@@ -1,10 +1,10 @@
-import UIKit
 import CoreGraphics
+import UIKit
 
 // MARK: - Initialize
 
-extension UIView {
-  public convenience init(
+public extension UIView {
+  convenience init(
     backgroundColor: UIColor,
     cornerRadius: CGFloat = 0,
     borderWidth: CGFloat = 0,
@@ -13,14 +13,14 @@ extension UIView {
   ) {
     self.init()
     self.backgroundColor = backgroundColor
-    self.layer.cornerRadius = cornerRadius
-    self.layer.borderWidth = borderWidth
-    self.layer.borderColor = borderColor?.cgColor
     self.clipsToBounds = clipsToBounds
-    self.translatesAutoresizingMaskIntoConstraints = false
+    layer.cornerRadius = cornerRadius
+    layer.borderWidth = borderWidth
+    layer.borderColor = borderColor?.cgColor
+    translatesAutoresizingMaskIntoConstraints = false
   }
 
-  public convenience init(size: CGSize) {
+  convenience init(size: CGSize) {
     self.init(frame: .init(origin: .zero, size: size))
     translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
@@ -29,11 +29,11 @@ extension UIView {
     ])
   }
 
-  public convenience init(length: CGFloat) {
+  convenience init(length: CGFloat) {
     self.init(size: .init(width: length, height: length))
   }
 
-  public convenience init(width: CGFloat) {
+  convenience init(width: CGFloat) {
     self.init(frame: .zero)
     translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
@@ -41,7 +41,7 @@ extension UIView {
     ])
   }
 
-  public convenience init(height: CGFloat) {
+  convenience init(height: CGFloat) {
     self.init(frame: .zero)
     translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
@@ -52,10 +52,10 @@ extension UIView {
 
 // MARK: - Layout
 
-extension UIView {
+public extension UIView {
   @available(iOS 11.0, tvOS 11.0, macCatalyst 13.0, *)
   @discardableResult
-  public func filling(
+  func filling(
     margin: UIEdgeInsets = .zero,
     useSafeLayoutGuides: Bool = true
   ) -> (
@@ -64,7 +64,7 @@ extension UIView {
     bottom: NSLayoutConstraint,
     leading: NSLayoutConstraint
   ) {
-    guard let superview = superview else {
+    guard let superview else {
       fatalError("Superview required.")
     }
 
@@ -85,13 +85,13 @@ extension UIView {
   }
 
   @discardableResult
-  public func centering(
+  func centering(
     _ offset: CGPoint = .zero
   ) -> (
     centerX: NSLayoutConstraint,
     centerY: NSLayoutConstraint
   ) {
-    guard let superview = superview else {
+    guard let superview else {
       fatalError("Superview required.")
     }
 
@@ -105,7 +105,7 @@ extension UIView {
   }
 
   @discardableResult
-  public func sizing(
+  func sizing(
     _ size: CGSize
   ) -> (
     width: NSLayoutConstraint,
@@ -123,9 +123,9 @@ extension UIView {
 
 // MARK: - Snapshot
 
-extension UIView {
+public extension UIView {
   @available(iOS 10.0, *)
-  public func snapshot(cropping: CGRect? = nil) -> UIImage {
+  func snapshot(cropping: CGRect? = nil) -> UIImage {
     let rect = cropping ?? bounds
     let renderer = UIGraphicsImageRenderer(bounds: rect)
     return renderer.image { context in
@@ -165,25 +165,25 @@ extension UIView {
 // MRARK: - Layer Property
 
 #if !DISABLE_LAYER_PROPERTY_PROXY
-extension UIView {
-  @IBInspectable public var opacity: Float {
-    get { return layer.opacity }
+public extension UIView {
+  @IBInspectable var opacity: Float {
+    get { layer.opacity }
     set { layer.opacity = newValue }
   }
 
-  @IBInspectable public var masksToBounds: Bool {
-    get { return layer.masksToBounds }
+  @IBInspectable var masksToBounds: Bool {
+    get { layer.masksToBounds }
     set { layer.masksToBounds = newValue }
   }
 
-  @IBInspectable public var cornerRadius: CGFloat {
-    get { return layer.cornerRadius }
+  @IBInspectable var cornerRadius: CGFloat {
+    get { layer.cornerRadius }
     set { layer.cornerRadius = newValue }
   }
 
   @available(iOS 11.0, *)
-  public var maskedCorners: CACornerMask {
-    get { return layer.maskedCorners }
+  var maskedCorners: CACornerMask {
+    get { layer.maskedCorners }
     set { layer.maskedCorners = newValue }
   }
 
@@ -193,71 +193,71 @@ extension UIView {
   /// - layerMinXMaxYCorner: 4
   /// - layerMaxXMaxYCorner: 8
   @available(iOS 11.0, *)
-  @IBInspectable public var maskedCornersRawValue: UInt {
+  @IBInspectable var maskedCornersRawValue: UInt {
     get { layer.maskedCorners.rawValue }
     set { layer.maskedCorners = CACornerMask(rawValue: newValue) }
   }
 
   @available(iOS 11.0, *)
-  @IBInspectable public var maskTopLeftCorner: Bool {
+  @IBInspectable var maskTopLeftCorner: Bool {
     get { layer.maskedCorners.contains(.layerMinXMinYCorner) }
     set { layer.maskedCorners.insert(.layerMinXMinYCorner) }
   }
 
   @available(iOS 11.0, *)
-  @IBInspectable public var maskTopRightCorner: Bool {
+  @IBInspectable var maskTopRightCorner: Bool {
     get { layer.maskedCorners.contains(.layerMaxXMinYCorner) }
     set { layer.maskedCorners.insert(.layerMaxXMinYCorner) }
   }
 
   @available(iOS 11.0, *)
-  @IBInspectable public var maskBottomLeftCorner: Bool {
+  @IBInspectable var maskBottomLeftCorner: Bool {
     get { layer.maskedCorners.contains(.layerMinXMaxYCorner) }
     set { layer.maskedCorners.insert(.layerMinXMaxYCorner) }
   }
 
   @available(iOS 11.0, *)
-  @IBInspectable public var maskBottomRightCorner: Bool {
+  @IBInspectable var maskBottomRightCorner: Bool {
     get { layer.maskedCorners.contains(.layerMaxXMaxYCorner) }
     set { layer.maskedCorners.insert(.layerMaxXMaxYCorner) }
   }
 
-  @IBInspectable public var borderWidth: CGFloat {
+  @IBInspectable var borderWidth: CGFloat {
     get { layer.borderWidth }
     set { layer.borderWidth = newValue }
   }
 
-  @IBInspectable public var borderColor: UIColor? {
+  @IBInspectable var borderColor: UIColor? {
     get { layer.borderColor.map(UIColor.init) }
     set { layer.borderColor = newValue?.cgColor }
   }
 
-  @IBInspectable public var shadowOpacity: Float {
+  @IBInspectable var shadowOpacity: Float {
     get { layer.shadowOpacity }
     set { layer.shadowOpacity = newValue }
   }
 
-  @IBInspectable public var shadowRadius: CGFloat {
+  @IBInspectable var shadowRadius: CGFloat {
     get { layer.shadowRadius }
     set { layer.shadowRadius = newValue }
   }
 
-  @IBInspectable public var layerShadowOffset: CGSize {
+  @IBInspectable var layerShadowOffset: CGSize {
     get { layer.shadowOffset }
     set { layer.shadowOffset = newValue }
   }
 
-  @IBInspectable public var layerShadowColor: UIColor? {
+  @IBInspectable var layerShadowColor: UIColor? {
     get { layer.shadowColor.map(UIColor.init) }
     set { layer.shadowColor = newValue?.cgColor }
   }
 
-  @IBInspectable public var isOpaqueEnabled: Bool {
+  @IBInspectable var isOpaqueEnabled: Bool {
     get { layer.isOpaque }
     set { layer.isOpaque = newValue }
   }
 
-  @IBInspectable public var shouldRasterize: Bool {
+  @IBInspectable var shouldRasterize: Bool {
     get { layer.shouldRasterize }
     set { layer.shouldRasterize = newValue }
   }
@@ -266,11 +266,11 @@ extension UIView {
 
 // MARK: - Border
 
-extension UIView {
+public extension UIView {
   /// Add dash border line view using CAShapeLayer.
   /// **Note**: Before you invoke this method, ensure `self` already have correct frame.
   /// Because using CAShapeLayer, can not remove it, make sure add only once.
-  public func addDashBorder(
+  func addDashBorder(
     for rectEdge: UIRectEdge = .all,
     width: CGFloat? = nil,
     color: UIColor = UIColor.separator,
@@ -302,10 +302,10 @@ extension UIView {
 
     let w = bounds.size.width
     let h = bounds.size.height
-    let startX  = 0.5 * w * (1.0 - multiplier) + 0.5 * constant
-    let endX    = 0.5 * w * (1.0 + multiplier) - 0.5 * constant
-    let startY  = 0.5 * h * (1.0 - multiplier) + 0.5 * constant
-    let endY    = 0.5 * h * (1.0 + multiplier) - 0.5 * constant
+    let startX = 0.5 * w * (1.0 - multiplier) + 0.5 * constant
+    let endX = 0.5 * w * (1.0 + multiplier) - 0.5 * constant
+    let startY = 0.5 * h * (1.0 - multiplier) + 0.5 * constant
+    let endY = 0.5 * h * (1.0 + multiplier) - 0.5 * constant
     let borderWidth = width ?? 1.0 / UIScreen.main.scale
 
     if rectEdge.contains(.top) {
@@ -360,13 +360,14 @@ extension UIView {
       super.init(frame: CGRect.zero)
     }
 
-    required fileprivate init?(coder aDecoder: NSCoder) {
+    @available(*, unavailable)
+    fileprivate required init?(coder aDecoder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
     }
   }
 
   /// Add border line view using Autolayout.
-  public func addBorder(
+  func addBorder(
     for rectEdge: UIRectEdge = .all,
     width: CGFloat? = nil,
     color: UIColor = UIColor.separator,
@@ -487,7 +488,7 @@ extension UIView {
   }
 
   /// Remove added border line view.
-  public func removeBorderline(for rectEdge: UIRectEdge = .all) {
+  func removeBorderline(for rectEdge: UIRectEdge = .all) {
     if rectEdge == UIRectEdge() {
       return
     }

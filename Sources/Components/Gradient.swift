@@ -8,10 +8,14 @@ public enum GradientMode {
 }
 
 public enum GradientOrigin: Int {
-  case topCenter      // -> bottomCenter
-  case leftCenter     // -> rightCenter
-  case topLeft        // -> bottomRight
-  case topRight       // -> bottomLeft
+  /// -> bottomCenter
+  case topCenter
+  /// -> rightCenter
+  case leftCenter
+  /// -> bottomRight
+  case topLeft
+  /// -> bottomLeft
+  case topRight
 }
 
 public protocol Gradable {
@@ -36,18 +40,22 @@ public extension Gradable where Self: UIView {
 
   fileprivate var drawingLocations: (start: CGPoint, end: CGPoint) {
     switch start {
-    case .topCenter: return (
-      start: CGPoint(x: bounds.midX, y: 0),
-      end: CGPoint(x: bounds.midX, y: bounds.height))
-    case .leftCenter: return (
-      start: CGPoint(x: 0, y: bounds.midY),
-      end: CGPoint(x: bounds.width, y: bounds.midY))
-    case .topLeft: return (
-      start: .zero,
-      end: CGPoint(x: bounds.width, y: bounds.height))
-    case .topRight: return (
-      start: CGPoint(x: bounds.width, y: 0),
-      end: CGPoint(x: 0, y: bounds.height))
+    case .topCenter: (
+        start: CGPoint(x: bounds.midX, y: 0),
+        end: CGPoint(x: bounds.midX, y: bounds.height)
+      )
+    case .leftCenter: (
+        start: CGPoint(x: 0, y: bounds.midY),
+        end: CGPoint(x: bounds.width, y: bounds.midY)
+      )
+    case .topLeft: (
+        start: .zero,
+        end: CGPoint(x: bounds.width, y: bounds.height)
+      )
+    case .topRight: (
+        start: CGPoint(x: bounds.width, y: 0),
+        end: CGPoint(x: 0, y: bounds.height)
+      )
     }
   }
 
@@ -118,7 +126,7 @@ public extension Gradable where Self: UIView {
   fileprivate func draw(_ gradient: CGGradient, context: CGContext) {
     let options: CGGradientDrawingOptions = [
       .drawsAfterEndLocation,
-      .drawsBeforeStartLocation
+      .drawsBeforeStartLocation,
     ]
     if mode == .linear {
       let loc = drawingLocations
@@ -172,7 +180,8 @@ public class GradientView: UIView, Gradable {
 
   override public func draw(_ rect: CGRect) {
     if let context = UIGraphicsGetCurrentContext(),
-       let currentGradient = currentGradient ?? gradient {
+       let currentGradient = currentGradient ?? gradient
+    {
       draw(currentGradient, context: context)
     } else {
       super.draw(rect)
@@ -196,7 +205,7 @@ public class GradientView: UIView, Gradable {
 // MARK: - IBGradientView
 
 public final class IBGradientView: GradientView {
-  public override var colors: [UIColor] {
+  override public var colors: [UIColor] {
     get {
       [startColor, endColor]
     }
@@ -212,7 +221,7 @@ public final class IBGradientView: GradientView {
   @IBInspectable public var startColor: UIColor = .clear
   @IBInspectable public var endColor: UIColor = .clear
 
-  public override var start: GradientOrigin {
+  override public var start: GradientOrigin {
     get {
       GradientOrigin(rawValue: startPosition) ?? super.start
     }
@@ -224,7 +233,7 @@ public final class IBGradientView: GradientView {
 
   @IBInspectable public var startPosition: Int = GradientOrigin.topCenter.rawValue
 
-  public override var locations: [CGFloat] {
+  override public var locations: [CGFloat] {
     get {
       [startLocation, endLocation]
     }
@@ -271,7 +280,8 @@ public class GradientButton: UIButton, Gradable {
 
   override public func draw(_ rect: CGRect) {
     if let context = UIGraphicsGetCurrentContext(),
-       let currentGradient = currentGradient ?? gradient {
+       let currentGradient = currentGradient ?? gradient
+    {
       draw(currentGradient, context: context)
     } else {
       super.draw(rect)
@@ -295,7 +305,7 @@ public class GradientButton: UIButton, Gradable {
 // MARK: - IBGradientButton
 
 public final class IBGradientButton: GradientButton {
-  public override var colors: [UIColor] {
+  override public var colors: [UIColor] {
     get {
       [startColor, endColor]
     }
@@ -311,7 +321,7 @@ public final class IBGradientButton: GradientButton {
   @IBInspectable public var startColor: UIColor = .clear
   @IBInspectable public var endColor: UIColor = .clear
 
-  public override var start: GradientOrigin {
+  override public var start: GradientOrigin {
     get {
       GradientOrigin(rawValue: startPosition) ?? super.start
     }
@@ -323,7 +333,7 @@ public final class IBGradientButton: GradientButton {
 
   @IBInspectable public var startPosition: Int = GradientOrigin.topCenter.rawValue
 
-  public override var locations: [CGFloat] {
+  override public var locations: [CGFloat] {
     get {
       [startLocation, endLocation]
     }

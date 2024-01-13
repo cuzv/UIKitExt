@@ -2,13 +2,13 @@ import UIKit
 
 // See https://github.com/ShengHuaWu/ObserveKeyboardNotifications
 
-extension NotificationCenter {
-  public struct KeyboardNotificationDescriptor<Payload> {
+public extension NotificationCenter {
+  struct KeyboardNotificationDescriptor<Payload> {
     public let name: Notification.Name
     public let convert: (Notification) -> Payload
   }
 
-  public struct KeyboardPayload {
+  struct KeyboardPayload {
     public let beginFrame: CGRect
     public let endFrame: CGRect
     public let curve: UIView.AnimationCurve
@@ -17,27 +17,32 @@ extension NotificationCenter {
   }
 }
 
-extension NotificationCenter.KeyboardNotificationDescriptor
-where Payload == NotificationCenter.KeyboardPayload {
-  public typealias KeyboardNotificationDescriptor = NotificationCenter.KeyboardNotificationDescriptor
-  public typealias KeyboardPayload = NotificationCenter.KeyboardPayload
+public extension NotificationCenter.KeyboardNotificationDescriptor
+  where Payload == NotificationCenter.KeyboardPayload
+{
+  typealias KeyboardNotificationDescriptor = NotificationCenter.KeyboardNotificationDescriptor
+  typealias KeyboardPayload = NotificationCenter.KeyboardPayload
 
-  public static let keyboardWillShow = KeyboardNotificationDescriptor(
+  static let keyboardWillShow = KeyboardNotificationDescriptor(
     name: UIWindow.keyboardWillShowNotification,
-    convert: KeyboardPayload.init)
-  public static let keyboardDidShow = KeyboardNotificationDescriptor(
+    convert: KeyboardPayload.init
+  )
+  static let keyboardDidShow = KeyboardNotificationDescriptor(
     name: UIWindow.keyboardDidShowNotification,
-    convert: KeyboardPayload.init)
-  public static let keyboardWillHide = KeyboardNotificationDescriptor(
+    convert: KeyboardPayload.init
+  )
+  static let keyboardWillHide = KeyboardNotificationDescriptor(
     name: UIWindow.keyboardWillHideNotification,
-    convert: KeyboardPayload.init)
-  public static let keyboardDidHide = KeyboardNotificationDescriptor(
+    convert: KeyboardPayload.init
+  )
+  static let keyboardDidHide = KeyboardNotificationDescriptor(
     name: UIWindow.keyboardDidHideNotification,
-    convert: KeyboardPayload.init)
+    convert: KeyboardPayload.init
+  )
 }
 
-extension NotificationCenter.KeyboardPayload {
-  public init(note: Notification) {
+public extension NotificationCenter.KeyboardPayload {
+  init(note: Notification) {
     guard let userInfo = note.userInfo else {
       fatalError("Keyboard behavior related notification's userInfo can't be nil.")
     }
@@ -49,8 +54,8 @@ extension NotificationCenter.KeyboardPayload {
   }
 }
 
-extension NotificationCenter {
-  public func observe<Payload>(
+public extension NotificationCenter {
+  func observe<Payload>(
     _ descriptor: KeyboardNotificationDescriptor<Payload>,
     object: Any? = nil,
     queue: OperationQueue? = nil,
@@ -66,8 +71,8 @@ extension NotificationCenter {
   }
 }
 
-extension UIView {
-  public static func animateKeyboard(
+public extension UIView {
+  static func animateKeyboard(
     withDuration duration: TimeInterval,
     curve: UIView.AnimationCurve,
     animations: @escaping () -> Void

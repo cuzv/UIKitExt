@@ -1,10 +1,10 @@
 #if !(os(iOS) && (arch(i386) || arch(arm)))
-import UIKit
 import Combine
+import UIKit
 
-extension UITextField {
+public extension UITextField {
   @available(iOS 13.0, *)
-  public func limitCharacter(count: Int, handler: @escaping (Int) -> Void) -> AnyCancellable {
+  func limitCharacter(count: Int, handler: @escaping (Int) -> Void) -> AnyCancellable {
     NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification).sink { notification in
       guard
         let textField = notification.object as? UITextField,
@@ -14,7 +14,7 @@ extension UITextField {
       }
 
       let currentCount = text.count
-      if currentCount > count && nil == textField.markedTextRange {
+      if currentCount > count, textField.markedTextRange == nil {
         let lower = text.index(text.startIndex, offsetBy: 0)
         let upper = text.index(text.startIndex, offsetBy: count)
         textField.text = String(text[lower ..< upper])
@@ -30,7 +30,7 @@ extension UITextField {
   }
 
   @objc private func onEditingChanged(_ sender: UITextField) {
-    sender.rightViewMode = true == sender.text?.isEmpty ? .never : .always
+    sender.rightViewMode = sender.text?.isEmpty == true ? .never : .always
   }
 
   public func fixWhitespacesIssue() {

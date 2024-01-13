@@ -6,9 +6,9 @@ public extension UIFont {
   /// Only system fonts are in effect
   func with(weight: Weight) -> UIFont {
     let descriptor = fontDescriptor.addingAttributes([
-      .traits : [
+      .traits: [
         UIFontDescriptor.TraitKey.weight: weight,
-      ]
+      ],
     ])
     return UIFont(descriptor: descriptor, size: 0)
   }
@@ -16,9 +16,9 @@ public extension UIFont {
   /// Only system fonts are in effect
   func with(width: UIFont.Width) -> UIFont {
     let descriptor = fontDescriptor.addingAttributes([
-      .traits : [
+      .traits: [
         UIFontDescriptor.TraitKey.width: width,
-      ]
+      ],
     ])
     return UIFont(descriptor: descriptor, size: 0)
   }
@@ -89,15 +89,15 @@ public extension UIFont {
 
 // MARK: - Fonts variables
 
-extension UIFont {
-  public static var headline: UIFont { .system(.headline) }
-  public static var subheadline: UIFont { .system(.subheadline) }
-  public static var body: UIFont { .system(.body) }
-  public static var caption2: UIFont { .system(.caption2) }
-  public static var caption1: UIFont { .system(.caption1) }
-  public static var footnote: UIFont { .system(.footnote) }
-  public static var callout: UIFont { .system(.callout) }
-  public static var title3: UIFont { .system(.title3) }
-  public static var title2: UIFont { .system(.title2) }
-  public static var title1: UIFont { .system(.title1) }
+public extension UIFont {
+  static var headline: UIFont { .system(.headline) }
+  static var subheadline: UIFont { .system(.subheadline) }
+  static var body: UIFont { .system(.body) }
+  static var caption2: UIFont { .system(.caption2) }
+  static var caption1: UIFont { .system(.caption1) }
+  static var footnote: UIFont { .system(.footnote) }
+  static var callout: UIFont { .system(.callout) }
+  static var title3: UIFont { .system(.title3) }
+  static var title2: UIFont { .system(.title2) }
+  static var title1: UIFont { .system(.title1) }
 }

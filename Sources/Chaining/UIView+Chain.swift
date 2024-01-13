@@ -1,136 +1,136 @@
 import UIKit
 
-extension UIView {
+public extension UIView {
   @discardableResult
-  public func useConstraints(_ flag: Bool = true) -> Self {
+  func useConstraints(_ flag: Bool = true) -> Self {
     translatesAutoresizingMaskIntoConstraints = !flag
     return self
   }
 
   @discardableResult
-  public func backgroundColor(_ color: UIColor?) -> Self {
+  func backgroundColor(_ color: UIColor?) -> Self {
     backgroundColor = color
     return self
   }
 
   @discardableResult
-  public func hidden(_ hidden: Bool) -> Self {
+  func hidden(_ hidden: Bool) -> Self {
     isHidden = hidden
     return self
   }
 
   @discardableResult
-  public func alpha(_ value: CGFloat) -> Self {
+  func alpha(_ value: CGFloat) -> Self {
     alpha = value
     return self
   }
 
   @discardableResult
-  public func opaque(_ opaque: Bool) -> Self {
+  func opaque(_ opaque: Bool) -> Self {
     isOpaque = opaque
     return self
   }
 
   @discardableResult
-  public func tintColor(_ color: UIColor?) -> Self {
+  func tintColor(_ color: UIColor?) -> Self {
     tintColor = color
     return self
   }
 
   @discardableResult
-  public func tintAdjustmentMode(_ mode: TintAdjustmentMode) -> Self {
+  func tintAdjustmentMode(_ mode: TintAdjustmentMode) -> Self {
     tintAdjustmentMode = mode
     return self
   }
 
   @discardableResult
-  public func clipsToBounds(_ clips: Bool) -> Self {
+  func clipsToBounds(_ clips: Bool) -> Self {
     clipsToBounds = clips
     return self
   }
 
   @discardableResult
-  public func clearsContextBeforeDrawing(_ clears: Bool) -> Self {
+  func clearsContextBeforeDrawing(_ clears: Bool) -> Self {
     clearsContextBeforeDrawing = clears
     return self
   }
 
   @discardableResult
-  public func mask(_ view: UIView?) -> Self {
+  func mask(_ view: UIView?) -> Self {
     mask = view
     return self
   }
 
   @discardableResult
-  public func userInteractionEnabled(_ enabled: Bool) -> Self {
+  func userInteractionEnabled(_ enabled: Bool) -> Self {
     isUserInteractionEnabled = enabled
     return self
   }
 
   @discardableResult
-  public func multipleTouchEnabled(_ enabled: Bool) -> Self {
+  func multipleTouchEnabled(_ enabled: Bool) -> Self {
     isMultipleTouchEnabled = enabled
     return self
   }
 
   @discardableResult
-  public func exclusiveTouch(_ enabled: Bool) -> Self {
+  func exclusiveTouch(_ enabled: Bool) -> Self {
     isExclusiveTouch = enabled
     return self
   }
 
   @discardableResult
-  public func frame(_ value: CGRect) -> Self {
+  func frame(_ value: CGRect) -> Self {
     frame = value
     return self
   }
 
   @discardableResult
-  public func bounds(_ value: CGRect) -> Self {
+  func bounds(_ value: CGRect) -> Self {
     bounds = value
     return self
   }
 
   @discardableResult
-  public func center(_ value: CGPoint) -> Self {
+  func center(_ value: CGPoint) -> Self {
     center = value
     return self
   }
 
   @discardableResult
-  public func transform(_ value: CGAffineTransform) -> Self {
+  func transform(_ value: CGAffineTransform) -> Self {
     transform = value
     return self
   }
 
   @available(iOS 11.0, *)
   @discardableResult
-  public func directionalLayoutMargins(_ margins: NSDirectionalEdgeInsets) -> Self {
+  func directionalLayoutMargins(_ margins: NSDirectionalEdgeInsets) -> Self {
     directionalLayoutMargins = margins
     return self
   }
 
   @discardableResult
-  public func layoutMargins(_ margins: UIEdgeInsets) -> Self {
+  func layoutMargins(_ margins: UIEdgeInsets) -> Self {
     layoutMargins = margins
     return self
   }
 
   @discardableResult
-  public func preservesSuperviewLayoutMargins(_ preserves: Bool) -> Self {
+  func preservesSuperviewLayoutMargins(_ preserves: Bool) -> Self {
     preservesSuperviewLayoutMargins = preserves
     return self
   }
 
   @available(iOS 11.0, *)
   @discardableResult
-  public func insetsLayoutMarginsFromSafeArea(_ insets: Bool) -> Self {
+  func insetsLayoutMarginsFromSafeArea(_ insets: Bool) -> Self {
     insetsLayoutMarginsFromSafeArea = insets
     return self
   }
 
   @discardableResult
-  public func contentCompressionResistancePriority(
+  func contentCompressionResistancePriority(
     _ priority: UILayoutPriority,
     for axis: NSLayoutConstraint.Axis
   ) -> Self {
@@ -139,7 +139,7 @@ extension UIView {
   }
 
   @discardableResult
-  public func contentHuggingPriority(
+  func contentHuggingPriority(
     _ priority: UILayoutPriority,
     for axis: NSLayoutConstraint.Axis
   ) -> Self {
@@ -148,263 +148,263 @@ extension UIView {
   }
 
   @discardableResult
-  public func contentMode(_ mode: ContentMode) -> Self {
+  func contentMode(_ mode: ContentMode) -> Self {
     contentMode = mode
     return self
   }
 
   @discardableResult
-  public func autoresizesSubviews(_ resizes: Bool) -> Self {
+  func autoresizesSubviews(_ resizes: Bool) -> Self {
     autoresizesSubviews = resizes
     return self
   }
 
   @discardableResult
-  public func autoresizingMask(_ mask: AutoresizingMask) -> Self {
+  func autoresizingMask(_ mask: AutoresizingMask) -> Self {
     autoresizingMask = mask
     return self
   }
 
   @discardableResult
-  public func translatesAutoresizingMaskIntoConstraints(_ translates: Bool) -> Self {
+  func translatesAutoresizingMaskIntoConstraints(_ translates: Bool) -> Self {
     useConstraints(!translates)
     return self
   }
 
   @available(iOS 13.0, *)
   @discardableResult
-  public func overrideUserInterfaceStyle(_ style: UIUserInterfaceStyle) -> Self {
+  func overrideUserInterfaceStyle(_ style: UIUserInterfaceStyle) -> Self {
     overrideUserInterfaceStyle = style
     return self
   }
 
   @discardableResult
-  public func semanticContentAttribute(_ attribute: UISemanticContentAttribute) -> Self {
+  func semanticContentAttribute(_ attribute: UISemanticContentAttribute) -> Self {
     semanticContentAttribute = attribute
     return self
   }
 
   @available(iOS 11.0, *)
   @discardableResult
-  public func interactions(_ elements: [UIInteraction]) -> Self {
+  func interactions(_ elements: [UIInteraction]) -> Self {
     interactions = elements
     return self
   }
 
   @discardableResult
-  public func contentScaleFactor(_ factor: CGFloat) -> Self {
+  func contentScaleFactor(_ factor: CGFloat) -> Self {
     contentScaleFactor = factor
     return self
   }
 
   @discardableResult
-  public func gestureRecognizers(_ elements: [UIGestureRecognizer]?) -> Self {
+  func gestureRecognizers(_ elements: [UIGestureRecognizer]?) -> Self {
     gestureRecognizers = elements
     return self
   }
 
   @discardableResult
-  public func motionEffects(_ elements: [UIMotionEffect]) -> Self {
+  func motionEffects(_ elements: [UIMotionEffect]) -> Self {
     motionEffects = elements
     return self
   }
 
   @discardableResult
-  public func restorationIdentifier(_ identifier: String?) -> Self {
+  func restorationIdentifier(_ identifier: String?) -> Self {
     restorationIdentifier = identifier
     return self
   }
 
   @discardableResult
-  public func tag(_ value: Int) -> Self {
+  func tag(_ value: Int) -> Self {
     tag = value
     return self
   }
 
   @available(iOS 11.0, *)
   @discardableResult
-  public func accessibilityIgnoresInvertColors(_ ignores: Bool) -> Self {
+  func accessibilityIgnoresInvertColors(_ ignores: Bool) -> Self {
     accessibilityIgnoresInvertColors = ignores
     return self
   }
 
   @available(iOS 14.0, *)
   @discardableResult
-  public func focusGroupIdentifier(_ identifier: String?) -> Self {
+  func focusGroupIdentifier(_ identifier: String?) -> Self {
     focusGroupIdentifier = identifier
     return self
   }
 
   @available(iOS 13.0, *)
   @discardableResult
-  public func largeContentImage(_ image: UIImage?) -> Self {
+  func largeContentImage(_ image: UIImage?) -> Self {
     largeContentImage = image
     return self
   }
 
   @available(iOS 13.0, *)
   @discardableResult
-  public func largeContentImageInsets(_ insets: UIEdgeInsets) -> Self {
+  func largeContentImageInsets(_ insets: UIEdgeInsets) -> Self {
     largeContentImageInsets = insets
     return self
   }
 
   @available(iOS 13.0, *)
   @discardableResult
-  public func largeContentTitle(_ title: String?) -> Self {
+  func largeContentTitle(_ title: String?) -> Self {
     largeContentTitle = title
     return self
   }
 
   @available(iOS 13.0, *)
   @discardableResult
-  public func scalesLargeContentImage(_ scales: Bool) -> Self {
+  func scalesLargeContentImage(_ scales: Bool) -> Self {
     scalesLargeContentImage = scales
     return self
   }
 
   @available(iOS 13.0, *)
   @discardableResult
-  public func showsLargeContentViewer(_ shows: Bool) -> Self {
+  func showsLargeContentViewer(_ shows: Bool) -> Self {
     showsLargeContentViewer = shows
     return self
   }
 
   @available(iOS 13.0, *)
   @discardableResult
-  public func transform3D(_ transform: CATransform3D) -> Self {
+  func transform3D(_ transform: CATransform3D) -> Self {
     transform3D = transform
     return self
   }
 }
 
-extension UIView {
+public extension UIView {
   @discardableResult
-  public func opacity(_ opacity: Float) -> Self {
+  func opacity(_ opacity: Float) -> Self {
     layer.opacity = opacity
     return self
   }
 
   @discardableResult
-  public func masksToBounds(_ masks: Bool) -> Self {
+  func masksToBounds(_ masks: Bool) -> Self {
     layer.masksToBounds = masks
     return self
   }
 
   @discardableResult
-  public func cornerRadius(_ radius: CGFloat) -> Self {
+  func cornerRadius(_ radius: CGFloat) -> Self {
     layer.cornerRadius = radius
     return self
   }
 
   @available(iOS 11.0, *)
   @discardableResult
-  public func maskedCorners(_ corners: CACornerMask) -> Self {
+  func maskedCorners(_ corners: CACornerMask) -> Self {
     layer.maskedCorners = corners
     return self
   }
 
   @discardableResult
-  public func borderWidth(_ width: CGFloat) -> Self {
+  func borderWidth(_ width: CGFloat) -> Self {
     layer.borderWidth = width
     return self
   }
 
   @discardableResult
-  public func borderColor(_ color: UIColor?) -> Self {
+  func borderColor(_ color: UIColor?) -> Self {
     layer.borderColor = color?.cgColor
     return self
   }
 
   @discardableResult
-  public func shadowOpacity(_ opacity: Float) -> Self {
+  func shadowOpacity(_ opacity: Float) -> Self {
     layer.shadowOpacity = opacity
     return self
   }
 
   @discardableResult
-  public func shadowRadius(_ radius: CGFloat) -> Self {
+  func shadowRadius(_ radius: CGFloat) -> Self {
     layer.shadowRadius = radius
     return self
   }
 
   @discardableResult
-  @objc public func shadowOffset(_ offset: CGSize) -> Self {
+  @objc func shadowOffset(_ offset: CGSize) -> Self {
     layer.shadowOffset = offset
     return self
   }
 
   @discardableResult
-  @objc public func shadowColor(_ color: UIColor?) -> Self {
+  @objc func shadowColor(_ color: UIColor?) -> Self {
     layer.shadowColor = color?.cgColor
     return self
   }
 
   @discardableResult
-  public func shouldRasterize(_ should: Bool) -> Self {
+  func shouldRasterize(_ should: Bool) -> Self {
     layer.shouldRasterize = should
     return self
   }
 }
 
-extension UIView {
+public extension UIView {
   @discardableResult
-  public func width(_ width: CGFloat) -> Self {
+  func width(_ width: CGFloat) -> Self {
     widthAnchor.constraint(equalToConstant: width).isActive = true
     frame.size.width = width
     return self
   }
 
   @discardableResult
-  public func width(lessThanOrEqual width: CGFloat) -> Self {
+  func width(lessThanOrEqual width: CGFloat) -> Self {
     widthAnchor.constraint(lessThanOrEqualToConstant: width).isActive = true
     frame.size.width = width
     return self
   }
 
   @discardableResult
-  public func width(greaterThanOrEqual width: CGFloat) -> Self {
+  func width(greaterThanOrEqual width: CGFloat) -> Self {
     widthAnchor.constraint(greaterThanOrEqualToConstant: width).isActive = true
     frame.size.width = width
     return self
   }
 
   @discardableResult
-  public func height(_ height: CGFloat) -> Self {
+  func height(_ height: CGFloat) -> Self {
     heightAnchor.constraint(equalToConstant: height).isActive = true
     frame.size.height = height
     return self
   }
 
   @discardableResult
-  public func height(lessThanOrEqual height: CGFloat) -> Self {
+  func height(lessThanOrEqual height: CGFloat) -> Self {
     heightAnchor.constraint(lessThanOrEqualToConstant: height).isActive = true
     frame.size.height = height
     return self
   }
 
   @discardableResult
-  public func height(greaterThanOrEqual height: CGFloat) -> Self {
+  func height(greaterThanOrEqual height: CGFloat) -> Self {
     heightAnchor.constraint(greaterThanOrEqualToConstant: height).isActive = true
     frame.size.width = height
     return self
   }
 
   @discardableResult
-  public func size(_ size: CGSize) -> Self {
+  func size(_ size: CGSize) -> Self {
     widthAnchor.constraint(equalToConstant: size.width).isActive = true
     heightAnchor.constraint(equalToConstant: size.height).isActive = true
     frame.size = size
     return self
   }
-  
+
   @discardableResult
-  public func size(_ width: CGFloat, _ height: CGFloat) -> Self {
+  func size(_ width: CGFloat, _ height: CGFloat) -> Self {
     size(.init(width: width, height: height))
   }
 
   @discardableResult
-  public func width(
+  func width(
     equalTo other: UIView, multiplier: CGFloat = 1, constant: CGFloat = 0
   ) -> Self {
     widthAnchor.constraint(
@@ -417,7 +417,7 @@ extension UIView {
   }
 
   @discardableResult
-  public func height(
+  func height(
     equalTo other: UIView, multiplier: CGFloat = 1, constant: CGFloat = 0
   ) -> Self {
     heightAnchor.constraint(
@@ -430,7 +430,7 @@ extension UIView {
   }
 
   @discardableResult
-  public func size(equalTo other: UIView) -> Self {
+  func size(equalTo other: UIView) -> Self {
     widthAnchor.constraint(equalTo: other.widthAnchor).isActive = true
     heightAnchor.constraint(equalTo: other.heightAnchor).isActive = true
     frame.size = other.frame.size
@@ -438,34 +438,34 @@ extension UIView {
   }
 
   @discardableResult
-  public func aspectRatio(_ value: CGFloat) -> Self {
+  func aspectRatio(_ value: CGFloat) -> Self {
     widthAnchor.constraint(equalTo: heightAnchor, multiplier: value).isActive = true
     return self
   }
 }
 
-extension UIView {
+public extension UIView {
   @discardableResult
-  public func addSubviews(_ views: UIView...) -> Self {
+  func addSubviews(_ views: UIView...) -> Self {
     views.forEach(addSubview)
     return self
   }
 
   @discardableResult
-  public func addSubviews(_ views: [UIView]) -> Self {
+  func addSubviews(_ views: [UIView]) -> Self {
     views.forEach(addSubview)
     return self
   }
 
   @discardableResult
-  public func addSubview(_ view: UIView, paddings insets: UIEdgeInsets) -> Self {
+  func addSubview(_ view: UIView, paddings insets: UIEdgeInsets) -> Self {
     addSubview(view)
     view.pinEdges(to: self, margins: insets)
     return self
   }
 
   @discardableResult
-  public func pinEdges(to other: UIView, margins insets: UIEdgeInsets = .zero) -> Self {
+  func pinEdges(to other: UIView, margins insets: UIEdgeInsets = .zero) -> Self {
     layout { proxy in
       proxy.edges == other.edgesAnchor - insets
     }
@@ -473,7 +473,7 @@ extension UIView {
 
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
   @discardableResult
-  public func addSubview(_ view: UIView, safePaddings insets: UIEdgeInsets) -> Self {
+  func addSubview(_ view: UIView, safePaddings insets: UIEdgeInsets) -> Self {
     addSubview(view)
     view.pinSafeEdges(to: self, margins: insets)
     return self
@@ -481,7 +481,7 @@ extension UIView {
 
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
   @discardableResult
-  public func pinSafeEdges(to other: UIView, margins insets: UIEdgeInsets = .zero) -> Self {
+  func pinSafeEdges(to other: UIView, margins insets: UIEdgeInsets = .zero) -> Self {
     layout { proxy in
       proxy.edges == other.safeEdgesAnchor - insets
     }
@@ -495,7 +495,7 @@ public extension UIView {
       .useConstraints()
       .addSubview(self, paddings: value)
   }
-  
+
   @discardableResult
   func overlay(_ view: UIView, alignment: Flex.OverlayAlignment = .center, offset: CGPoint = .zero) -> Self {
     addSubview(view) { proxy in
@@ -519,4 +519,3 @@ public extension UIView {
     }
   }
 }
-

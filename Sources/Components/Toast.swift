@@ -94,6 +94,7 @@ final class ToastWindow: UIWindow {
     setup()
   }
 
+  @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -167,16 +168,16 @@ final class ToastWindow: UIWindow {
   }
 
   override func hitTest(_ point: CGPoint, with event: UIEvent!) -> UIView? {
-    if let currentView = currentView {
-      return currentView.hitTest(convert(point, to: currentView), with: event)
+    if let currentView {
+      currentView.hitTest(convert(point, to: currentView), with: event)
     } else {
-      return super.hitTest(point, with: event)
+      super.hitTest(point, with: event)
     }
   }
 }
 
-extension UIView {
-  fileprivate func fillSubview(_ subview: UIView) {
+private extension UIView {
+  func fillSubview(_ subview: UIView) {
     subview.translatesAutoresizingMaskIntoConstraints = false
     addSubview(subview)
     NSLayoutConstraint.activate([
@@ -190,14 +191,14 @@ extension UIView {
 
 // MARK: - Styled Toast
 
-extension Toast {
+public extension Toast {
   @available(iOS 11.0, *)
-  public init(text: String, duration: TimeInterval = 2) {
+  init(text: String, duration: TimeInterval = 2) {
     self.init(body: ContentView(text: text), duration: duration)
   }
 
   @available(iOS 11.0, *)
-  public init(attributedText: NSAttributedString, duration: TimeInterval = 2) {
+  init(attributedText: NSAttributedString, duration: TimeInterval = 2) {
     self.init(
       body: ContentView(attributedText: attributedText),
       duration: duration
@@ -269,6 +270,7 @@ extension Toast {
       ])
     }
 
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
     }
@@ -301,9 +303,9 @@ extension Toast {
 
     override func hitTest(_ point: CGPoint, with event: UIEvent!) -> UIView? {
       if backgroundView.frame.contains(point) {
-        return backgroundView
+        backgroundView
       } else {
-        return nil
+        nil
       }
     }
 
@@ -320,7 +322,9 @@ extension Toast {
         withDuration: 0.25, delay: delay,
         options: .beginFromCurrentState, animations: { [backgroundView] in
           backgroundView.transform = .init(translationX: 0, y: translationY)
-        }, completion: completion)
+        },
+        completion: completion
+      )
     }
 
     private var translateDistance: CGFloat {
@@ -336,7 +340,8 @@ public extension Task {
     priority: TaskPriority? = nil,
     operation: @escaping @Sendable () async throws -> Void
   ) -> Self
-  where Success == Void, Failure == Never {
+    where Success == Void, Failure == Never
+  {
     .init(priority: priority) {
       do {
         try await operation()
@@ -353,7 +358,8 @@ public extension Task {
     priority: TaskPriority? = nil,
     operation: @escaping @Sendable () async throws -> Void
   ) -> Self
-  where Success == Void, Failure == Never {
+    where Success == Void, Failure == Never
+  {
     .detached(priority: priority) {
       do {
         try await operation()

@@ -1,7 +1,7 @@
 import UIKit
 
-extension UINavigationController {
-  public func push(
+public extension UINavigationController {
+  func push(
     _ vc: UIViewController,
     animated: Bool,
     completion: (() -> Void)?
@@ -17,7 +17,7 @@ extension UINavigationController {
     }
   }
 
-  public func pop(animated: Bool, completion: (() -> Void)?) {
+  func pop(animated: Bool, completion: (() -> Void)?) {
     popViewController(animated: animated)
 
     if let coordinator = transitionCoordinator, animated {
@@ -37,7 +37,7 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     // the system `interactivePopGestureRecognizer`. That's done by assigning the same "targets" (effectively
     // object and selector) of the system one to our gesture recognizer.
     guard
-      let interactivePopGestureRecognizer = interactivePopGestureRecognizer,
+      let interactivePopGestureRecognizer,
       let targets = interactivePopGestureRecognizer.value(forKey: "targets")
     else {
       return
@@ -59,10 +59,10 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     if let gestureView = gestureRecognizer.view {
       let location = gestureRecognizer.location(in: gestureView)
       if let view = gestureView.hitTest(location, with: nil) {
-        if view.tag == 0xdead {
+        if view.tag == 0xDEAD {
           return false
         }
-        if view.isKind(of: UIControl.self) && !view.isKind(of: UIButton.self) {
+        if view.isKind(of: UIControl.self), !view.isKind(of: UIButton.self) {
           return false
         }
         if let view = view as? SloppyPopSupport, !view.isSloppyPopEnabled {
@@ -78,7 +78,7 @@ extension UINavigationController: UIGestureRecognizerDelegate {
       return false
     }
 
-    if otherGestureRecognizer.view?.tag == 0xdead {
+    if otherGestureRecognizer.view?.tag == 0xDEAD {
       return false
     }
     if let view = otherGestureRecognizer.view as? SloppyPopSupport, !view.isSloppyPopEnabled {

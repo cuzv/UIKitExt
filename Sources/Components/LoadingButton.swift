@@ -1,15 +1,15 @@
 import UIKit
 
-extension UIControl.State {
-  public static let loading = UIControl.State(rawValue: 1 << 16)
+public extension UIControl.State {
+  static let loading = UIControl.State(rawValue: 1 << 16)
 }
 
-final public class LoadingButton: UIButton {
+public final class LoadingButton: UIButton {
   private var loadingAnimationToken: CABasicAnimation?
   private let loadingAnimationKey = "com.redrainlab.loading"
   private let emptyImage = UIImage()
 
-  @objc dynamic public var isLoading: Bool = false {
+  @objc public dynamic var isLoading: Bool = false {
     didSet {
       let loading = isLoading
       if oldValue != loading {
@@ -24,7 +24,7 @@ final public class LoadingButton: UIButton {
     isLoading ? .loading : super.state
   }
 
-  public override init(frame: CGRect) {
+  override public init(frame: CGRect) {
     super.init(frame: frame)
     setup()
   }
@@ -48,21 +48,21 @@ final public class LoadingButton: UIButton {
   }
 
   // Prevent weird bug which do animation the second time with image miss-rotation.
-  public override func setImage(_ image: UIImage?, for state: UIControl.State) {
+  override public func setImage(_ image: UIImage?, for state: UIControl.State) {
     super.setImage(image ?? emptyImage, for: state)
   }
 
-  public override func didMoveToSuperview() {
+  override public func didMoveToSuperview() {
     super.didMoveToSuperview()
 
-    if nil != superview {
-      if nil == image(for: .normal) {
+    if superview != nil {
+      if image(for: .normal) == nil {
         setImage(nil, for: .normal)
       }
     }
   }
 
-  public override func didMoveToWindow() {
+  override public func didMoveToWindow() {
     super.didMoveToWindow()
     resumeAnimationIfNeeded()
   }
@@ -84,7 +84,7 @@ final public class LoadingButton: UIButton {
   }
 
   @objc private func resumeAnimationIfNeeded() {
-    if nil != window && isLoading {
+    if window != nil, isLoading {
       isLoading.toggle()
       isLoading.toggle()
     }

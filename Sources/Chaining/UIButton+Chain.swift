@@ -1,8 +1,8 @@
 import UIKit
 
-extension UIButton {
+public extension UIButton {
   @discardableResult
-  public func title(
+  func title(
     _ value: String?,
     for state: UIControl.State
   ) -> Self {
@@ -11,7 +11,7 @@ extension UIButton {
   }
 
   @discardableResult
-  public func attributedTitle(
+  func attributedTitle(
     _ text: NSAttributedString?,
     for state: UIControl.State
   ) -> Self {
@@ -20,7 +20,7 @@ extension UIButton {
   }
 
   @discardableResult
-  public func titleColor(
+  func titleColor(
     _ color: UIColor,
     for state: UIControl.State
   ) -> Self {
@@ -29,7 +29,7 @@ extension UIButton {
   }
 
   @discardableResult
-  public func titleShadowColor(
+  func titleShadowColor(
     _ color: UIColor?,
     for state: UIControl.State
   ) -> Self {
@@ -38,43 +38,43 @@ extension UIButton {
   }
 
   @discardableResult
-  public func titleFont(_ font: UIFont) -> Self {
+  func titleFont(_ font: UIFont) -> Self {
     titleLabel?.font = font
     return self
   }
 
   @discardableResult
-  public func titleAlignment(_ alignment: NSTextAlignment) -> Self {
+  func titleAlignment(_ alignment: NSTextAlignment) -> Self {
     titleLabel?.textAlignment = alignment
     return self
   }
 
   @discardableResult
-  public func titleLineBreakMode(_ mode: NSLineBreakMode) -> Self {
+  func titleLineBreakMode(_ mode: NSLineBreakMode) -> Self {
     titleLabel?.lineBreakMode = mode
     return self
   }
 
   @discardableResult
-  public func adjustsImageWhenHighlighted(_ adjusts: Bool) -> Self {
+  func adjustsImageWhenHighlighted(_ adjusts: Bool) -> Self {
     adjustsImageWhenHighlighted = adjusts
     return self
   }
 
   @discardableResult
-  public func adjustsImageWhenDisabled(_ adjusts: Bool) -> Self {
+  func adjustsImageWhenDisabled(_ adjusts: Bool) -> Self {
     adjustsImageWhenDisabled = adjusts
     return self
   }
 
   @discardableResult
-  public func showsTouchWhenHighlighted(_ shows: Bool) -> Self {
+  func showsTouchWhenHighlighted(_ shows: Bool) -> Self {
     showsTouchWhenHighlighted = shows
     return self
   }
 
   @discardableResult
-  public func backgroundImage(
+  func backgroundImage(
     _ image: UIImage?,
     for state: UIControl.State
   ) -> Self {
@@ -83,7 +83,7 @@ extension UIButton {
   }
 
   @discardableResult
-  public func image(
+  func image(
     _ image: UIImage?,
     for state: UIControl.State
   ) -> Self {
@@ -93,7 +93,7 @@ extension UIButton {
 
   @available(iOS 13.0, *)
   @discardableResult
-  public func preferredSymbolConfiguration(
+  func preferredSymbolConfiguration(
     _ configuration: UIImage.SymbolConfiguration?,
     for state: UIControl.State
   ) -> Self {
@@ -102,47 +102,47 @@ extension UIButton {
   }
 
   @discardableResult
-  public func tintColor(_ color: UIColor) -> Self {
+  func tintColor(_ color: UIColor) -> Self {
     tintColor = color
     return self
   }
 
   @discardableResult
-  public func contentEdgeInsets(_ insets: UIEdgeInsets) -> Self {
+  func contentEdgeInsets(_ insets: UIEdgeInsets) -> Self {
     contentEdgeInsets = insets
     return self
   }
 
   @discardableResult
-  public func titleEdgeInsets(_ insets: UIEdgeInsets) -> Self {
+  func titleEdgeInsets(_ insets: UIEdgeInsets) -> Self {
     titleEdgeInsets = insets
     return self
   }
 
   @discardableResult
-  public func imageEdgeInsets(_ insets: UIEdgeInsets) -> Self {
+  func imageEdgeInsets(_ insets: UIEdgeInsets) -> Self {
     imageEdgeInsets = insets
     return self
   }
 
   @available(iOS 13.4, *)
   @discardableResult
-  public func pointerInteractionEnabled(_ enabled: Bool) -> Self {
+  func pointerInteractionEnabled(_ enabled: Bool) -> Self {
     isPointerInteractionEnabled = enabled
     return self
   }
 
   @available(iOS 13.4, *)
   @discardableResult
-  public func pointerStyleProvider(_ provider: PointerStyleProvider?) -> Self {
+  func pointerStyleProvider(_ provider: PointerStyleProvider?) -> Self {
     pointerStyleProvider = provider
     return self
   }
 }
 
-extension UIButton {
+public extension UIButton {
   @discardableResult
-  public func titles(
+  func titles(
     _ pairs: (UIControl.State, String?)...
   ) -> Self {
     pairs.forEach { setTitle($1, for: $0) }
@@ -150,7 +150,7 @@ extension UIButton {
   }
 
   @discardableResult
-  public func attributedTitles(
+  func attributedTitles(
     _ pairs: (UIControl.State, NSAttributedString?)...
   ) -> Self {
     pairs.forEach { setAttributedTitle($1, for: $0) }
@@ -158,7 +158,7 @@ extension UIButton {
   }
 
   @discardableResult
-  public func titleColors(
+  func titleColors(
     _ pairs: (UIControl.State, UIColor)...
   ) -> Self {
     pairs.forEach { setTitleColor($1, for: $0) }
@@ -166,7 +166,7 @@ extension UIButton {
   }
 
   @discardableResult
-  public func titleShadowColors(
+  func titleShadowColors(
     _ pairs: (UIControl.State, UIColor)...
   ) -> Self {
     pairs.forEach { setTitleShadowColor($1, for: $0) }
@@ -174,7 +174,7 @@ extension UIButton {
   }
 
   @discardableResult
-  public func backgroundImages(
+  func backgroundImages(
     _ pairs: (UIControl.State, UIImage?)...
   ) -> Self {
     pairs.forEach { setBackgroundImage($1, for: $0) }
@@ -182,7 +182,7 @@ extension UIButton {
   }
 
   @discardableResult
-  public func images(
+  func images(
     _ pairs: (UIControl.State, UIImage?)...
   ) -> Self {
     pairs.forEach { setImage($1, for: $0) }
@@ -191,7 +191,7 @@ extension UIButton {
 
   @available(iOS 13.0, *)
   @discardableResult
-  public func preferredSymbolConfigurations(
+  func preferredSymbolConfigurations(
     _ pairs: (UIControl.State, UIImage.SymbolConfiguration?)...
   ) -> Self {
     pairs.forEach { setPreferredSymbolConfiguration($1, forImageIn: $0) }
@@ -218,7 +218,7 @@ public extension UIButton {
     if let text {
       stateAlphaMappings.forEach { state, alpha in
         let mutableText = NSMutableAttributedString(attributedString: text)
-        mutableText.enumerateAttribute(.foregroundColor, in: NSRange(0..<mutableText.length)) { value, range, stop in
+        mutableText.enumerateAttribute(.foregroundColor, in: NSRange(0 ..< mutableText.length)) { value, range, _ in
           if let color = value as? UIColor {
             let (light, dark) = color.resolvedTraitColors
             let color = light.withAlphaComponent(alpha) | dark.withAlphaComponent(alpha)
@@ -272,7 +272,7 @@ public extension UIButton {
     if let image {
       if let (light, dark) = image.resolvedTraitImages {
         stateAlphaMappings.forEach { state, alpha in
-          let resolvedImage = light.withAlpha(alpha) |  dark.withAlpha(alpha)
+          let resolvedImage = light.withAlpha(alpha) | dark.withAlpha(alpha)
           setBackgroundImage(resolvedImage, for: state)
         }
       } else {
@@ -327,7 +327,7 @@ public extension UIButton {
     if let image {
       if let (light, dark) = image.resolvedTraitImages {
         stateAlphaMappings.forEach { state, alpha in
-          let resolvedImage = light.withAlpha(alpha) |  dark.withAlpha(alpha)
+          let resolvedImage = light.withAlpha(alpha) | dark.withAlpha(alpha)
           setImage(resolvedImage, for: state)
         }
       } else {

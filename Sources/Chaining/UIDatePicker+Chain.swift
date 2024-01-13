@@ -33,7 +33,7 @@ public extension UIDatePicker {
 
   @available(iOS 13.4, macCatalyst 13.4, *)
   @discardableResult
-  func preferredDatePickerStyle(_ value: UIDatePickerStyle ) -> Self {
+  func preferredDatePickerStyle(_ value: UIDatePickerStyle) -> Self {
     preferredDatePickerStyle = value
     return self
   }

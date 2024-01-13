@@ -1,112 +1,112 @@
 import UIKit
 
-extension UIStackView {
+public extension UIStackView {
   @discardableResult
-  public func alignment(_ value: Alignment) -> Self {
+  func alignment(_ value: Alignment) -> Self {
     alignment = value
     return self
   }
 
   @discardableResult
-  public func axis(_ value: NSLayoutConstraint.Axis) -> Self {
+  func axis(_ value: NSLayoutConstraint.Axis) -> Self {
     axis = value
     return self
   }
 
   @discardableResult
-  public func baselineRelativeArrangement(_ flag: Bool) -> Self {
+  func baselineRelativeArrangement(_ flag: Bool) -> Self {
     isBaselineRelativeArrangement = flag
     return self
   }
 
   @discardableResult
-  public func distribution(_ value: Distribution) -> Self {
+  func distribution(_ value: Distribution) -> Self {
     distribution = value
     return self
   }
 
   @discardableResult
-  public func layoutMarginsRelativeArrangement(_ flag: Bool) -> Self {
+  func layoutMarginsRelativeArrangement(_ flag: Bool) -> Self {
     isLayoutMarginsRelativeArrangement = flag
     return self
   }
 
   @discardableResult
-  public func spacing(_ value: CGFloat) -> Self {
+  func spacing(_ value: CGFloat) -> Self {
     spacing = value
     return self
   }
 }
 
-extension UIStackView {
+public extension UIStackView {
   @discardableResult
-  public func addArrangedSubview(_ view: UIView?) -> Self {
-    if let view = view {
+  func addArrangedSubview(_ view: UIView?) -> Self {
+    if let view {
       addArrangedSubview(view)
     }
     return self
   }
 
   @discardableResult
-  public func addArrangedSubviews(_ views: UIView...) -> Self {
+  func addArrangedSubviews(_ views: UIView...) -> Self {
     views.forEach(addArrangedSubview(_:))
     return self
   }
 
   @discardableResult
-  public func addArrangedSubviews(_ views: UIView?...) -> Self {
-    views.compactMap({ $0 }).forEach(addArrangedSubview(_:))
+  func addArrangedSubviews(_ views: UIView?...) -> Self {
+    views.compactMap { $0 }.forEach(addArrangedSubview(_:))
     return self
   }
 
   @discardableResult
-  public func addArrangedSubviews(_ views: [UIView]) -> Self {
+  func addArrangedSubviews(_ views: [UIView]) -> Self {
     views.forEach(addArrangedSubview(_:))
     return self
   }
 
   @discardableResult
-  public func addArrangedSubviews(_ views: [UIView?]) -> Self {
-    views.compactMap({ $0 }).forEach(addArrangedSubview(_:))
+  func addArrangedSubviews(_ views: [UIView?]) -> Self {
+    views.compactMap { $0 }.forEach(addArrangedSubview(_:))
     return self
   }
 
   @discardableResult
-  public func removeArrangedSubviews(_ views: UIView...) -> Self {
+  func removeArrangedSubviews(_ views: UIView...) -> Self {
     views.forEach(removeArrangedSubview(_:))
     return self
   }
 
   @discardableResult
-  public func removeArrangedSubviews(_ views: [UIView]) -> Self {
+  func removeArrangedSubviews(_ views: [UIView]) -> Self {
     views.forEach(removeArrangedSubview(_:))
     return self
   }
 
   /// Compose of `removeArrangedSubview(_:)` & `removeFromSuperview`
-  public func detachArrangedSubview(_ view: UIView) {
+  func detachArrangedSubview(_ view: UIView) {
     removeArrangedSubview(view)
     view.removeFromSuperview()
   }
 
-  public func detachArrangedSubviews(_ views: UIView...) {
+  func detachArrangedSubviews(_ views: UIView...) {
     views.forEach(detachArrangedSubview(_:))
   }
 
-  public func detachArrangedSubviews(_ views: [UIView]) {
+  func detachArrangedSubviews(_ views: [UIView]) {
     views.forEach(detachArrangedSubview(_:))
   }
 
   /// Call lastly while arrange subviews
   @discardableResult
-  public func distributionCenter() -> Self {
+  func distributionCenter() -> Self {
     insertArrangedSubview(UIView().useConstraints(), at: 0)
     addArrangedSubview(UIView().useConstraints())
     return distributeHeadEqualTail()
   }
 
   @discardableResult
-  public func distributeHeadEqualTail() -> Self {
+  func distributeHeadEqualTail() -> Self {
     if
       let head = arrangedSubviews.first,
       let tail = arrangedSubviews.last,
@@ -125,9 +125,9 @@ extension UIStackView {
   }
 }
 
-extension UIStackView {
+public extension UIStackView {
   @discardableResult
-  public func addingArrangedHeaderFooterDistributedEqually() -> Self {
+  func addingArrangedHeaderFooterDistributedEqually() -> Self {
     let header = UIView().useConstraints()
     let footer = UIView().useConstraints()
 

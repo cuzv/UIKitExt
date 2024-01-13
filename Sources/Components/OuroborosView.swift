@@ -7,7 +7,7 @@ public final class OuroborosView: UIView {
     setup()
   }
 
-  required public init?(coder: NSCoder) {
+  public required init?(coder: NSCoder) {
     super.init(coder: coder)
     setup()
   }
@@ -49,7 +49,7 @@ public final class OuroborosView: UIView {
     shape.strokeStart = 0.02
     shape.strokeEnd = 0.98
     shape.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-    shape.transform = CATransform3DMakeRotation(-.pi/2, 0, 0, 1)
+    shape.transform = CATransform3DMakeRotation(-.pi / 2, 0, 0, 1)
     layer.mask = shape
   }
 

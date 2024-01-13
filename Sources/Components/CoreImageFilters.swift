@@ -19,8 +19,8 @@ public struct CoreImageFilter {
   }
 }
 
-extension CoreImageFilter {
-  public enum Name {
+public extension CoreImageFilter {
+  enum Name {
     public enum Blur: String {
       case box = "CIBoxBlur"
       case disc = "CIDiscBlur"
@@ -47,19 +47,19 @@ extension CoreImageFilter {
     var stringValue: String {
       switch self {
       case let .blur(value):
-        return value.rawValue
+        value.rawValue
       case let .tileEffect(value):
-        return value.rawValue
+        value.rawValue
       case let .geometryAdjustment(value):
-        return value.rawValue
+        value.rawValue
       }
     }
   }
 }
 
-extension CoreImageFilter {
+public extension CoreImageFilter {
   /// https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference
-  public enum ParameterKey: String {
+  enum ParameterKey: String {
     /// An NSNumber object whose attribute type is CIAttributeTypeDistance and whose display name is Radius.
     /// Default value: 10.00
     case inputRadius
@@ -98,12 +98,12 @@ extension CoreImageFilter {
 
 // MARK: -
 
-extension UIImage {
-  public func applying(_ filters: CoreImageFilter) -> UIImage {
+public extension UIImage {
+  func applying(_ filters: CoreImageFilter) -> UIImage {
     applying(contentsOf: [filters])
   }
 
-  public func applying(contentsOf filters: [CoreImageFilter]) -> UIImage {
+  func applying(contentsOf filters: [CoreImageFilter]) -> UIImage {
     if let input = CIImage(image: self) {
       let output = input.applying(contentsOf: filters)
       if let cgImage = CIContext().createCGImage(output, from: input.extent) {
@@ -117,7 +117,7 @@ extension UIImage {
     return self
   }
 
-  public func blur(radius: CGFloat) -> UIImage {
+  func blur(radius: CGFloat) -> UIImage {
     applying(contentsOf: [
       .init(
         name: .tileEffect(.clamp),
@@ -131,8 +131,8 @@ extension UIImage {
   }
 }
 
-extension CIImage {
-  public func applying(contentsOf filters: [CoreImageFilter]) -> CIImage {
+public extension CIImage {
+  func applying(contentsOf filters: [CoreImageFilter]) -> CIImage {
     var output = self
     filters.forEach {
       output = output.applyingFilter(

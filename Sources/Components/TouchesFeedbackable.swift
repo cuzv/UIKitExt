@@ -6,43 +6,43 @@ public protocol TouchesFeedbackable: AnyObject {
   var touchesBeganDate: Date? { get set }
 }
 
-extension TouchesFeedbackable where Self: UIView {
-  public func showFeedback() {
+public extension TouchesFeedbackable where Self: UIView {
+  func showFeedback() {
     touchesBeganDate = Date()
     UIView.animate(withDuration: 0.25) {
       self.feedbackView.alpha = 1
     }
   }
 
-  public func hideFeedback() {
+  func hideFeedback() {
     let delay = max(0, 0.25 - abs(touchesBeganDate?.timeIntervalSince(Date()) ?? 0))
     UIView.animate(withDuration: 0.25, delay: delay, options: [], animations: {
       self.feedbackView.alpha = 0
     }, completion: nil)
   }
 
-  public func layoutDidChange() {
-    if nil == feedbackView.superview {
+  func layoutDidChange() {
+    if feedbackView.superview == nil {
       insertSubview(feedbackView, at: 0)
       feedbackView.translatesAutoresizingMaskIntoConstraints = false
       NSLayoutConstraint.activate([
         feedbackView.leadingAnchor.constraint(equalTo: leadingAnchor),
         feedbackView.trailingAnchor.constraint(equalTo: trailingAnchor),
         feedbackView.topAnchor.constraint(equalTo: topAnchor),
-        feedbackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        feedbackView.bottomAnchor.constraint(equalTo: bottomAnchor),
       ])
     }
     sendSubviewToBack(feedbackView)
 
-    if let backgroundView = backgroundView {
-      if nil == backgroundView.superview {
+    if let backgroundView {
+      if backgroundView.superview == nil {
         insertSubview(backgroundView, at: 0)
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
           backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
           backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
           backgroundView.topAnchor.constraint(equalTo: topAnchor),
-          backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor)
+          backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
       }
 
@@ -63,24 +63,23 @@ open class TouchesFeedbackView: UIView, TouchesFeedbackable {
     return view
   }()
 
-  open override func layoutSubviews() {
+  override open func layoutSubviews() {
     super.layoutSubviews()
     layoutDidChange()
   }
 
-  open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+  override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     showFeedback()
   }
 
-  open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-  }
+  override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {}
 
-  open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+  override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     hideFeedback()
     tapAction?(self)
   }
 
-  open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+  override open func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
     hideFeedback()
   }
 }

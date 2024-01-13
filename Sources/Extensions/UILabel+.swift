@@ -1,7 +1,7 @@
 import UIKit
 
-extension UILabel {
-  public convenience init(
+public extension UILabel {
+  convenience init(
     text: String,
     textColor: UIColor = .foreground,
     textAlignment: NSTextAlignment = .natural,
@@ -19,7 +19,7 @@ extension UILabel {
     self.numberOfLines = numberOfLines
     // backgroundColor set to `nil` not working as doc says, use `.clear` instead
     self.backgroundColor = backgroundColor
-    self.translatesAutoresizingMaskIntoConstraints = false
-    self.adjustsFontForContentSizeCategory = true
+    translatesAutoresizingMaskIntoConstraints = false
+    adjustsFontForContentSizeCategory = true
   }
 }

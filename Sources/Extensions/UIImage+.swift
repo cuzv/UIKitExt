@@ -1,8 +1,8 @@
-import UIKit
 import AVFoundation
+import UIKit
 
-extension UIImage {
-  public static func create(
+public extension UIImage {
+  static func create(
     color: UIColor,
     size: CGSize = .init(width: 1, height: 1),
     cornerRadius: CGFloat = 0
@@ -13,7 +13,7 @@ extension UIImage {
     }
   }
 
-  public static func create(
+  static func create(
     light: UIColor,
     dark: UIColor,
     size: CGSize = .init(width: 1, height: 1),
@@ -22,15 +22,15 @@ extension UIImage {
     .create(color: light, size: size, cornerRadius: cornerRadius) | .create(color: dark, size: size, cornerRadius: cornerRadius)
   }
 
-  public func withAlpha(_ alpha: CGFloat) -> UIImage {
-    UIGraphicsImageRenderer(canvasSize: size).image { context in
+  func withAlpha(_ alpha: CGFloat) -> UIImage {
+    UIGraphicsImageRenderer(canvasSize: size).image { _ in
       draw(at: .zero, blendMode: .normal, alpha: alpha)
     }
   }
 
   @available(iOS 12.0, *)
-  public var resolvedTraitImages: (light: UIImage, dark: UIImage)? {
-    if let imageAsset = imageAsset {
+  var resolvedTraitImages: (light: UIImage, dark: UIImage)? {
+    if let imageAsset {
       let light = imageAsset.image(with: .init(userInterfaceStyle: .light))
       let dark = imageAsset.image(with: .init(userInterfaceStyle: .dark))
       return (light, dark)
@@ -38,7 +38,7 @@ extension UIImage {
     return nil
   }
 
-  public var isQRCode: Bool {
+  var isQRCode: Bool {
     if let CIImage = CIImage(image: self) {
       let detector = CIDetector(
         ofType: CIDetectorTypeQRCode, context: nil,
@@ -52,28 +52,28 @@ extension UIImage {
     return false
   }
 
-  public var original: UIImage {
+  var original: UIImage {
     withRenderingMode(.alwaysOriginal)
   }
 
-  public var template: UIImage {
+  var template: UIImage {
     withRenderingMode(.alwaysTemplate)
   }
 
-  public var decompressed: UIImage {
+  var decompressed: UIImage {
     UIGraphicsImageRenderer(canvasSize: size).image { _ in
       draw(at: .zero)
     }
   }
 
-  public func invertingColors() -> UIImage? {
+  func invertingColors() -> UIImage? {
     guard let ciImage = CIImage(image: self) ?? ciImage, let filter = CIFilter(name: "CIColorInvert") else { return nil }
     filter.setValue(ciImage, forKey: kCIInputImageKey)
     guard let outputImage = filter.outputImage else { return nil }
     return UIImage(ciImage: outputImage)
   }
 
-  public func scaled(aspectFit boundingSize: CGSize) -> UIImage {
+  func scaled(aspectFit boundingSize: CGSize) -> UIImage {
     guard size.width != 0 && size.height != 0 else { return self }
     guard boundingSize.width < size.width || boundingSize.height < size.height else { return self }
     let scaledRect = AVMakeRect(
@@ -85,7 +85,7 @@ extension UIImage {
     }
   }
 
-  public func scaled(aspectFill boundingSize: CGSize) -> UIImage {
+  func scaled(aspectFill boundingSize: CGSize) -> UIImage {
     guard size.width != 0 && size.height != 0 else { return self }
     guard boundingSize.width < size.width || boundingSize.height < size.height else { return self }
     let scale = max(boundingSize.width / size.width, boundingSize.height / size.height)
@@ -98,13 +98,13 @@ extension UIImage {
     }
   }
 
-  public func cropped(to rect: CGRect) -> UIImage? {
+  func cropped(to rect: CGRect) -> UIImage? {
     cgImage?.cropping(to: rect.applying(.init(scaleX: scale, y: scale)))
       .flatMap(UIImage.init(cgImage:))
   }
 
-  public func rotated(byRadians radians: CGFloat) -> UIImage? {
-    guard let cgImage = cgImage else { return nil }
+  func rotated(byRadians radians: CGFloat) -> UIImage? {
+    guard let cgImage else { return nil }
     var rotatedSize = CGRect(origin: .zero, size: size)
       .applying(.init(rotationAngle: radians)).size
     // Trim off the extremely small float value to prevent core graphics from rounding it up
@@ -133,7 +133,7 @@ extension UIImage {
     }
   }
 
-  public func oriented(to orientation: Orientation = .up) -> UIImage? {
+  func oriented(to orientation: Orientation = .up) -> UIImage? {
     let rect = CGRect(origin: .zero, size: size)
     var bounds = rect
     var transform = CGAffineTransform.identity
@@ -153,33 +153,37 @@ extension UIImage {
     case .left:
       bounds = .init(
         origin: bounds.origin,
-        size: .init(width: bounds.height, height: bounds.width))
+        size: .init(width: bounds.height, height: bounds.width)
+      )
       transform = transform.translatedBy(x: 0, y: rect.width)
       transform = transform.rotated(by: .pi * 3 / 2)
     case .leftMirrored:
       bounds = .init(
         origin: bounds.origin,
-        size: .init(width: bounds.height, height: bounds.width))
+        size: .init(width: bounds.height, height: bounds.width)
+      )
       transform = transform.translatedBy(x: rect.height, y: rect.width)
       transform = transform.scaledBy(x: -1, y: 1)
       transform = transform.rotated(by: .pi * 3 / 2)
     case .right:
       bounds = .init(
         origin: bounds.origin,
-        size: .init(width: bounds.height, height: bounds.width))
+        size: .init(width: bounds.height, height: bounds.width)
+      )
       transform = transform.translatedBy(x: rect.height, y: 0)
       transform = transform.rotated(by: .pi / 2)
     case .rightMirrored:
       bounds = .init(
         origin: bounds.origin,
-        size: .init(width: bounds.height, height: bounds.width))
+        size: .init(width: bounds.height, height: bounds.width)
+      )
       transform = transform.scaledBy(x: -1, y: 1)
       transform = transform.rotated(by: .pi / 2)
     @unknown default:
       return self
     }
 
-    guard let cgImage = cgImage else { return nil }
+    guard let cgImage else { return nil }
 
     return UIGraphicsImageRenderer(canvasSize: bounds.size).image { context in
       let cgContext = context.cgContext
@@ -200,7 +204,7 @@ extension UIImage {
 
   private func oriented() -> UIImage? {
     if imageOrientation == .up { return self }
-    guard let cgImage = cgImage else { return nil }
+    guard let cgImage else { return nil }
 
     var transform: CGAffineTransform = .identity
 
@@ -251,20 +255,19 @@ extension UIImage {
   }
 }
 
-extension UIGraphicsImageRenderer {
-  public convenience init(canvasSize size: CGSize) {
-    let format: UIGraphicsImageRendererFormat
-    if #available(iOS 11.0, *) {
-      format = .preferred()
+public extension UIGraphicsImageRenderer {
+  convenience init(canvasSize size: CGSize) {
+    let format: UIGraphicsImageRendererFormat = if #available(iOS 11.0, *) {
+      .preferred()
     } else {
-      format = .default()
+      .default()
     }
     self.init(size: size, format: format)
   }
 }
 
-extension UIImage.Orientation {
-  public init(_ cgOrientation: CGImagePropertyOrientation) {
+public extension UIImage.Orientation {
+  init(_ cgOrientation: CGImagePropertyOrientation) {
     switch cgOrientation {
     case .up: self = .up
     case .upMirrored: self = .upMirrored

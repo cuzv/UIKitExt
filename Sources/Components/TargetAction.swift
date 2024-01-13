@@ -1,6 +1,6 @@
 import UIKit
 
-extension UIControlTargetActionClosureSupport where Self: UIControl {
+public extension UIControlTargetActionClosureSupport where Self: UIControl {
   /// Associates a target object and action method with the control.
   /// - Parameters:
   ///   - target: The target object—that is, the object whose action method is called. If you specify nil, UIKit searches the responder chain for an object that responds to the specified action message and delivers the message to that object.
@@ -9,7 +9,7 @@ extension UIControlTargetActionClosureSupport where Self: UIControl {
   ///   - sender: The object that initiated the request.
   @available(iOS 9.0, *)
   @discardableResult
-  public func action(
+  func action(
     on events: UIControl.Event = .touchUpInside,
     perform: @escaping (_ sender: Self) -> Void
   ) -> Self {
@@ -66,7 +66,7 @@ extension UIControlTargetActionClosureSupport where Self: UIControl {
 
 // MARK: - Tap Gesture
 
-extension GestureTargetActionClosureSupport where Self: UIView {
+public extension GestureTargetActionClosureSupport where Self: UIView {
   /// Add a tap gesture to receiver.
   ///
   /// - Parameters:
@@ -74,7 +74,7 @@ extension GestureTargetActionClosureSupport where Self: UIView {
   ///   - perform: A closure identifying the action method to be called.
   ///   - sender: The object that initiated the request.
   @discardableResult
-  public func tapAction(
+  func tapAction(
     count: Int = 1, perform: @escaping (_ sender: Self) -> Void
   ) -> Self {
     isUserInteractionEnabled = true
@@ -101,8 +101,8 @@ extension GestureTargetActionClosureSupport where Self: UIView {
   }
 
   @discardableResult
-  public func removeAllTapActions() -> Self {
-    gestureRecognizers?.compactMap({ $0 as? UITapGestureRecognizer }).forEach { tap in
+  func removeAllTapActions() -> Self {
+    gestureRecognizers?.compactMap { $0 as? UITapGestureRecognizer }.forEach { tap in
       switch tap.numberOfTapsRequired {
       case 1:
         objc_setAssociatedObject(self, &TapGestureAssociatedKey.one, nil, .OBJC_ASSOCIATION_RETAIN)
@@ -152,7 +152,7 @@ final class ActionTrampoline<T: NSObject> {
 
 // MARK: - UIControlEventAssociatedKey
 
-struct UIControlEventAssociatedKey {
+enum UIControlEventAssociatedKey {
   static var touchDown: Void?
   static var touchDownRepeat: Void?
   static var touchDragInside: Void?
@@ -177,7 +177,7 @@ struct UIControlEventAssociatedKey {
 
 // MARK: - TapGestureAssociatedKey
 
-private struct TapGestureAssociatedKey {
+private enum TapGestureAssociatedKey {
   public static var one: Void?
   public static var two: Void?
   public static var three: Void?

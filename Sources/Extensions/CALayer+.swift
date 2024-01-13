@@ -29,17 +29,17 @@ public struct SketchShadow {
   }
 }
 
-extension CALayer {
+public extension CALayer {
   /// When using a non-zero spread, it hardcodes a path based on the bounds of the CALayer.
   /// If the layer's bounds ever change, you'd want to call the applySketchShadow() method again.
   ///
   /// https://stackoverflow.com/questions/34269399/how-to-control-shadow-spread-and-blur
-  public func apply(_ shadow: SketchShadow) {
+  func apply(_ shadow: SketchShadow) {
     shadowColor = shadow.color.cgColor
     shadowOpacity = shadow.alpha
     shadowOffset = CGSize(width: shadow.x, height: shadow.y)
     shadowRadius = shadow.blur / 2.0
-    shadowPath = (0 == shadow.spread) ? nil : UIBezierPath(
+    shadowPath = (shadow.spread == 0) ? nil : UIBezierPath(
       rect: bounds.insetBy(dx: -shadow.spread, dy: -shadow.spread)
     ).cgPath
   }

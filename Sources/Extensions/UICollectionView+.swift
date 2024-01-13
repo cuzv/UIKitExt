@@ -1,8 +1,8 @@
 import UIKit
 
-extension UICollectionView {
+public extension UICollectionView {
   @available(iOS 11.0, tvOS 11.0, macCatalyst 11.0, *)
-  public convenience init(
+  convenience init(
     layout: UICollectionViewLayout,
     backgroundColor: UIColor? = nil,
     showsHorizontalScrollIndicator: Bool = false,
@@ -20,12 +20,12 @@ extension UICollectionView {
     self.alwaysBounceVertical = alwaysBounceVertical
     self.contentInsetAdjustmentBehavior = contentInsetAdjustmentBehavior
     self.clipsToBounds = clipsToBounds
-    self.translatesAutoresizingMaskIntoConstraints = false
+    translatesAutoresizingMaskIntoConstraints = false
   }
 }
 
-extension UICollectionView {
-  func cv_scrollToTail(animated: Bool = true) {
+public extension UICollectionView {
+  internal func cv_scrollToTail(animated: Bool = true) {
     let sectionCount = numberOfSections
     let lastSectionIndex = sectionCount - 1
 
@@ -48,43 +48,43 @@ extension UICollectionView {
     }
   }
 
-  public func reloadVisibleItems() {
+  func reloadVisibleItems() {
     reloadItems(at: indexPathsForVisibleItems)
   }
 
-  public func deselectVisibleItems(animated: Bool = true) {
+  func deselectVisibleItems(animated: Bool = true) {
     indexPathsForVisibleItems
-      .map({ ($0, animated) })
+      .map { ($0, animated) }
       .forEach(deselectItem(at:animated:))
   }
 
-  private var indexPathsForAll: LazySequence<FlattenSequence<LazyMapSequence<(Range<Int>), LazyMapSequence<(Range<Int>), IndexPath>>>> {
+  private var indexPathsForAll: LazySequence<FlattenSequence<LazyMapSequence<Range<Int>, LazyMapSequence<Range<Int>, IndexPath>>>> {
     (0 ..< numberOfSections)
       .lazy
       .flatMap { section in
         (0 ..< self.numberOfItems(inSection: section))
           .lazy
-          .map({ (section, $0) })
+          .map { (section, $0) }
           .map(IndexPath.init(item:section:))
       }
   }
 
-  public func selectAllItems(
+  func selectAllItems(
     animated: Bool = false,
     scrollPosition: ScrollPosition = []
   ) {
     indexPathsForAll
-      .map({ ($0, animated, scrollPosition) })
+      .map { ($0, animated, scrollPosition) }
       .forEach(selectItem(at:animated:scrollPosition:))
   }
 
-  public func deselectSelectedItems(animated: Bool = false) {
+  func deselectSelectedItems(animated: Bool = false) {
     indexPathsForSelectedItems?
-      .map({ ($0, animated) })
+      .map { ($0, animated) }
       .forEach(deselectItem(at:animated:))
   }
 
-  public var isAllSelected: Bool {
+  var isAllSelected: Bool {
     if let count = indexPathsForSelectedItems?.count {
       return count == (0 ..< numberOfSections)
         .lazy
@@ -95,8 +95,8 @@ extension UICollectionView {
   }
 }
 
-extension UICollectionView {
-  public func calculateSize(
+public extension UICollectionView {
+  func calculateSize(
     forDeployedCell cell: UICollectionViewCell,
     sectionInset: UIEdgeInsets? = nil
   ) -> CGSize {

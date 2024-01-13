@@ -1,7 +1,7 @@
 #if !(os(iOS) && (arch(i386) || arch(arm)))
-import UIKit
 import Combine
 import SwiftUI
+import UIKit
 
 // MARK: - ColorScheme
 
@@ -19,20 +19,20 @@ import SwiftUI
   public var userInterfaceStyle: UIUserInterfaceStyle {
     switch self {
     case .automatic:
-      return .unspecified
+      .unspecified
     case .light:
-      return .light
+      .light
     case .dark:
-      return .dark
+      .dark
     }
   }
 
   public var next: Self {
     switch self {
     case .light:
-      return .dark
+      .dark
     default:
-      return .light
+      .light
     }
   }
 }
@@ -49,25 +49,25 @@ extension ColorScheme: CustomStringConvertible {
   public var description: String {
     switch self {
     case .automatic:
-      return NSLocalizedString("Automatic", comment: "")
+      NSLocalizedString("Automatic", comment: "")
     case .light:
-      return NSLocalizedString("Light", comment: "")
+      NSLocalizedString("Light", comment: "")
     case .dark:
-      return NSLocalizedString("Dark", comment: "")
+      NSLocalizedString("Dark", comment: "")
     }
   }
 }
 
 // MARK: -
 
-extension ColorScheme {
-  public static var preferredColorScheme: ColorScheme {
+public extension ColorScheme {
+  static var preferredColorScheme: ColorScheme {
     get { UserDefaults.standard.preferredColorScheme }
     set { UserDefaults.standard.preferredColorScheme = newValue }
   }
 
   @available(iOS 13.0, *)
-  public static var preferredColorSchemePublisher: AnyPublisher<ColorScheme, Never> {
+  static var preferredColorSchemePublisher: AnyPublisher<ColorScheme, Never> {
     UserDefaults.standard.publisher(for: \.preferredColorScheme)
       .removeDuplicates()
       .eraseToAnyPublisher()
@@ -76,7 +76,7 @@ extension ColorScheme {
 
 extension UserDefaults {
   @objc var preferredColorScheme: ColorScheme {
-    get { ColorScheme(rawValue: integer(forKey: #function)) ?? .automatic  }
+    get { ColorScheme(rawValue: integer(forKey: #function)) ?? .automatic }
     set { set(newValue.rawValue, forKey: #function) }
   }
 }
@@ -162,7 +162,8 @@ extension UIWindow {
         }
         return originalImpl(window, selector, coder)
       } as @convention(block) (UIWindow, NSCoder) -> UIWindow?),
-      method_getTypeEncoding(method))
+      method_getTypeEncoding(method)
+    )
   }()
 }
 
@@ -179,7 +180,8 @@ extension UIWindow {
 
     let swipe = UISwipeGestureRecognizer(
       target: self,
-      action: #selector(toggleColorScheme))
+      action: #selector(toggleColorScheme)
+    )
     swipe.numberOfTouchesRequired = 2
     swipe.direction = [.left, .right]
     addGestureRecognizer(swipe)
@@ -201,53 +203,53 @@ extension UIWindow {
 
 infix operator |: AdditionPrecedence
 
-extension UIColor {
-  public class func union(light: UIColor, dark: UIColor) -> UIColor {
+public extension UIColor {
+  class func union(light: UIColor, dark: UIColor) -> UIColor {
     if #available(iOS 13.0, *) {
-      return .init { _ in UserDefaults.standard.preferredColorScheme.userInterfaceStyle == .dark ? dark : light }
+      .init { _ in UserDefaults.standard.preferredColorScheme.userInterfaceStyle == .dark ? dark : light }
     } else {
-      return light
+      light
     }
   }
 
-  public static func | (light: UIColor, dark: UIColor) -> UIColor {
+  static func | (light: UIColor, dark: UIColor) -> UIColor {
     union(light: light, dark: dark)
   }
 }
 
 @available(iOS 13.0, *)
-extension Color {
-  public static func union(light: Color, dark: Color) -> Color {
+public extension Color {
+  static func union(light: Color, dark: Color) -> Color {
     if #available(iOS 15.0, *) {
-      return .init(uiColor: .union(light: .init(light), dark: .init(dark)))
+      .init(uiColor: .union(light: .init(light), dark: .init(dark)))
     } else if #available(iOS 14.0, *) {
-      return .init(.union(light: .init(light), dark: .init(dark)))
+      .init(.union(light: .init(light), dark: .init(dark)))
     } else {
-      return light
+      light
     }
   }
 
-  public static func | (light: Color, dark: Color) -> Color {
+  static func | (light: Color, dark: Color) -> Color {
     union(light: light, dark: dark)
   }
 }
 
-extension UIImage {
-  public class func union(light: UIImage, dark: UIImage) -> UIImage {
+public extension UIImage {
+  class func union(light: UIImage, dark: UIImage) -> UIImage {
     if #available(iOS 13.0, *) {
       let imageAsset = UIImageAsset()
       imageAsset.register(
         light,
         with: .init(traitsFrom: [
           .init(userInterfaceStyle: .light),
-          .init(displayScale: light.scale)
+          .init(displayScale: light.scale),
         ])
       )
       imageAsset.register(
         dark,
         with: .init(traitsFrom: [
           .init(userInterfaceStyle: .dark),
-          .init(displayScale: dark.scale)
+          .init(displayScale: dark.scale),
         ])
       )
       return imageAsset.image(with: .current)
@@ -256,7 +258,7 @@ extension UIImage {
     }
   }
 
-  public static func | (light: UIImage, dark: UIImage) -> UIImage {
+  static func | (light: UIImage, dark: UIImage) -> UIImage {
     union(light: light, dark: dark)
   }
 }

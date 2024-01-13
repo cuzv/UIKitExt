@@ -2,7 +2,7 @@ import UIKit
 
 // MARK: - AppLanguage
 
-public struct AppLanguage {
+public enum AppLanguage {
   private static let kAppleLanguages = "AppleLanguages"
 
   public static var currentLanguage: String? {
@@ -10,7 +10,7 @@ public struct AppLanguage {
       UserDefaults.standard.string(forKey: #function) ?? NSLocale.preferredLanguages.first
     }
     set {
-      if let newValue = newValue, !newValue.isEmpty {
+      if let newValue, !newValue.isEmpty {
         UserDefaults.standard.set([newValue], forKey: kAppleLanguages)
         UserDefaults.standard.set(newValue, forKey: #function)
       } else {
@@ -35,7 +35,7 @@ public extension Bundle {
       let originalMethod = class_getInstanceMethod(clazz, originalSelector),
       let overrideMethod = class_getInstanceMethod(clazz, overrideSelector)
     {
-      if  class_addMethod(
+      if class_addMethod(
         clazz,
         originalSelector,
         method_getImplementation(overrideMethod),
@@ -45,7 +45,8 @@ public extension Bundle {
           clazz,
           overrideSelector,
           method_getImplementation(originalMethod),
-          method_getTypeEncoding(originalMethod))
+          method_getTypeEncoding(originalMethod)
+        )
       } else {
         method_exchangeImplementations(originalMethod, overrideMethod)
       }
@@ -53,9 +54,11 @@ public extension Bundle {
   }
 
   @objc func _al_localizedStringForKey(
-    forKey key: String, value: String?, table tableName: String?) -> String {
+    forKey key: String, value: String?, table tableName: String?
+  ) -> String {
     _al_localizedBundle._al_localizedStringForKey(
-      forKey: key, value: value, table: tableName)
+      forKey: key, value: value, table: tableName
+    )
   }
 
   private var _al_localizedBundle: Bundle {
@@ -63,27 +66,32 @@ public extension Bundle {
     let currentLanguage = AppLanguage.currentLanguage
     let previousLanguage = _al_language
 
-    if nil == currentLanguage && nil == previousLanguage {
+    if currentLanguage == nil, previousLanguage == nil {
       bundle = self
       objc_setAssociatedObject(
-        self, &_al_localizedBundleKey, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        self, &_al_localizedBundleKey, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+      )
     } else if currentLanguage == previousLanguage {
       bundle = objc_getAssociatedObject(
-        self, &_al_localizedBundleKey) as? Bundle
+        self, &_al_localizedBundleKey
+      ) as? Bundle
     } else {
       objc_setAssociatedObject(
-        self, &_al_localizedBundleKey, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        self, &_al_localizedBundleKey, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+      )
     }
 
     if
-      nil == bundle,
-      let currentLanguage = currentLanguage,
+      bundle == nil,
+      let currentLanguage,
       !currentLanguage.isEmpty,
-      let path = Bundle.main.path(forResource: currentLanguage, ofType: "lproj") {
+      let path = Bundle.main.path(forResource: currentLanguage, ofType: "lproj")
+    {
       bundle = Bundle(path: path)
       objc_setAssociatedObject(
         self, &_al_localizedBundleKey,
-        bundle, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        bundle, .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+      )
       _al_language = currentLanguage
     }
 
@@ -96,7 +104,8 @@ public extension Bundle {
     }
     set {
       objc_setAssociatedObject(
-        self, &_al_languageKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+        self, &_al_languageKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC
+      )
     }
   }
 }

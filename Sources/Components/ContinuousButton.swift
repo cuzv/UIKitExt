@@ -1,13 +1,13 @@
 #if !(os(iOS) && (arch(i386) || arch(arm)))
 
-import UIKit
 import Combine
+import UIKit
 
 @available(iOS 13.0, *)
 public final class ContinuousButton: UIButton {
   private var subscription: AnyCancellable?
 
-  public override var isEnabled: Bool {
+  override public var isEnabled: Bool {
     didSet {
       if !isEnabled {
         cancelTask()
@@ -15,7 +15,7 @@ public final class ContinuousButton: UIButton {
     }
   }
 
-  public override var isUserInteractionEnabled: Bool {
+  override public var isUserInteractionEnabled: Bool {
     didSet {
       if !isUserInteractionEnabled {
         cancelTask()
@@ -27,7 +27,7 @@ public final class ContinuousButton: UIButton {
     cancelTask()
   }
 
-  public override init(frame: CGRect) {
+  override public init(frame: CGRect) {
     super.init(frame: frame)
     setup()
   }
@@ -40,10 +40,12 @@ public final class ContinuousButton: UIButton {
   private func setup() {
     NotificationCenter.default.addObserver(
       self, selector: #selector(cancelTask),
-      name: UIApplication.willResignActiveNotification, object: nil)
+      name: UIApplication.willResignActiveNotification, object: nil
+    )
     NotificationCenter.default.addObserver(
       self, selector: #selector(cancelTask),
-      name: UIApplication.didEnterBackgroundNotification, object: nil)
+      name: UIApplication.didEnterBackgroundNotification, object: nil
+    )
 
     addTarget(self, action: #selector(cancelTask), for: [.touchUpInside, .touchUpOutside])
     addTarget(self, action: #selector(scheduleTask), for: .touchDown)
@@ -61,10 +63,10 @@ public final class ContinuousButton: UIButton {
       .autoconnect()
       .receive(on: DispatchQueue.main)
       .sink { [weak self] _ in
-        guard let self = self else { return }
-        self.removeTarget(self, action: #selector(self.scheduleTask), for: .touchDown)
-        self.sendActions(for: .touchDown)
-        self.addTarget(self, action: #selector(self.scheduleTask), for: .touchDown)
+        guard let self else { return }
+        removeTarget(self, action: #selector(scheduleTask), for: .touchDown)
+        sendActions(for: .touchDown)
+        addTarget(self, action: #selector(scheduleTask), for: .touchDown)
       }
   }
 }

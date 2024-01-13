@@ -8,7 +8,7 @@ public enum Flex {
     case spaceBetween
     case spaceAround
     case spaceEvenly
-    
+
     var distribution: UIStackView.Distribution {
       switch self {
       case .spaceEvenly: .equalSpacing
@@ -17,14 +17,14 @@ public enum Flex {
       }
     }
   }
-  
+
   public enum AlignItems: Int, @unchecked Sendable {
     case start
     case center
     case end
     case baseline
     case stretch
-    
+
     func alignment(axis: NSLayoutConstraint.Axis) -> UIStackView.Alignment {
       switch self {
       case .start: .leading
@@ -40,7 +40,7 @@ public enum Flex {
       }
     }
   }
-  
+
   public enum OverlayAlignment: Int, @unchecked Sendable {
     case center
     case topLeading
@@ -132,8 +132,8 @@ public extension UIStackView {
     } else {
       addArrangedSubviews(itemViews)
     }
-    
-    let growItemViews = itemViews.filter({ $0.grow >= 1 })
+
+    let growItemViews = itemViews.filter { $0.grow >= 1 }
     if growItemViews.count > 1 {
       let first = growItemViews[0]
       for view in growItemViews.dropFirst() {
@@ -163,7 +163,7 @@ public extension UIStackView {
       NSLayoutConstraint.activate(
         leadingView.widthAnchor.constraint(equalTo: trailingView.widthAnchor)
       )
-      
+
       if justify == .spaceAround {
         spacers.forEach { view in
           NSLayoutConstraint.activate(
