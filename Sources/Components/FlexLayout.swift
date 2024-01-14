@@ -1,5 +1,19 @@
 import UIKit
 
+// MARK: - Typealias
+
+public typealias FlexColumn = Flex.Column
+public typealias FlexRow = Flex.Row
+public typealias FlexScroll = Flex.Scroll
+public typealias FlexView = Flex.View
+
+public typealias FlexJustifyContent = Flex.JustifyContent
+public typealias FlexAlignItems = Flex.AlignItems
+public typealias FlexOverlayAlignment = Flex.OverlayAlignment
+public typealias FlexConstraintRelation = Flex.ConstraintRelation
+
+// MARK: - Flex
+
 public enum Flex {
   public enum JustifyContent: Int, @unchecked Sendable {
     case start
@@ -48,10 +62,15 @@ public enum Flex {
     case bottomLeading
     case botomTrailing
   }
-}
 
-public extension Flex {
-  final class Column: UIStackView {
+  public enum ConstraintRelation: Int, @unchecked Sendable {
+    case superview
+    case safeArea
+  }
+
+  // MARK: Column
+
+  open class Column: UIStackView {
     public convenience init(
       justify: JustifyContent = .start,
       align: AlignItems = .stretch,
@@ -70,7 +89,9 @@ public extension Flex {
     }
   }
 
-  final class Row: UIStackView {
+  // MARK: Row
+
+  open class Row: UIStackView {
     public convenience init(
       justify: JustifyContent = .start,
       align: AlignItems = .stretch,
@@ -89,16 +110,21 @@ public extension Flex {
     }
   }
 
-  final class Scroll: UIScrollView {
+  // MARK: Scroll
+
+  open class Scroll: UIScrollView {
     public convenience init(
       axis: NSLayoutConstraint.Axis,
       contentInset: UIEdgeInsets = .zero,
-      contentInsetAdjustmentBehavior: ContentInsetAdjustmentBehavior = .never,
+      contentInsetAdjustmentBehavior: ContentInsetAdjustmentBehavior = .automatic,
       backgroundColor: UIColor? = nil,
       showsHorizontalScrollIndicator: Bool? = nil,
       showsVerticalScrollIndicator: Bool? = nil,
       alwaysBounceHorizontal: Bool? = nil,
       alwaysBounceVertical: Bool? = nil,
+      justify: JustifyContent = .start,
+      align: AlignItems = .stretch,
+      spacing: CGFloat = 0,
       paddings: NSDirectionalEdgeInsets = .zero,
       @LayoutSpecBuilder content: () -> [UIView]
     ) {
@@ -116,6 +142,9 @@ public extension Flex {
       case .horizontal:
         addSubview(
           Flex.Row(
+            justify: justify,
+            align: align,
+            spacing: spacing,
             paddings: paddings,
             content: content
           ),
@@ -127,6 +156,9 @@ public extension Flex {
       case .vertical:
         addSubview(
           Flex.Column(
+            justify: justify,
+            align: align,
+            spacing: spacing,
             paddings: paddings,
             content: content
           ),
@@ -137,6 +169,25 @@ public extension Flex {
         )
       @unknown default:
         break
+      }
+    }
+  }
+
+  // MARK: View
+
+  open class View: UIView {
+    public convenience init(
+      paddings insets: NSDirectionalEdgeInsets = .zero,
+      relation: ConstraintRelation = .superview,
+      @SingleChildLayoutSpecBuilder content: () -> UIView
+    ) {
+      self.init()
+
+      switch relation {
+      case .superview:
+        addSubview(content(), paddings: insets)
+      case .safeArea:
+        addSubview(content(), safePaddings: insets)
       }
     }
   }
@@ -228,6 +279,8 @@ public extension UIStackView {
   }
 }
 
+// MARK: - Result Builder
+
 public extension Flex {
   @resultBuilder enum LayoutSpecBuilder {
     public static func buildBlock(_ components: [UIView]) -> [UIView] {
@@ -258,7 +311,23 @@ public extension Flex {
       component
     }
   }
+
+  @resultBuilder enum SingleChildLayoutSpecBuilder {
+    public static func buildBlock(_ components: UIView) -> UIView {
+      components
+    }
+
+    public static func buildEither(first component: UIView) -> UIView {
+      component
+    }
+
+    public static func buildEither(second component: UIView) -> UIView {
+      component
+    }
+  }
 }
+
+// MARK: - FlexGrowSupport
 
 public protocol FlexGrowSupport: AnyObject {
   var grow: CGFloat { get set }
@@ -281,6 +350,8 @@ extension NSObject: FlexGrowSupport {
   }
 }
 
+// MARK: - Flex Extension
+
 public extension UIView {
   @discardableResult
   func inRow(
@@ -288,9 +359,8 @@ public extension UIView {
     align: Flex.AlignItems = .stretch,
     spacing: CGFloat = 0,
     paddings: NSDirectionalEdgeInsets = .zero
-  ) -> UIStackView {
+  ) -> Flex.Row {
     .init(
-      axis: .horizontal,
       justify: justify,
       align: align,
       spacing: spacing,
@@ -306,9 +376,8 @@ public extension UIView {
     align: Flex.AlignItems = .stretch,
     spacing: CGFloat = 0,
     paddings: NSDirectionalEdgeInsets = .zero
-  ) -> UIStackView {
+  ) -> Flex.Column {
     .init(
-      axis: .vertical,
       justify: justify,
       align: align,
       spacing: spacing,
@@ -341,12 +410,15 @@ public extension UIView {
   func inScroll(
     axis: NSLayoutConstraint.Axis,
     contentInset: UIEdgeInsets = .zero,
-    contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior = .never,
+    contentInsetAdjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior = .automatic,
     backgroundColor: UIColor? = nil,
     showsHorizontalScrollIndicator: Bool? = nil,
     showsVerticalScrollIndicator: Bool? = nil,
     alwaysBounceHorizontal: Bool? = nil,
     alwaysBounceVertical: Bool? = nil,
+    justify: Flex.JustifyContent = .start,
+    align: Flex.AlignItems = .stretch,
+    spacing: CGFloat = 0,
     paddings: NSDirectionalEdgeInsets = .zero
   ) -> Flex.Scroll {
     .init(
@@ -358,9 +430,78 @@ public extension UIView {
       showsVerticalScrollIndicator: showsVerticalScrollIndicator,
       alwaysBounceHorizontal: alwaysBounceHorizontal,
       alwaysBounceVertical: alwaysBounceVertical,
+      justify: justify,
+      align: align,
+      spacing: spacing,
       paddings: paddings
     ) {
       self
+    }
+  }
+
+  @discardableResult
+  func inView(
+    paddings insets: NSDirectionalEdgeInsets = .zero,
+    relation: Flex.ConstraintRelation = .superview
+  ) -> Flex.View {
+    .init(
+      paddings: insets,
+      relation: relation
+    ) {
+      self
+    }
+  }
+
+  @discardableResult
+  func padding(
+    _ insets: NSDirectionalEdgeInsets = .zero,
+    relation: Flex.ConstraintRelation = .superview
+  ) -> Flex.View {
+    inView(
+      paddings: insets,
+      relation: relation
+    )
+  }
+}
+
+// MARK: - Chain Extension
+
+public extension UIView {
+  @discardableResult
+  func placeIn(
+    _ superview: UIView,
+    paddings insets: NSDirectionalEdgeInsets = .zero,
+    relation: Flex.ConstraintRelation = .superview
+  ) -> Self {
+    switch relation {
+    case .safeArea:
+      superview.addSubview(self, safePaddings: insets)
+    case .superview:
+      superview.addSubview(self, paddings: insets)
+    }
+    return self
+  }
+
+  @discardableResult
+  func overlay(_ view: UIView, alignment: Flex.OverlayAlignment = .center, offset: CGPoint = .zero) -> Self {
+    addSubview(view) { proxy in
+      switch alignment {
+      case .center:
+        proxy.centerX == proxy.superview.centerXAnchor + offset.x
+        proxy.centerY == proxy.superview.centerYAnchor + offset.y
+      case .topLeading:
+        proxy.centerX == proxy.superview.leadingAnchor + offset.x
+        proxy.centerY == proxy.superview.topAnchor + offset.y
+      case .topTrailing:
+        proxy.centerX == proxy.superview.trailingAnchor + offset.x
+        proxy.centerY == proxy.superview.topAnchor + offset.y
+      case .bottomLeading:
+        proxy.centerX == proxy.superview.leadingAnchor + offset.x
+        proxy.centerY == proxy.superview.bottomAnchor + offset.y
+      case .botomTrailing:
+        proxy.centerX == proxy.superview.trailingAnchor + offset.x
+        proxy.centerY == proxy.superview.bottomAnchor + offset.y
+      }
     }
   }
 }

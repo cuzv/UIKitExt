@@ -276,7 +276,7 @@ public extension UIView {
 
   struct EdgesMarginPack {
     let edges: EdgesPack
-    let margin: UIEdgeInsets
+    let margin: NSDirectionalEdgeInsets
   }
 }
 
@@ -479,9 +479,16 @@ public func / <Anchor: LayoutDimension>(
   .init(anchor: lhs.anchor, multiplier: 1.0 / rhs, constant: 0)
 }
 
+public func + (
+  lhs: UIView.EdgesPack,
+  rhs: NSDirectionalEdgeInsets
+) -> UIView.EdgesMarginPack {
+  .init(edges: lhs, margin: rhs.reversed)
+}
+
 public func - (
   lhs: UIView.EdgesPack,
-  rhs: UIEdgeInsets
+  rhs: NSDirectionalEdgeInsets
 ) -> UIView.EdgesMarginPack {
   .init(edges: lhs, margin: rhs)
 }
@@ -678,8 +685,8 @@ public func == (
   rhs: UIView.EdgesMarginPack
 ) -> [NSLayoutConstraint] {
   [
-    lhs.leading.equal(to: rhs.edges.leading, offsetBy: rhs.margin.left),
-    lhs.trailing.equal(to: rhs.edges.trailing, offsetBy: -rhs.margin.right),
+    lhs.leading.equal(to: rhs.edges.leading, offsetBy: rhs.margin.leading),
+    lhs.trailing.equal(to: rhs.edges.trailing, offsetBy: -rhs.margin.trailing),
     lhs.top.equal(to: rhs.edges.top, offsetBy: rhs.margin.top),
     lhs.bottom.equal(to: rhs.edges.bottom, offsetBy: -rhs.margin.bottom),
   ]

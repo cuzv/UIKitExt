@@ -61,6 +61,7 @@ public extension UIScrollView {
     }
   }
 
+  @available(*, deprecated, message: "use the verticalScrollIndicatorInsets and horizontalScrollIndicatorInsets getters instead")
   var scrollIndicatorInsetTop: CGFloat {
     get { scrollIndicatorInsets.top }
     set {
@@ -70,6 +71,7 @@ public extension UIScrollView {
     }
   }
 
+  @available(*, deprecated, message: "use the verticalScrollIndicatorInsets and horizontalScrollIndicatorInsets getters instead")
   var scrollIndicatorInsetLeft: CGFloat {
     get { scrollIndicatorInsets.left }
     set {
@@ -79,6 +81,7 @@ public extension UIScrollView {
     }
   }
 
+  @available(*, deprecated, message: "use the verticalScrollIndicatorInsets and horizontalScrollIndicatorInsets getters instead")
   var scrollIndicatorInsetBottom: CGFloat {
     get { scrollIndicatorInsets.bottom }
     set {
@@ -88,6 +91,7 @@ public extension UIScrollView {
     }
   }
 
+  @available(*, deprecated, message: "use the verticalScrollIndicatorInsets and horizontalScrollIndicatorInsets getters instead")
   var scrollIndicatorInsetRight: CGFloat {
     get { scrollIndicatorInsets.right }
     set {

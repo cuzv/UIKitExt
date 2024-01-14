@@ -458,14 +458,14 @@ public extension UIView {
   }
 
   @discardableResult
-  func addSubview(_ view: UIView, paddings insets: UIEdgeInsets) -> Self {
+  func addSubview(_ view: UIView, paddings insets: NSDirectionalEdgeInsets) -> Self {
     addSubview(view)
     view.pinEdges(to: self, margins: insets)
     return self
   }
 
   @discardableResult
-  func pinEdges(to other: UIView, margins insets: UIEdgeInsets = .zero) -> Self {
+  func pinEdges(to other: UIView, margins insets: NSDirectionalEdgeInsets = .zero) -> Self {
     layout { proxy in
       proxy.edges == other.edgesAnchor - insets
     }
@@ -473,7 +473,7 @@ public extension UIView {
 
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
   @discardableResult
-  func addSubview(_ view: UIView, safePaddings insets: UIEdgeInsets) -> Self {
+  func addSubview(_ view: UIView, safePaddings insets: NSDirectionalEdgeInsets) -> Self {
     addSubview(view)
     view.pinSafeEdges(to: self, margins: insets)
     return self
@@ -481,64 +481,9 @@ public extension UIView {
 
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
   @discardableResult
-  func pinSafeEdges(to other: UIView, margins insets: UIEdgeInsets = .zero) -> Self {
+  func pinSafeEdges(to other: UIView, margins insets: NSDirectionalEdgeInsets = .zero) -> Self {
     layout { proxy in
       proxy.edges == other.safeEdgesAnchor - insets
     }
-  }
-}
-
-public extension UIView {
-  @discardableResult
-  func overlay(_ view: UIView, alignment: Flex.OverlayAlignment = .center, offset: CGPoint = .zero) -> Self {
-    addSubview(view) { proxy in
-      switch alignment {
-      case .center:
-        proxy.centerX == proxy.superview.centerXAnchor + offset.x
-        proxy.centerY == proxy.superview.centerYAnchor + offset.y
-      case .topLeading:
-        proxy.centerX == proxy.superview.leadingAnchor + offset.x
-        proxy.centerY == proxy.superview.topAnchor + offset.y
-      case .topTrailing:
-        proxy.centerX == proxy.superview.trailingAnchor + offset.x
-        proxy.centerY == proxy.superview.topAnchor + offset.y
-      case .bottomLeading:
-        proxy.centerX == proxy.superview.leadingAnchor + offset.x
-        proxy.centerY == proxy.superview.bottomAnchor + offset.y
-      case .botomTrailing:
-        proxy.centerX == proxy.superview.trailingAnchor + offset.x
-        proxy.centerY == proxy.superview.bottomAnchor + offset.y
-      }
-    }
-  }
-
-  @discardableResult
-  func inView(
-    _ view: UIView? = nil,
-    paddings insets: UIEdgeInsets = .zero,
-    relation: Relation = .superView
-  ) -> UIView {
-    let container = (
-      view ?? UIView().useConstraints()
-    )
-
-    switch relation {
-    case .safeArea:
-      return container.addSubview(self, safePaddings: insets)
-    case .superView:
-      return container.addSubview(self, paddings: insets)
-    }
-  }
-
-  @discardableResult
-  func padding(_ value: UIEdgeInsets) -> UIView {
-    inView(paddings: value)
-  }
-}
-
-public extension UIView {
-  enum Relation {
-    case safeArea
-    case superView
   }
 }
