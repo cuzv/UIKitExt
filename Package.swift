@@ -18,7 +18,10 @@ let package = Package(
       name: "UIKitExt",
       dependencies: [
       ],
-      path: "Sources"
+      path: "Sources",
+      swiftSettings: [
+        .define("DISABLE_LAYER_PROPERTY_PROXY")
+      ]
     ),
   ],
   swiftLanguageVersions: [.v5]
