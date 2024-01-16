@@ -264,15 +264,33 @@ public extension UIStackView {
     }
 
     if let leadingView, let trailingView {
-      NSLayoutConstraint.activate(
-        leadingView.widthAnchor.constraint(equalTo: trailingView.widthAnchor)
-      )
+      switch axis {
+      case .horizontal:
+        NSLayoutConstraint.activate(
+          leadingView.widthAnchor.constraint(equalTo: trailingView.widthAnchor)
+        )
+      case .vertical:
+        NSLayoutConstraint.activate(
+          leadingView.heightAnchor.constraint(equalTo: trailingView.heightAnchor)
+        )
+      @unknown default:
+        break
+      }
 
       if justify == .spaceAround {
-        spacers.forEach { view in
-          NSLayoutConstraint.activate(
-            view.widthAnchor.constraint(equalTo: leadingView.widthAnchor, multiplier: 2)
-          )
+        for view in spacers {
+          switch axis {
+          case .horizontal:
+            NSLayoutConstraint.activate(
+              view.widthAnchor.constraint(equalTo: leadingView.widthAnchor, multiplier: 2)
+            )
+          case .vertical:
+            NSLayoutConstraint.activate(
+              view.heightAnchor.constraint(equalTo: leadingView.heightAnchor, multiplier: 2)
+            )
+          @unknown default:
+            break
+          }
         }
       }
     }
