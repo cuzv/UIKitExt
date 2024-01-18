@@ -17,3 +17,9 @@ extension SectionModel: Hashable {
     lhs.model == rhs.model
   }
 }
+
+public extension SectionModel {
+  var isEmpty: Bool {
+    elements.isEmpty
+  }
+}

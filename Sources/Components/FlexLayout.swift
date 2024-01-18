@@ -61,6 +61,10 @@ public enum Flex {
     case topTrailing
     case bottomLeading
     case botomTrailing
+    case leadingCenter
+    case trailingCenter
+    case topCenter
+    case bottomCenter
   }
 
   public enum ConstraintRelation: Int, @unchecked Sendable {
@@ -518,6 +522,18 @@ public extension UIView {
         proxy.centerY == proxy.superview.bottomAnchor + offset.y
       case .botomTrailing:
         proxy.centerX == proxy.superview.trailingAnchor + offset.x
+        proxy.centerY == proxy.superview.bottomAnchor + offset.y
+      case .leadingCenter:
+        proxy.centerX == proxy.superview.leadingAnchor + offset.x
+        proxy.centerY == proxy.superview.centerYAnchor + offset.y
+      case .trailingCenter:
+        proxy.centerX == proxy.superview.trailingAnchor + offset.x
+        proxy.centerY == proxy.superview.centerYAnchor + offset.y
+      case .topCenter:
+        proxy.centerX == proxy.superview.centerXAnchor + offset.x
+        proxy.centerY == proxy.superview.topAnchor + offset.y
+      case .bottomCenter:
+        proxy.centerX == proxy.superview.centerXAnchor + offset.x
         proxy.centerY == proxy.superview.bottomAnchor + offset.y
       }
     }

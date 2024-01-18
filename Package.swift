@@ -20,7 +20,7 @@ let package = Package(
       ],
       path: "Sources",
       swiftSettings: [
-        .define("DISABLE_LAYER_PROPERTY_PROXY")
+        .define("DISABLE_LAYER_PROPERTY_PROXY"),
       ]
     ),
   ],
