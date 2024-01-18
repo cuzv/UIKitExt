@@ -74,7 +74,7 @@ public enum Flex {
 
   // MARK: Column
 
-  open class Column: UIStackView {
+  open class Column: HitTestSlopStackView {
     public convenience init(
       justify: JustifyContent = .start,
       align: AlignItems = .stretch,
@@ -95,7 +95,7 @@ public enum Flex {
 
   // MARK: Row
 
-  open class Row: UIStackView {
+  open class Row: HitTestSlopStackView {
     public convenience init(
       justify: JustifyContent = .start,
       align: AlignItems = .stretch,
@@ -116,7 +116,7 @@ public enum Flex {
 
   // MARK: Scroll
 
-  open class Scroll: UIScrollView {
+  open class Scroll: HitTestSlopScrollView {
     public convenience init(
       axis: NSLayoutConstraint.Axis,
       contentInset: UIEdgeInsets = .zero,
@@ -179,7 +179,7 @@ public enum Flex {
 
   // MARK: View
 
-  open class View: UIView {
+  open class View: HitTestSlopView {
     public convenience init(
       paddings insets: NSDirectionalEdgeInsets = .zero,
       relation: ConstraintRelation = .superview,
@@ -193,6 +193,54 @@ public enum Flex {
       case .safeArea:
         addSubview(content(), safePaddings: insets)
       }
+    }
+  }
+
+  // MARK: HitTestSlopStackView
+
+  open class HitTestSlopStackView: UIStackView, HitTestSlop {
+    public private(set) var hitTestSlop: UIEdgeInsets = .zero
+
+    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+      judgeWhetherInclude(point: point, with: event)
+    }
+
+    @discardableResult
+    public func hitTestSlop(_ slop: UIEdgeInsets) -> Self {
+      hitTestSlop = slop
+      return self
+    }
+  }
+
+  // MARK: HitTestSlopScrollView
+
+  open class HitTestSlopScrollView: UIScrollView, HitTestSlop {
+    public private(set) var hitTestSlop: UIEdgeInsets = .zero
+
+    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+      judgeWhetherInclude(point: point, with: event)
+    }
+
+    @discardableResult
+    public func hitTestSlop(_ slop: UIEdgeInsets) -> Self {
+      hitTestSlop = slop
+      return self
+    }
+  }
+
+  // MARK: HitTestSlopView
+
+  open class HitTestSlopView: UIView, HitTestSlop {
+    public private(set) var hitTestSlop: UIEdgeInsets = .zero
+
+    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+      judgeWhetherInclude(point: point, with: event)
+    }
+
+    @discardableResult
+    public func hitTestSlop(_ slop: UIEdgeInsets) -> Self {
+      hitTestSlop = slop
+      return self
     }
   }
 }
