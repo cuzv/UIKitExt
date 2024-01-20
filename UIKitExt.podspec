@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
   spec.name             = "UIKitExt"
   spec.version          = "1.0.0"
   spec.summary          = "Useful functionally extensions for Apple's UIKit framework."
-  spec.homepage         = "https://github.com/cuzv/UIKitExtt"
+  spec.homepage         = "https://github.com/cuzv/UIKitExt"
   spec.license          = "MIT"
   spec.author           = { "Shaw" => "cuzval@gmail.com" }
   spec.platform         = :ios, "12.0"
