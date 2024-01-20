@@ -245,19 +245,19 @@ public enum Flex {
   }
 }
 
-public extension UIStackView {
+public extension Flex.HitTestSlopStackView {
   convenience init(
     axis: NSLayoutConstraint.Axis,
-    justify: Flex.JustifyContent = .start,
-    align: Flex.AlignItems = .stretch,
-    spacing: CGFloat = 0,
-    paddings: NSDirectionalEdgeInsets = .zero,
+    justify: Flex.JustifyContent,
+    align: Flex.AlignItems,
+    spacing: CGFloat,
+    paddings: NSDirectionalEdgeInsets,
     @Flex.LayoutSpecBuilder content: () -> [UIView]
   ) {
     self.init(
       axis: axis,
-      alignment: align.alignment(axis: axis),
       distribution: justify.distribution,
+      alignment: align.alignment(axis: axis),
       spacing: spacing,
       paddings: paddings
     )
@@ -464,7 +464,7 @@ public extension UIView {
     align: Flex.AlignItems = .stretch,
     spacing: CGFloat = 0,
     paddings: NSDirectionalEdgeInsets = .zero
-  ) -> UIStackView {
+  ) -> Flex.HitTestSlopStackView {
     .init(
       axis: axis,
       justify: justify,
