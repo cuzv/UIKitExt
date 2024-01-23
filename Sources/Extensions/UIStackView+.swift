@@ -31,6 +31,7 @@ public extension UIStackView {
       axis: axis,
       distribution: distribution,
       alignment: alignment,
+      spacing: spacing,
       paddings: paddings
     )
     for view in content() {
