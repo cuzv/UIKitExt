@@ -68,8 +68,8 @@ public extension UIViewController {
 
     let previous = children
 
-    previous.forEach {
-      $0.willMove(toParent: nil)
+    for previou in previous {
+      previou.willMove(toParent: nil)
     }
     next.willMove(toParent: self)
 
@@ -87,14 +87,14 @@ public extension UIViewController {
     ])
 
     UIView.transition(with: view, duration: duration, options: options, animations: {
-      previous.forEach {
-        $0.view.removeFromSuperview()
-        $0.removeFromParent()
+      for previou in previous {
+        previou.view.removeFromSuperview()
+        previou.removeFromParent()
       }
       next.view.setNeedsLayout()
     }, completion: { finished in
-      previous.forEach {
-        $0.didMove(toParent: nil)
+      for previou in previous {
+        previou.didMove(toParent: nil)
       }
       next.didMove(toParent: self)
       completion?(finished)

@@ -134,10 +134,10 @@ public extension UIImage {
 public extension CIImage {
   func applying(contentsOf filters: [CoreImageFilter]) -> CIImage {
     var output = self
-    filters.forEach {
+    for filter in filters {
       output = output.applyingFilter(
-        $0.name.stringValue,
-        parameters: $0.parametersDictionaryValue
+        filter.name.stringValue,
+        parameters: filter.parametersDictionaryValue
       )
     }
     return output

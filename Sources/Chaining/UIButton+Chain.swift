@@ -216,7 +216,7 @@ public extension UIButton {
   @discardableResult
   func attributedTitle(_ text: NSAttributedString?) -> Self {
     if let text {
-      stateAlphaMappings.forEach { state, alpha in
+      for (state, alpha) in stateAlphaMappings {
         let mutableText = NSMutableAttributedString(attributedString: text)
         mutableText.enumerateAttribute(.foregroundColor, in: NSRange(0 ..< mutableText.length)) { value, range, _ in
           if let color = value as? UIColor {
@@ -228,7 +228,7 @@ public extension UIButton {
         setAttributedTitle(mutableText, for: state)
       }
     } else {
-      stateAlphaMappings.map(\.0).forEach { state in
+      for state in stateAlphaMappings.map(\.0) {
         setAttributedTitle(nil, for: state)
       }
     }
@@ -239,12 +239,12 @@ public extension UIButton {
   func titleColor(_ color: UIColor?) -> Self {
     if let color {
       let (light, dark) = color.resolvedTraitColors
-      stateAlphaMappings.forEach { state, alpha in
+      for (state, alpha) in stateAlphaMappings {
         let color = light.withAlphaComponent(alpha) | dark.withAlphaComponent(alpha)
         setTitleColor(color, for: state)
       }
     } else {
-      stateAlphaMappings.map(\.0).forEach { state in
+      for state in stateAlphaMappings.map(\.0) {
         setTitleColor(nil, for: state)
       }
     }
@@ -255,12 +255,12 @@ public extension UIButton {
   func titleShadowColor(_ color: UIColor?) -> Self {
     if let color {
       let (light, dark) = color.resolvedTraitColors
-      stateAlphaMappings.forEach { state, alpha in
+      for (state, alpha) in stateAlphaMappings {
         let color = light.withAlphaComponent(alpha) | dark.withAlphaComponent(alpha)
         setTitleShadowColor(color, for: state)
       }
     } else {
-      stateAlphaMappings.map(\.0).forEach { state in
+      for state in stateAlphaMappings.map(\.0) {
         setTitleShadowColor(nil, for: state)
       }
     }
@@ -271,17 +271,17 @@ public extension UIButton {
   func backgroundImage(_ image: UIImage?) -> Self {
     if let image {
       if let (light, dark) = image.resolvedTraitImages {
-        stateAlphaMappings.forEach { state, alpha in
+        for (state, alpha) in stateAlphaMappings {
           let resolvedImage = light.withAlpha(alpha) | dark.withAlpha(alpha)
           setBackgroundImage(resolvedImage, for: state)
         }
       } else {
-        stateAlphaMappings.forEach { state, alpha in
+        for (state, alpha) in stateAlphaMappings {
           setBackgroundImage(image.withAlpha(alpha), for: state)
         }
       }
     } else {
-      stateAlphaMappings.map(\.0).forEach { state in
+      for state in stateAlphaMappings.map(\.0) {
         setBackgroundImage(nil, for: state)
       }
     }
@@ -294,7 +294,7 @@ public extension UIButton {
     size: CGSize = .init(width: 1, height: 1),
     cornerRadius: CGFloat = 0
   ) -> Self {
-    stateAlphaMappings.forEach { state, alpha in
+    for (state, alpha) in stateAlphaMappings {
       backgroundImage(
         color: color.withAlphaComponent(alpha),
         size: size,
@@ -326,17 +326,17 @@ public extension UIButton {
   func image(_ image: UIImage?) -> Self {
     if let image {
       if let (light, dark) = image.resolvedTraitImages {
-        stateAlphaMappings.forEach { state, alpha in
+        for (state, alpha) in stateAlphaMappings {
           let resolvedImage = light.withAlpha(alpha) | dark.withAlpha(alpha)
           setImage(resolvedImage, for: state)
         }
       } else {
-        stateAlphaMappings.forEach { state, alpha in
+        for (state, alpha) in stateAlphaMappings {
           setImage(image.withAlpha(alpha), for: state)
         }
       }
     } else {
-      stateAlphaMappings.map(\.0).forEach { state in
+      for state in stateAlphaMappings.map(\.0) {
         setImage(nil, for: state)
       }
     }

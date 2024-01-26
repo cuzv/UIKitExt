@@ -67,13 +67,13 @@ public extension Navigation where Base: UIViewController {
     }
     set {
       let stackView = leadingStackView
-      stackView.arrangedSubviews.forEach {
-        stackView.removeArrangedSubview($0)
-        $0.removeFromSuperview()
+      for arrangedSubview in stackView.arrangedSubviews {
+        stackView.removeArrangedSubview(arrangedSubview)
+        arrangedSubview.removeFromSuperview()
       }
 
-      newValue.forEach {
-        stackView.addArrangedSubview($0)
+      for item in newValue {
+        stackView.addArrangedSubview(item)
       }
 
       let spacer = UIView()
@@ -92,17 +92,17 @@ public extension Navigation where Base: UIViewController {
     }
     set {
       let stackView = trailingStackView
-      stackView.arrangedSubviews.forEach {
-        stackView.removeArrangedSubview($0)
-        $0.removeFromSuperview()
+      for arrangedSubview in stackView.arrangedSubviews {
+        stackView.removeArrangedSubview(arrangedSubview)
+        arrangedSubview.removeFromSuperview()
       }
 
       let spacer = UIView()
       spacer.translatesAutoresizingMaskIntoConstraints = false
       stackView.addArrangedSubview(spacer)
 
-      newValue.reversed().forEach {
-        stackView.addArrangedSubview($0)
+      for item in newValue.reversed() {
+        stackView.addArrangedSubview(item)
       }
     }
   }

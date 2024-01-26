@@ -282,7 +282,7 @@ public extension Toast {
       let cornerRadius = bounds.height * 0.5
 
       backgroundView.layer.cornerRadius = cornerRadius
-      backgroundView.subviews.forEach { view in
+      for view in backgroundView.subviews {
         view.layer.cornerRadius = cornerRadius
       }
 

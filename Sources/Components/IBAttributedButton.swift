@@ -28,7 +28,7 @@ public final class IBAttributedButton: UIButton, HitTestSlop {
     ]
 
     let states: [UIControl.State] = [.normal, .disabled, .highlighted, .selected]
-    states.forEach { state in
+    for state in states {
       if let color = titleColor(for: state) {
         attributes[.foregroundColor] = color
       }
