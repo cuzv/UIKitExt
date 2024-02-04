@@ -587,3 +587,12 @@ public extension UIView {
     }
   }
 }
+
+public extension UIStackView {
+  @discardableResult
+  func arrange(
+    @Flex.LayoutSpecBuilder content: () -> [UIView]
+  ) -> Self {
+    addArrangedSubviews(content())
+  }
+}
