@@ -101,3 +101,25 @@ public extension UIFont {
   static var title2: UIFont { .system(.title2) }
   static var title1: UIFont { .system(.title1) }
 }
+
+// MARK: - Design
+
+public extension UIFont {
+  /// https://www.jianshu.com/p/a0390f70ea36
+  ///
+  /// ```swift
+  ///   let style = NSMutableParagraphStyle()
+  ///   style.lineSpacing = font.lineSpacing(`sizeOfDesignMark`)
+  ///   label.attributedText = NSAttributedString(string: text, attributes: [.paragraphStyle: style])
+  /// ```
+  func lineSpacing(_ value: CGFloat) -> CGFloat {
+    value - (lineHeight - pointSize)
+  }
+
+  /// https://www.shejidaren.com/ui-sheji-gao-huanyuan-fangfa.html
+  ///
+  /// x + 2 * ceil(x / 10)
+  var singleLineHeight: CGFloat {
+    pointSize + 2 * ceil(pointSize / 10.0)
+  }
+}
