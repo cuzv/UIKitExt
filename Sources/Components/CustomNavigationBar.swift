@@ -3,10 +3,12 @@ import UIKit
 let kPadding: CGFloat = 15
 let kBarHeight: CGFloat = 44
 
+// MARK: - Navigation subviews
+
 public extension Navigation where Base: UIViewController {
   var bar: UIView {
     let it = base.view.subviews.first { view in
-      view.isKind(of: NavView.self)
+      view.isKind(of: _NavView.self)
     }
 
     if let it {
@@ -14,7 +16,7 @@ public extension Navigation where Base: UIViewController {
     } else {
       base.additionalSafeAreaInsets.top = kBarHeight
 
-      let it = NavView()
+      let it = _NavView()
       it.translatesAutoresizingMaskIntoConstraints = false
       base.view.addSubview(it)
       NSLayoutConstraint.activate([
@@ -118,20 +120,18 @@ public extension Navigation where Base: UIViewController {
   }
 }
 
-extension Navigation where Base: UIViewController {
-  final class NavView: UIView {}
-  final class LeadingStackView: UIStackView {}
-  final class TrailingStackView: UIStackView {}
+// MARK: - Leading & Trailing StackView
 
+extension Navigation where Base: UIViewController {
   var leadingStackView: UIStackView {
     let it = bar.subviews.first { view in
-      view.isKind(of: LeadingStackView.self)
+      view.isKind(of: _NavLeadingStackView.self)
     } as? UIStackView
 
     if let it {
       return it
     } else {
-      let it = LeadingStackView()
+      let it = _NavLeadingStackView()
       it.translatesAutoresizingMaskIntoConstraints = false
       it.axis = .horizontal
       it.alignment = .center
@@ -156,13 +156,13 @@ extension Navigation where Base: UIViewController {
 
   var trailingStackView: UIStackView {
     let it = bar.subviews.first { view in
-      view.isKind(of: TrailingStackView.self)
+      view.isKind(of: _NavTrailingStackView.self)
     } as? UIStackView
 
     if let it {
       return it
     } else {
-      let it = TrailingStackView()
+      let it = _NavTrailingStackView()
       it.translatesAutoresizingMaskIntoConstraints = false
       it.axis = .horizontal
       it.alignment = .center
@@ -182,6 +182,14 @@ extension Navigation where Base: UIViewController {
     }
   }
 }
+
+// MARK: - Private classes
+
+private final class _NavView: UIView {}
+private final class _NavLeadingStackView: UIStackView {}
+private final class _NavTrailingStackView: UIStackView {}
+
+// MARK: - NavigationProvider
 
 public protocol NavigationProvider: AnyObject {}
 
