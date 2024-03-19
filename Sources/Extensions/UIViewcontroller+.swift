@@ -101,3 +101,34 @@ public extension UIViewController {
     })
   }
 }
+
+// MARK: - UIInterfaceOrientation
+
+public extension UIViewController {
+  func update(orientation: UIInterfaceOrientation) {
+    if
+      #available(iOS 16.0, *),
+      let scence = UIApplication.shared.connectedScenes.first as? UIWindowScene
+    {
+      setNeedsUpdateOfSupportedInterfaceOrientations()
+      scence.requestGeometryUpdate(.iOS(interfaceOrientations: orientation.mask)) { error in
+        debugPrint("\(error)")
+      }
+    } else {
+      UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
+    }
+  }
+}
+
+extension UIInterfaceOrientation {
+  var mask: UIInterfaceOrientationMask {
+    switch self {
+    case .landscapeLeft: .landscapeLeft
+    case .landscapeRight: .landscapeRight
+    case .unknown: .portrait
+    case .portrait: .portrait
+    case .portraitUpsideDown: .portraitUpsideDown
+    @unknown default: .portrait
+    }
+  }
+}
