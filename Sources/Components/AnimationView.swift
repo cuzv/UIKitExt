@@ -67,7 +67,7 @@ open class AnimationView: UIView {
   }
 }
 
-public final class SpinView: AnimationView {
+open class SpinView: AnimationView {
   override public func startAnimating() {
     let animation = CABasicAnimation(keyPath: "transform.rotation.z")
     animation.fromValue = 0
@@ -84,7 +84,7 @@ public final class SpinView: AnimationView {
   }
 }
 
-public final class BreathView: AnimationView {
+open class BreathView: AnimationView {
   override public func startAnimating() {
     let start = layer.opacity
     let end = abs(1.0 - start)

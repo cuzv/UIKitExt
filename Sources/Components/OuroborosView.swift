@@ -1,7 +1,7 @@
 import UIKit
 
 @available(iOS 12.0, tvOS 12.0, macCatalyst 13.0, *)
-public final class OuroborosView: UIView {
+public final class OuroborosView: SpinView {
   override public init(frame: CGRect) {
     super.init(frame: frame)
     setup()
