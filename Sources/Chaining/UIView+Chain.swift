@@ -404,6 +404,11 @@ public extension UIView {
   }
 
   @discardableResult
+  func size(_ value: CGFloat) -> Self {
+    size(.init(width: value, height: value))
+  }
+
+  @discardableResult
   func width(
     equalTo other: UIView, multiplier: CGFloat = 1, constant: CGFloat = 0
   ) -> Self {
