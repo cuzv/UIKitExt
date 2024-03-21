@@ -512,13 +512,12 @@ public extension UIView {
 }
 
 public final class Spacer: UIView {
-  override public init(frame: CGRect) {
-    super.init(frame: frame)
-    useConstraints()
+  public init(touchable: Bool = true) {
+    super.init(frame: .zero)
+    useConstraints().userInteractionEnabled(touchable)
   }
-
-  public required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    useConstraints()
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 }
