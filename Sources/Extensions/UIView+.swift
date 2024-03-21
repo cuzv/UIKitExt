@@ -271,7 +271,7 @@ public extension UIView {
   /// **Note**: Before you invoke this method, ensure `self` already have correct frame.
   /// Because using CAShapeLayer, can not remove it, make sure add only once.
   func addDashBorder(
-    for rectEdge: UIRectEdge = .all,
+    edge: UIRectEdge = .all,
     width: CGFloat? = nil,
     color: UIColor = UIColor.separator,
     multiplier: CGFloat = 1,
@@ -308,7 +308,7 @@ public extension UIView {
     let endY = 0.5 * h * (1.0 + multiplier) - 0.5 * constant
     let borderWidth = width ?? 1.0 / UIScreen.main.scale
 
-    if rectEdge.contains(.top) {
+    if edge.contains(.top) {
       let lineLayer = makeLineLayer(
         width: borderWidth,
         color: color,
@@ -319,7 +319,7 @@ public extension UIView {
       layer.addSublayer(lineLayer)
     }
 
-    if rectEdge.contains(.left) {
+    if edge.contains(.left) {
       let lineLayer = makeLineLayer(
         width: borderWidth,
         color: color,
@@ -330,7 +330,7 @@ public extension UIView {
       layer.addSublayer(lineLayer)
     }
 
-    if rectEdge.contains(.bottom) {
+    if edge.contains(.bottom) {
       let lineLayer = makeLineLayer(
         width: borderWidth,
         color: color,
@@ -341,7 +341,7 @@ public extension UIView {
       layer.addSublayer(lineLayer)
     }
 
-    if rectEdge.contains(.right) {
+    if edge.contains(.right) {
       let lineLayer = makeLineLayer(
         width: borderWidth,
         color: color,
@@ -368,7 +368,7 @@ public extension UIView {
 
   /// Add border line view using Autolayout.
   func addBorder(
-    for rectEdge: UIRectEdge = .all,
+    edge: UIRectEdge = .all,
     width: CGFloat? = nil,
     color: UIColor = UIColor.separator,
     multiplier: CGFloat = 1.0,
@@ -426,19 +426,19 @@ public extension UIView {
       addConstraints(constraints)
     }
 
-    if rectEdge == UIRectEdge() {
+    if edge == UIRectEdge() {
       return
     }
 
     for view in subviews {
-      if let view = view as? _BorderLineView, rectEdge.contains(view.edge) {
+      if let view = view as? _BorderLineView, edge.contains(view.edge) {
         return
       }
     }
 
     let borderWidth = width ?? 1.0 / UIScreen.main.scale
 
-    if rectEdge.contains(.top) {
+    if edge.contains(.top) {
       addLineViewConstraints(
         edge: .top,
         center: .centerX,
@@ -450,7 +450,7 @@ public extension UIView {
       )
     }
 
-    if rectEdge.contains(.left) {
+    if edge.contains(.left) {
       addLineViewConstraints(
         edge: .left,
         center: .centerY,
@@ -462,7 +462,7 @@ public extension UIView {
       )
     }
 
-    if rectEdge.contains(.bottom) {
+    if edge.contains(.bottom) {
       addLineViewConstraints(
         edge: .bottom,
         center: .centerX,
@@ -474,7 +474,7 @@ public extension UIView {
       )
     }
 
-    if rectEdge.contains(.right) {
+    if edge.contains(.right) {
       addLineViewConstraints(
         edge: .right,
         center: .centerY,

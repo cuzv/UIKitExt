@@ -127,12 +127,30 @@ public extension UIStackView {
 
 public extension UIStackView {
   @discardableResult
-  func addingArrangedHeaderFooterDistributedEqually() -> Self {
+  func centering() -> Self {
     let header = UIView().useConstraints()
     let footer = UIView().useConstraints()
 
     insertArrangedSubview(header, at: 0)
     addArrangedSubview(footer)
+
+    switch axis {
+    case .horizontal:
+      header.widthAnchor.constraint(equalTo: footer.widthAnchor).isActive = true
+    case .vertical:
+      header.heightAnchor.constraint(equalTo: footer.heightAnchor).isActive = true
+    @unknown default:
+      header.heightAnchor.constraint(equalTo: footer.heightAnchor).isActive = true
+      header.widthAnchor.constraint(equalTo: footer.widthAnchor).isActive = true
+    }
+
+    return self
+  }
+
+  @discardableResult
+  func applyCentering() -> Self {
+    let header = arrangedSubviews[0]
+    let footer = arrangedSubviews.last!
 
     switch axis {
     case .horizontal:

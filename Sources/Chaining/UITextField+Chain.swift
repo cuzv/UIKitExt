@@ -150,4 +150,34 @@ public extension UITextField {
     inputAccessoryView = view
     return self
   }
+
+  @discardableResult
+  func keyboardType(_ value: UIKeyboardType) -> Self {
+    keyboardType = value
+    return self
+  }
+
+  @discardableResult
+  func keyboardAppearance(_ value: UIKeyboardAppearance) -> Self {
+    keyboardAppearance = value
+    return self
+  }
+
+  @discardableResult
+  func returnKeyType(_ value: UIReturnKeyType) -> Self {
+    returnKeyType = value
+    return self
+  }
+
+  @discardableResult
+  func enablesReturnKeyAutomatically(_ value: Bool) -> Self {
+    enablesReturnKeyAutomatically = value
+    return self
+  }
+
+  @discardableResult
+  func secureTextEntry(_ value: Bool) -> Self {
+    isSecureTextEntry = value
+    return self
+  }
 }

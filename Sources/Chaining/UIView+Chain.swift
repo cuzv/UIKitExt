@@ -491,4 +491,34 @@ public extension UIView {
       proxy.edges == other.safeEdgesAnchor - insets
     }
   }
+
+  @discardableResult
+  func border(
+    edge: UIRectEdge = .all,
+    width: CGFloat? = nil,
+    color: UIColor = UIColor.separator,
+    multiplier: CGFloat = 1.0,
+    constant: CGFloat = 0
+  ) -> Self {
+    addBorder(
+      edge: edge,
+      width: width,
+      color: color,
+      multiplier: multiplier,
+      constant: constant
+    )
+    return self
+  }
+}
+
+public final class Spacer: UIView {
+  override public init(frame: CGRect) {
+    super.init(frame: frame)
+    useConstraints()
+  }
+
+  public required init?(coder: NSCoder) {
+    super.init(coder: coder)
+    useConstraints()
+  }
 }
