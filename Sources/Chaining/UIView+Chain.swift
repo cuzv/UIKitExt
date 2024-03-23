@@ -470,6 +470,12 @@ public extension UIView {
   }
 
   @discardableResult
+  func bringToFront() -> Self {
+    superview?.bringSubviewToFront(self)
+    return self
+  }
+
+  @discardableResult
   func pinEdges(to other: UIView, margins insets: NSDirectionalEdgeInsets = .zero) -> Self {
     layout { proxy in
       proxy.edges == other.edgesAnchor - insets
