@@ -5,9 +5,8 @@ public extension UIControl.State {
 }
 
 public final class LoadingButton: UIButton {
-  private var loadingAnimationToken: CABasicAnimation?
-  private let loadingAnimationKey = "com.redrainlab.loading"
   private let emptyImage = UIImage()
+  private var loadingView: AnimationView = OuroborosView()
 
   @objc public dynamic var isLoading: Bool = false {
     didSet {
@@ -45,6 +44,31 @@ public final class LoadingButton: UIButton {
       name: UIApplication.didBecomeActiveNotification,
       object: nil
     )
+
+    title("", for: .loading)
+      .image(emptyImage, for: .loading)
+      .backgroundImage(emptyImage, for: .loading)
+
+    loadingView(loadingView)
+  }
+
+  @discardableResult
+  public func loadingView(_ view: AnimationView) -> Self {
+    loadingView.removeFromSuperview()
+    loadingView = view
+    view.isAnimating = false
+
+    return addSubview(view) { proxy in
+      proxy.width == proxy.superview.heightAnchor * 0.7
+      proxy.height == proxy.superview.heightAnchor * 0.7
+      proxy.center == proxy.superview.centerAnchor
+    }
+  }
+
+  @discardableResult
+  public func loadingColor(_ color: UIColor) -> Self {
+    loadingView.tintColor(color)
+    return self
   }
 
   // Prevent weird bug which do animation the second time with image miss-rotation.
@@ -68,18 +92,7 @@ public final class LoadingButton: UIButton {
   }
 
   private func onLoadingStateUpdated(isLoading: Bool) {
-    if isLoading {
-      let loading = CABasicAnimation(keyPath: "transform.rotation.z")
-      loading.fromValue = 0
-      loading.toValue = 2.0 * .pi
-      loading.duration = 2
-      loading.fillMode = .both
-      loading.repeatDuration = .greatestFiniteMagnitude
-      imageView?.layer.add(loading, forKey: loadingAnimationKey)
-    } else {
-      imageView?.layer.removeAnimation(forKey: loadingAnimationKey)
-    }
-
+    loadingView.isAnimating = isLoading
     setNeedsLayout()
   }
 

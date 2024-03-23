@@ -553,6 +553,15 @@ public extension UIView {
   }
 
   @discardableResult
+  func overlap(_ view: UIView) -> Self {
+    guard let superview = view.superview else { return self }
+    superview.addSubview(self) { proxy in
+      proxy.edges == view.edgesAnchor
+    }
+    return self
+  }
+
+  @discardableResult
   func overlay(_ view: UIView, alignment: Flex.OverlayAlignment = .center, offset: CGPoint = .zero) -> Self {
     addSubview(view) { proxy in
       switch alignment {

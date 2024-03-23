@@ -516,7 +516,8 @@ public final class Spacer: UIView {
     super.init(frame: .zero)
     useConstraints().userInteractionEnabled(touchable)
   }
-  
+
+  @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

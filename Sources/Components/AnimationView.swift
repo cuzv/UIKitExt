@@ -31,6 +31,7 @@ open class AnimationView: UIView {
       name: UIApplication.didBecomeActiveNotification,
       object: nil
     )
+    stopAnimating()
   }
 
   open var isAnimating: Bool = false {
@@ -41,6 +42,8 @@ open class AnimationView: UIView {
       }
     }
   }
+
+  open var hidesWhenStopped: Bool = true
 
   override open func didMoveToWindow() {
     super.didMoveToWindow()
@@ -59,20 +62,27 @@ open class AnimationView: UIView {
   }
 
   open func startAnimating() {
-    fatalError()
+    alpha(1)
   }
 
   open func stopAnimating() {
-    fatalError()
+    alpha(hidesWhenStopped ? 0 : 1)
+  }
+
+  @discardableResult
+  open func animating(_ value: Bool) -> Self {
+    isAnimating = value
+    return self
   }
 }
 
 open class SpinView: AnimationView {
   override public func startAnimating() {
+    super.startAnimating()
     let animation = CABasicAnimation(keyPath: "transform.rotation.z")
     animation.fromValue = 0
     animation.toValue = 2.0 * .pi
-    animation.duration = 1.0
+    animation.duration = 0.7
     animation.fillMode = .both
     animation.isRemovedOnCompletion = true
     animation.repeatCount = .greatestFiniteMagnitude
@@ -80,19 +90,22 @@ open class SpinView: AnimationView {
   }
 
   override public func stopAnimating() {
+    super.stopAnimating()
     layer.removeAnimation(forKey: "rotation")
   }
 }
 
 open class BreathView: AnimationView {
   override public func startAnimating() {
+    super.startAnimating()
+
     let start = layer.opacity
     let end = abs(1.0 - start)
 
     let animation = CABasicAnimation(keyPath: "opacity")
     animation.fromValue = start
     animation.toValue = end
-    animation.duration = 1
+    animation.duration = 0.7
     animation.autoreverses = true
     animation.fillMode = .both
     animation.isRemovedOnCompletion = true
@@ -103,6 +116,7 @@ open class BreathView: AnimationView {
   }
 
   override public func stopAnimating() {
+    super.stopAnimating()
     layer.removeAnimation(forKey: "opacity")
   }
 }
