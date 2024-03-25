@@ -358,3 +358,31 @@ public extension UIButton {
     return self
   }
 }
+
+public extension UIButton {
+  @discardableResult
+  func titleColor(
+    _ hex: String,
+    alpha: CGFloat = 1,
+    for state: UIControl.State
+  ) -> Self {
+    titleColor(.init(hex: hex, alpha: alpha), for: state)
+  }
+
+  @discardableResult
+  func titleColor(
+    _ hex: UInt32,
+    alpha: CGFloat = 1,
+    for state: UIControl.State
+  ) -> Self {
+    titleColor(.init(hex: hex, alpha: alpha), for: state)
+  }
+
+  @discardableResult
+  func tintColor(
+    _ hex: UInt32,
+    alpha: CGFloat = 1
+  ) -> Self {
+    tintColor(.init(hex: hex, alpha: alpha))
+  }
+}

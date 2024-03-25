@@ -624,3 +624,17 @@ public extension UIView {
     }
   }
 }
+
+// MARK: - Color
+
+public extension UIView {
+  @discardableResult
+  func backgroundColor(_ hex: String, alpha: CGFloat = 1) -> Self {
+    backgroundColor(.init(hex: hex, alpha: alpha))
+  }
+
+  @discardableResult
+  func backgroundColor(_ hex: UInt32, alpha: CGFloat = 1) -> Self {
+    backgroundColor(.init(hex: hex, alpha: alpha))
+  }
+}

@@ -103,3 +103,15 @@ public extension UILabel {
     return self
   }
 }
+
+public extension UILabel {
+  @discardableResult
+  func textColor(_ hex: String, alpha: CGFloat = 1) -> Self {
+    textColor(.init(hex: hex))
+  }
+
+  @discardableResult
+  func textColor(_ hex: UInt32, alpha: CGFloat = 1) -> Self {
+    textColor(.init(hex: hex))
+  }
+}
