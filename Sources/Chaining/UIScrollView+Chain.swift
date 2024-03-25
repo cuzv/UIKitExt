@@ -173,3 +173,22 @@ public extension UIScrollView {
     return self
   }
 }
+
+public extension UIScrollView {
+  func addContentView(_ view: UIView, axis: NSLayoutConstraint.Axis = .vertical) -> Self {
+    addSubview(
+      view,
+      layout: { proxy in
+        proxy.edges == proxy.superview.edgesAnchor
+        switch axis {
+        case .horizontal:
+          proxy.height == proxy.superview.heightAnchor
+        case .vertical:
+          proxy.width == proxy.superview.widthAnchor
+        @unknown default:
+          proxy.width == proxy.superview.widthAnchor
+        }
+      }
+    )
+  }
+}

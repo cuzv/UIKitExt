@@ -10,7 +10,6 @@ public typealias FlexView = Flex.View
 public typealias FlexJustifyContent = Flex.JustifyContent
 public typealias FlexAlignItems = Flex.AlignItems
 public typealias FlexOverlayAlignment = Flex.OverlayAlignment
-public typealias FlexConstraintRelation = Flex.ConstraintRelation
 
 // MARK: - Flex
 
@@ -65,11 +64,6 @@ public enum Flex {
     case trailingCenter
     case topCenter
     case bottomCenter
-  }
-
-  public enum ConstraintRelation: Int, @unchecked Sendable {
-    case superview
-    case safeArea
   }
 
   // MARK: Column
@@ -181,18 +175,12 @@ public enum Flex {
 
   open class View: HitTestSlopView {
     public convenience init(
+      edges: PinEdge = .all,
       paddings insets: NSDirectionalEdgeInsets = .zero,
-      relation: ConstraintRelation = .superview,
       @SingleChildLayoutSpecBuilder content: () -> UIView
     ) {
       self.init()
-
-      switch relation {
-      case .superview:
-        addSubview(content(), paddings: insets)
-      case .safeArea:
-        addSubview(content(), safePaddings: insets)
-      }
+      addSubview(content(), edges: edges, paddings: insets)
     }
   }
 
@@ -511,12 +499,12 @@ public extension UIView {
 
   @discardableResult
   func inView(
-    paddings insets: NSDirectionalEdgeInsets = .zero,
-    relation: Flex.ConstraintRelation = .superview
+    edges: PinEdge = .all,
+    paddings insets: NSDirectionalEdgeInsets = .zero
   ) -> Flex.View {
     .init(
-      paddings: insets,
-      relation: relation
+      edges: edges,
+      paddings: insets
     ) {
       self
     }
@@ -524,76 +512,13 @@ public extension UIView {
 
   @discardableResult
   func padding(
-    _ insets: NSDirectionalEdgeInsets = .zero,
-    relation: Flex.ConstraintRelation = .superview
+    edges: PinEdge = .all,
+    _ insets: NSDirectionalEdgeInsets = .zero
   ) -> Flex.View {
     inView(
-      paddings: insets,
-      relation: relation
+      edges: edges,
+      paddings: insets
     )
-  }
-}
-
-// MARK: - Chain Extension
-
-public extension UIView {
-  @discardableResult
-  func placeIn(
-    _ superview: UIView,
-    paddings insets: NSDirectionalEdgeInsets = .zero,
-    relation: Flex.ConstraintRelation = .superview
-  ) -> Self {
-    switch relation {
-    case .safeArea:
-      superview.addSubview(self, safePaddings: insets)
-    case .superview:
-      superview.addSubview(self, paddings: insets)
-    }
-    return self
-  }
-
-  @discardableResult
-  func overlap(_ view: UIView) -> Self {
-    guard let superview = view.superview else { return self }
-    superview.addSubview(self) { proxy in
-      proxy.edges == view.edgesAnchor
-    }
-    return self
-  }
-
-  @discardableResult
-  func overlay(_ view: UIView, alignment: Flex.OverlayAlignment = .center, offset: CGPoint = .zero) -> Self {
-    addSubview(view) { proxy in
-      switch alignment {
-      case .center:
-        proxy.centerX == proxy.superview.centerXAnchor + offset.x
-        proxy.centerY == proxy.superview.centerYAnchor + offset.y
-      case .topLeading:
-        proxy.centerX == proxy.superview.leadingAnchor + offset.x
-        proxy.centerY == proxy.superview.topAnchor + offset.y
-      case .topTrailing:
-        proxy.centerX == proxy.superview.trailingAnchor + offset.x
-        proxy.centerY == proxy.superview.topAnchor + offset.y
-      case .bottomLeading:
-        proxy.centerX == proxy.superview.leadingAnchor + offset.x
-        proxy.centerY == proxy.superview.bottomAnchor + offset.y
-      case .botomTrailing:
-        proxy.centerX == proxy.superview.trailingAnchor + offset.x
-        proxy.centerY == proxy.superview.bottomAnchor + offset.y
-      case .leadingCenter:
-        proxy.centerX == proxy.superview.leadingAnchor + offset.x
-        proxy.centerY == proxy.superview.centerYAnchor + offset.y
-      case .trailingCenter:
-        proxy.centerX == proxy.superview.trailingAnchor + offset.x
-        proxy.centerY == proxy.superview.centerYAnchor + offset.y
-      case .topCenter:
-        proxy.centerX == proxy.superview.centerXAnchor + offset.x
-        proxy.centerY == proxy.superview.topAnchor + offset.y
-      case .bottomCenter:
-        proxy.centerX == proxy.superview.centerXAnchor + offset.x
-        proxy.centerY == proxy.superview.bottomAnchor + offset.y
-      }
-    }
   }
 }
 

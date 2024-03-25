@@ -399,13 +399,13 @@ public extension UIView {
   }
 
   @discardableResult
-  func size(_ width: CGFloat, _ height: CGFloat) -> Self {
-    size(.init(width: width, height: height))
+  func size(_ value: CGFloat) -> Self {
+    size(.init(width: value, height: value))
   }
 
   @discardableResult
-  func size(_ value: CGFloat) -> Self {
-    size(.init(width: value, height: value))
+  func size(_ width: CGFloat, _ height: CGFloat) -> Self {
+    size(.init(width: width, height: height))
   }
 
   @discardableResult
@@ -463,39 +463,9 @@ public extension UIView {
   }
 
   @discardableResult
-  func addSubview(_ view: UIView, paddings insets: NSDirectionalEdgeInsets) -> Self {
-    addSubview(view)
-    view.pinEdges(to: self, margins: insets)
-    return self
-  }
-
-  @discardableResult
   func bringToFront() -> Self {
     superview?.bringSubviewToFront(self)
     return self
-  }
-
-  @discardableResult
-  func pinEdges(to other: UIView, margins insets: NSDirectionalEdgeInsets = .zero) -> Self {
-    layout { proxy in
-      proxy.edges == other.edgesAnchor - insets
-    }
-  }
-
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
-  @discardableResult
-  func addSubview(_ view: UIView, safePaddings insets: NSDirectionalEdgeInsets) -> Self {
-    addSubview(view)
-    view.pinSafeEdges(to: self, margins: insets)
-    return self
-  }
-
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macCatalyst 13.0, *)
-  @discardableResult
-  func pinSafeEdges(to other: UIView, margins insets: NSDirectionalEdgeInsets = .zero) -> Self {
-    layout { proxy in
-      proxy.edges == other.safeEdgesAnchor - insets
-    }
   }
 
   @discardableResult
@@ -526,5 +496,131 @@ public final class Spacer: UIView {
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+}
+
+// MARK: - Pin Edges Layout
+
+@available(iOS 11.0, *)
+public extension UIView {
+  @discardableResult
+  func addSubview(_ view: UIView, edges: PinEdge = .all, paddings: NSDirectionalEdgeInsets) -> Self {
+    addSubview(view)
+    view.pin(to: self, edges: edges, margins: paddings)
+    return self
+  }
+
+  @discardableResult
+  func pin(to other: UIView, edges: PinEdge, margins insets: NSDirectionalEdgeInsets = .zero) -> Self {
+    layout { proxy in
+      if edges.contains(.leading) {
+        proxy.leading == other.leadingAnchor + insets.leading
+      }
+      if edges.contains(.trailing) {
+        proxy.trailing == other.trailingAnchor - insets.trailing
+      }
+      if edges.contains(.top) {
+        proxy.top == other.topAnchor + insets.top
+      }
+      if edges.contains(.bottom) {
+        proxy.bottom == other.bottomAnchor - insets.bottom
+      }
+
+      if edges.contains(.safeLeading) {
+        proxy.leading == other.safeAreaLayoutGuide.leadingAnchor + insets.leading
+      }
+      if edges.contains(.safeTrailing) {
+        proxy.trailing == other.safeAreaLayoutGuide.trailingAnchor - insets.trailing
+      }
+      if edges.contains(.safeTop) {
+        proxy.top == other.safeAreaLayoutGuide.topAnchor + insets.top
+      }
+      if edges.contains(.safeBottom) {
+        proxy.bottom == other.safeAreaLayoutGuide.bottomAnchor - insets.bottom
+      }
+    }
+  }
+
+  struct PinEdge: OptionSet, @unchecked Sendable {
+    public let rawValue: UInt
+
+    public init(rawValue: UInt) {
+      self.rawValue = rawValue
+    }
+
+    public static let top = PinEdge(rawValue: 1 << 0)
+    public static let bottom = PinEdge(rawValue: 1 << 1)
+    public static let leading = PinEdge(rawValue: 1 << 2)
+    public static let trailing = PinEdge(rawValue: 1 << 3)
+
+    public static let all: PinEdge = [.top, .bottom, .leading, .trailing]
+
+    public static let safeTop = PinEdge(rawValue: 1 << 4)
+    public static let safeBottom = PinEdge(rawValue: 1 << 5)
+    public static let safeLeading = PinEdge(rawValue: 1 << 6)
+    public static let safeTrailing = PinEdge(rawValue: 1 << 7)
+
+    public static let safeAll: PinEdge = [.safeTop, .safeBottom, .safeLeading, .safeTrailing]
+
+    public static let scrollAll: PinEdge = [.safeTop, .bottom, .leading, .trailing]
+  }
+}
+
+// MARK: - Convenience Layout
+
+public extension UIView {
+  @available(iOS 11.0, *)
+  @discardableResult
+  func placeIn(
+    _ superview: UIView,
+    edges: PinEdge = .all,
+    paddings insets: NSDirectionalEdgeInsets = .zero
+  ) -> Self {
+    superview.addSubview(self, edges: edges, paddings: insets)
+    return self
+  }
+
+  @discardableResult
+  func overlap(_ view: UIView) -> Self {
+    guard let superview = view.superview else { return self }
+    superview.addSubview(self) { proxy in
+      proxy.edges == view.edgesAnchor
+    }
+    return self
+  }
+
+  @discardableResult
+  func overlay(_ view: UIView, alignment: Flex.OverlayAlignment = .center, offset: CGPoint = .zero) -> Self {
+    addSubview(view) { proxy in
+      switch alignment {
+      case .center:
+        proxy.centerX == proxy.superview.centerXAnchor + offset.x
+        proxy.centerY == proxy.superview.centerYAnchor + offset.y
+      case .topLeading:
+        proxy.centerX == proxy.superview.leadingAnchor + offset.x
+        proxy.centerY == proxy.superview.topAnchor + offset.y
+      case .topTrailing:
+        proxy.centerX == proxy.superview.trailingAnchor + offset.x
+        proxy.centerY == proxy.superview.topAnchor + offset.y
+      case .bottomLeading:
+        proxy.centerX == proxy.superview.leadingAnchor + offset.x
+        proxy.centerY == proxy.superview.bottomAnchor + offset.y
+      case .botomTrailing:
+        proxy.centerX == proxy.superview.trailingAnchor + offset.x
+        proxy.centerY == proxy.superview.bottomAnchor + offset.y
+      case .leadingCenter:
+        proxy.centerX == proxy.superview.leadingAnchor + offset.x
+        proxy.centerY == proxy.superview.centerYAnchor + offset.y
+      case .trailingCenter:
+        proxy.centerX == proxy.superview.trailingAnchor + offset.x
+        proxy.centerY == proxy.superview.centerYAnchor + offset.y
+      case .topCenter:
+        proxy.centerX == proxy.superview.centerXAnchor + offset.x
+        proxy.centerY == proxy.superview.topAnchor + offset.y
+      case .bottomCenter:
+        proxy.centerX == proxy.superview.centerXAnchor + offset.x
+        proxy.centerY == proxy.superview.bottomAnchor + offset.y
+      }
+    }
   }
 }

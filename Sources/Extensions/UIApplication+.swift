@@ -1,8 +1,12 @@
 import UIKit
 
 public extension UIApplication {
+  var _keyWindow: UIWindow? {
+    windows.last(where: \.isKeyWindow)
+  }
+
   func topMostViewController() -> UIViewController? {
-    keyWindow?.rootViewController?.topMostViewController()
+    _keyWindow?.rootViewController?.topMostViewController()
   }
 
   // See https://rambo.codes/ios/quick-tip/2019/12/09/clearing-your-apps-launch-screen-cache-on-ios.html
@@ -14,5 +18,9 @@ public extension UIApplication {
     } catch {
       print("Failed to delete launch screen cache: \(error)")
     }
+  }
+
+  var safeAreaInsets: UIEdgeInsets {
+    _keyWindow?.safeAreaInsets ?? .zero
   }
 }
