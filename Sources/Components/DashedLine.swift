@@ -29,16 +29,19 @@ public final class DashedLine: UIView {
     shapeLayer.path = path
   }
 
+  @discardableResult
   public func strokeColor(_ color: UIColor) -> Self {
     shapeLayer.strokeColor = color.cgColor
     return self
   }
 
+  @discardableResult
   public func lineWidth(_ width: CGFloat) -> Self {
     shapeLayer.lineWidth = width
     return self
   }
 
+  @discardableResult
   public func lineDashPattern(_ pattern: [NSNumber]) -> Self {
     shapeLayer.lineDashPattern = pattern
     return self
