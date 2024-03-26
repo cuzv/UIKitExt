@@ -4,7 +4,7 @@ public extension UIControl.State {
   static let loading = UIControl.State(rawValue: 1 << 16)
 }
 
-public final class LoadingButton: UIButton {
+public final class LoadingButton: HitTestSlopButton {
   private let emptyImage = UIImage()
   private var loadingView: AnimationView = OuroborosView()
 
@@ -68,6 +68,12 @@ public final class LoadingButton: UIButton {
   @discardableResult
   public func loadingColor(_ color: UIColor) -> Self {
     loadingView.tintColor(color)
+    return self
+  }
+
+  @discardableResult
+  public func loading(_ value: Bool) -> Self {
+    isLoading = value
     return self
   }
 
