@@ -39,4 +39,3 @@ private final class BundleToken {
 #endif
   }()
 }
-

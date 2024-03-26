@@ -1,8 +1,8 @@
 //  Created by Shaw on 1/1/24.
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 public struct SegmentStyle {
   let normalFont: UIFont
@@ -42,12 +42,13 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
     setup()
   }
 
+  @available(*, unavailable)
   public required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
   private func setup() {
-    let itemViews = items.enumerated().map { (offset, item) in
+    let itemViews = items.enumerated().map { offset, item in
       SegmentLabel(text: String(describing: item))
         .textColor(style.normalTextColor)
         .font(style.normalFont)
@@ -88,13 +89,13 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
 
     indicator.clipsToBounds(true)
     clipsToBounds(true)
-    
+
     reactToggle(index: 0)
   }
 
-  public override func layoutSubviews() {
+  override public func layoutSubviews() {
     super.layoutSubviews()
-    
+
     cornerRadius(indicator.bounds.height * 0.5)
     indicator.cornerRadius(indicator.bounds.height * 0.5)
   }
@@ -103,12 +104,12 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
     reactToggle(index: index)
     onClick?(items[index])
   }
-  
+
   private func reactToggle(index: Int) {
     guard let itemViews else {
       return
     }
-    
+
     let pivot = itemViews[index]
 
     indicator.relayout { proxy in
@@ -118,12 +119,12 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
       proxy.bottom == pivot.bottomAnchor + 8
     }
 
-    itemViews.forEach { label in
+    for label in itemViews {
       label
         .font(style.normalFont)
         .textColor(style.normalTextColor)
     }
-    
+
     pivot
       .font(style.highlightFont)
       .textColor(style.highlightTextColor)
@@ -156,11 +157,11 @@ final class SegmentLabel: UILabel, HitTestSlop {
 @available(iOS 13.0, *)
 public struct Segment<Element: Hashable & CustomStringConvertible>: UIViewRepresentable {
   public typealias UIViewType = SegmentView<Element>
-  
+
   public let items: [Element]
   public let style: SegmentStyle
   @Binding private var selection: Element
-  
+
   public init(
     items: [Element],
     style: SegmentStyle,
