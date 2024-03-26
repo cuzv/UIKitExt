@@ -175,7 +175,7 @@ public enum Flex {
 
   open class View: HitTestSlopView {
     public convenience init(
-      edges: PinEdge = .all,
+      edges: PinEdge = .superview,
       paddings insets: NSDirectionalEdgeInsets = .zero,
       @SingleChildLayoutSpecBuilder content: () -> UIView
     ) {
@@ -499,7 +499,7 @@ public extension UIView {
 
   @discardableResult
   func inView(
-    edges: PinEdge = .all,
+    edges: PinEdge = .superview,
     paddings insets: NSDirectionalEdgeInsets = .zero
   ) -> Flex.View {
     .init(
@@ -512,7 +512,7 @@ public extension UIView {
 
   @discardableResult
   func padding(
-    edges: PinEdge = .all,
+    edges: PinEdge = .superview,
     _ insets: NSDirectionalEdgeInsets = .zero
   ) -> Flex.View {
     inView(

@@ -504,7 +504,7 @@ public final class Spacer: UIView {
 @available(iOS 11.0, *)
 public extension UIView {
   @discardableResult
-  func addSubview(_ view: UIView, edges: PinEdge = .all, paddings: NSDirectionalEdgeInsets) -> Self {
+  func addSubview(_ view: UIView, edges: PinEdge = .superview, paddings: NSDirectionalEdgeInsets) -> Self {
     addSubview(view)
     view.pin(to: self, edges: edges, margins: paddings)
     return self
@@ -553,16 +553,14 @@ public extension UIView {
     public static let leading = PinEdge(rawValue: 1 << 2)
     public static let trailing = PinEdge(rawValue: 1 << 3)
 
-    public static let all: PinEdge = [.top, .bottom, .leading, .trailing]
-
     public static let safeTop = PinEdge(rawValue: 1 << 4)
     public static let safeBottom = PinEdge(rawValue: 1 << 5)
     public static let safeLeading = PinEdge(rawValue: 1 << 6)
     public static let safeTrailing = PinEdge(rawValue: 1 << 7)
 
-    public static let safeAll: PinEdge = [.safeTop, .safeBottom, .safeLeading, .safeTrailing]
-
-    public static let scrollAll: PinEdge = [.safeTop, .bottom, .leading, .trailing]
+    public static let superview: PinEdge = [.top, .bottom, .leading, .trailing]
+    public static let safeArea: PinEdge = [.safeTop, .safeBottom, .safeLeading, .safeTrailing]
+    public static let sheet: PinEdge = [.safeTop, .bottom, .safeLeading, .safeTrailing]
   }
 }
 
@@ -573,7 +571,7 @@ public extension UIView {
   @discardableResult
   func placeIn(
     _ superview: UIView,
-    edges: PinEdge = .all,
+    edges: PinEdge = .superview,
     paddings insets: NSDirectionalEdgeInsets = .zero
   ) -> Self {
     superview.addSubview(self, edges: edges, paddings: insets)

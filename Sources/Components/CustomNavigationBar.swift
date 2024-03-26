@@ -186,8 +186,19 @@ extension Navigation where Base: UIViewController {
 // MARK: - Private classes
 
 private final class _NavView: UIView {}
-private final class _NavLeadingStackView: UIStackView {}
-private final class _NavTrailingStackView: UIStackView {}
+private class _StackView: UIStackView {
+  override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+    for view in arrangedSubviews {
+      if view.frame.contains(point) {
+        return true
+      }
+    }
+    return false
+  }
+}
+
+private final class _NavLeadingStackView: _StackView {}
+private final class _NavTrailingStackView: _StackView {}
 
 // MARK: - NavigationProvider
 
