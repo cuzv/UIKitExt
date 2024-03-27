@@ -32,7 +32,11 @@ public extension Gradable where Self: UIView {
 
   var start: GradientOrigin { .topCenter }
 
-  var dimmedColors: [UIColor] { [] }
+  var dimmedColors: [UIColor] {
+    colors.map {
+      $0.withAlphaComponent(0.5)
+    }
+  }
 
   var automaticallyDims: Bool { true }
 
