@@ -2,7 +2,7 @@ import UIKit
 
 public extension UIApplication {
   var _keyWindow: UIWindow? {
-    windows.last(where: \.isKeyWindow)
+    windows.first(where: \.isKeyWindow)
   }
 
   func topMostViewController() -> UIViewController? {
