@@ -636,3 +636,18 @@ public extension UIView {
     backgroundColor(.init(hex: hex, alpha: alpha))
   }
 }
+
+// MARK: Recursive Descendants
+
+public extension UIView {
+  @discardableResult
+  func runRecursiveDescendants(_ block: (UIView) -> Void) -> Self {
+    block(self)
+
+    for view in subviews {
+      view.runRecursiveDescendants(block)
+    }
+
+    return self
+  }
+}
