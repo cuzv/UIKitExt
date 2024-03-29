@@ -40,6 +40,18 @@ public extension UIColor {
   }
 }
 
+public extension Int {
+  func toHexColor(alpha: CGFloat = 1) -> UIColor {
+    .init(hex: UInt32(self), alpha: alpha)
+  }
+}
+
+public extension String {
+  func toHexColor(alpha: CGFloat = 1) -> UIColor {
+    .init(hex: self, alpha: alpha)
+  }
+}
+
 // MARK: - iOS default color
 
 public extension UIColor {

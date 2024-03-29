@@ -1,6 +1,6 @@
 import UIKit
 
-let kPadding: CGFloat = 15
+let kPadding: CGFloat = 0
 let kBarHeight: CGFloat = 44
 
 // MARK: - Navigation subviews
