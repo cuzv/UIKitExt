@@ -175,6 +175,7 @@ public extension UIScrollView {
 }
 
 public extension UIScrollView {
+  @discardableResult
   func addContentView(_ view: UIView, axis: NSLayoutConstraint.Axis = .vertical) -> Self {
     addSubview(
       view,

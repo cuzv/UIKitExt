@@ -74,7 +74,7 @@ public enum Flex {
       align: AlignItems = .stretch,
       spacing: CGFloat = 0,
       paddings: NSDirectionalEdgeInsets = .zero,
-      @LayoutSpecBuilder content: () -> [UIView]
+      @ChildrenViewBuilder content: () -> [UIView]
     ) {
       self.init(
         axis: .vertical,
@@ -95,7 +95,7 @@ public enum Flex {
       align: AlignItems = .stretch,
       spacing: CGFloat = 0,
       paddings: NSDirectionalEdgeInsets = .zero,
-      @LayoutSpecBuilder content: () -> [UIView]
+      @ChildrenViewBuilder content: () -> [UIView]
     ) {
       self.init(
         axis: .horizontal,
@@ -124,7 +124,7 @@ public enum Flex {
       align: AlignItems = .stretch,
       spacing: CGFloat = 0,
       paddings: NSDirectionalEdgeInsets = .zero,
-      @LayoutSpecBuilder content: () -> [UIView]
+      @ChildrenViewBuilder content: () -> [UIView]
     ) {
       self.init(
         contentInset: contentInset,
@@ -177,7 +177,7 @@ public enum Flex {
     public convenience init(
       edges: PinEdge = .superview,
       paddings insets: NSDirectionalEdgeInsets = .zero,
-      @SingleChildLayoutSpecBuilder content: () -> UIView
+      @ChildViewBuilder content: () -> UIView
     ) {
       self.init()
       addSubview(content(), edges: edges, paddings: insets)
@@ -240,7 +240,7 @@ public extension Flex.HitTestSlopStackView {
     align: Flex.AlignItems,
     spacing: CGFloat,
     paddings: NSDirectionalEdgeInsets,
-    @Flex.LayoutSpecBuilder content: () -> [UIView]
+    @ChildrenViewBuilder content: () -> [UIView]
   ) {
     self.init(
       axis: axis,
@@ -333,54 +333,6 @@ public extension Flex.HitTestSlopStackView {
           }
         }
       }
-    }
-  }
-}
-
-// MARK: - Result Builder
-
-public extension Flex {
-  @resultBuilder enum LayoutSpecBuilder {
-    public static func buildBlock(_ components: [UIView]) -> [UIView] {
-      components
-    }
-
-    public static func buildBlock(_ components: [UIView]...) -> [UIView] {
-      components.flatMap { $0 }
-    }
-
-    public static func buildExpression(_ expression: UIView) -> [UIView] {
-      [expression]
-    }
-
-    public static func buildExpression(_ expression: [UIView]) -> [UIView] {
-      expression
-    }
-
-    public static func buildOptional(_ component: [UIView]?) -> [UIView] {
-      component ?? []
-    }
-
-    public static func buildEither(first component: [UIView]) -> [UIView] {
-      component
-    }
-
-    public static func buildEither(second component: [UIView]) -> [UIView] {
-      component
-    }
-  }
-
-  @resultBuilder enum SingleChildLayoutSpecBuilder {
-    public static func buildBlock(_ components: UIView) -> UIView {
-      components
-    }
-
-    public static func buildEither(first component: UIView) -> UIView {
-      component
-    }
-
-    public static func buildEither(second component: UIView) -> UIView {
-      component
     }
   }
 }
@@ -525,7 +477,7 @@ public extension UIView {
 public extension UIStackView {
   @discardableResult
   func arrange(
-    @Flex.LayoutSpecBuilder content: () -> [UIView]
+    @ChildrenViewBuilder content: () -> [UIView]
   ) -> Self {
     addArrangedSubviews(content())
   }

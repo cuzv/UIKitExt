@@ -25,7 +25,7 @@ public extension UIStackView {
     alignment: UIStackView.Alignment = .fill,
     spacing: CGFloat = 0,
     paddings: NSDirectionalEdgeInsets = .zero,
-    @Flex.LayoutSpecBuilder content: () -> [UIView]
+    @ChildrenViewBuilder content: () -> [UIView]
   ) {
     self.init(
       axis: axis,
