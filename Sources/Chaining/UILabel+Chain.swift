@@ -107,11 +107,11 @@ public extension UILabel {
 public extension UILabel {
   @discardableResult
   func textColor(_ hex: String, alpha: CGFloat = 1) -> Self {
-    textColor(.init(hex: hex))
+    textColor(.init(hex: hex, alpha: alpha))
   }
 
   @discardableResult
   func textColor(_ hex: UInt32, alpha: CGFloat = 1) -> Self {
-    textColor(.init(hex: hex))
+    textColor(.init(hex: hex, alpha: alpha))
   }
 }

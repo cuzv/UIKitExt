@@ -44,11 +44,19 @@ public extension Int {
   func toHexColor(alpha: CGFloat = 1) -> UIColor {
     .init(hex: UInt32(self), alpha: alpha)
   }
+
+  var hexColor: UIColor {
+    toHexColor()
+  }
 }
 
 public extension String {
   func toHexColor(alpha: CGFloat = 1) -> UIColor {
     .init(hex: self, alpha: alpha)
+  }
+
+  var hexColor: UIColor {
+    toHexColor()
   }
 }
 
