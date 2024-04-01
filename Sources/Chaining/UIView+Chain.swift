@@ -469,6 +469,12 @@ public extension UIView {
   }
 
   @discardableResult
+  func sendToBack() -> Self {
+    superview?.sendSubviewToBack(self)
+    return self
+  }
+
+  @discardableResult
   func border(
     edge: UIRectEdge = .all,
     width: CGFloat? = nil,

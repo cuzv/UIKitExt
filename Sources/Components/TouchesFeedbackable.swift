@@ -58,10 +58,16 @@ open class TouchesFeedbackView: UIView, TouchesFeedbackable {
   public var backgroundView: UIView?
   public var feedbackView: UIView = {
     let view = UIView()
-    view.backgroundColor = UIColor(red: 217 / 255.0, green: 217 / 255.0, blue: 217 / 255.0, alpha: 1)
+    if #available(iOS 13.0, *) {
+      view.backgroundColor = .secondarySystemBackground
+    } else {
+      view.backgroundColor = UIColor(red: 217 / 255.0, green: 217 / 255.0, blue: 217 / 255.0, alpha: 1)
+    }
     view.alpha = 0
     return view
   }()
+
+  private var isCancelled = false
 
   override open func layoutSubviews() {
     super.layoutSubviews()
@@ -69,17 +75,29 @@ open class TouchesFeedbackView: UIView, TouchesFeedbackable {
   }
 
   override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    isCancelled = false
     showFeedback()
   }
 
-  override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {}
+  override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if let touch = touches.first {
+      let position = touch.location(in: self)
+      if !bounds.contains(position) {
+        isCancelled = true
+        hideFeedback()
+      }
+    }
+  }
 
   override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     hideFeedback()
-    tapAction?(self)
+    if !isCancelled {
+      tapAction?(self)
+    }
   }
 
   override open func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    isCancelled = true
     hideFeedback()
   }
 }
