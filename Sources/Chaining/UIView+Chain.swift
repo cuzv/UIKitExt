@@ -575,7 +575,7 @@ public extension UIView {
 public extension UIView {
   @available(iOS 11.0, *)
   @discardableResult
-  func placeIn(
+  func `in`(
     _ superview: UIView,
     edges: PinEdge = .superview,
     paddings insets: NSDirectionalEdgeInsets = .zero

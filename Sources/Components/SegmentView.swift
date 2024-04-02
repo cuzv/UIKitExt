@@ -68,7 +68,7 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
     stackView
       .backgroundColor(.black.withAlphaComponent(0.06))
       .addArrangedSubviews(itemViews)
-      .placeIn(self)
+      .in(self)
 
     let pivot = itemViews[0]
     pivot.textColor(.label)

@@ -218,7 +218,7 @@ public enum Flex {
 
   // MARK: HitTestSlopView
 
-  open class HitTestSlopView: UIView, HitTestSlop {
+  open class HitTestSlopView: TouchableFeedbackView, HitTestSlop {
     public private(set) var hitTestSlop: UIEdgeInsets = .zero
 
     override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
