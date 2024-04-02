@@ -1,12 +1,37 @@
 import UIKit
 
-public protocol TouchesFeedbackable: AnyObject {
+// MARK: - TouchableFeedback
+
+public protocol TouchableFeedback: AnyObject {
   var backgroundView: UIView? { get set }
   var feedbackView: UIView { get set }
   var touchesBeganDate: Date? { get set }
+  var tapAction: ((TouchableFeedbackView) -> Void)? { get set }
 }
 
-public extension TouchesFeedbackable where Self: UIView {
+public extension TouchableFeedback {
+  @discardableResult
+  func backgroundView(_ view: UIView?) -> Self {
+    backgroundView = view
+    return self
+  }
+
+  @discardableResult
+  func feedbackView(_ view: UIView) -> Self {
+    feedbackView = view
+    return self
+  }
+
+  @discardableResult
+  func tapAction(_ action: ((TouchableFeedbackView) -> Void)?) -> Self {
+    tapAction = action
+    return self
+  }
+}
+
+// MARK: - TouchableFeedback & UIView
+
+public extension TouchableFeedback where Self: UIView {
   func showFeedback() {
     touchesBeganDate = Date()
     UIView.animate(withDuration: 0.25) {
@@ -51,8 +76,10 @@ public extension TouchesFeedbackable where Self: UIView {
   }
 }
 
-open class TouchesFeedbackView: UIView, TouchesFeedbackable {
-  open var tapAction: ((TouchesFeedbackView) -> Void)?
+// MARK: - TouchableFeedbackView
+
+open class TouchableFeedbackView: UIView, TouchableFeedback {
+  open var tapAction: ((TouchableFeedbackView) -> Void)?
   open var touchesBeganDate: Date?
   open var backgroundView: UIView?
   open var feedbackView = UIView()
