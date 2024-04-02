@@ -24,4 +24,8 @@ public extension NSDirectionalEdgeInsets {
   init(value: CGFloat) {
     self.init(top: value, leading: value, bottom: value, trailing: value)
   }
+
+  init(top: CGFloat = 0, bottom: CGFloat = 0, leading: CGFloat = 0, trailing: CGFloat = 0) {
+    self.init(top: top, leading: leading, bottom: bottom, trailing: trailing)
+  }
 }

@@ -52,31 +52,6 @@ public final class LoadingButton: HitTestSlopButton {
     loadingView(loadingView)
   }
 
-  @discardableResult
-  public func loadingView(_ view: AnimationView) -> Self {
-    loadingView.removeFromSuperview()
-    loadingView = view
-    view.isAnimating = false
-
-    return addSubview(view) { proxy in
-      proxy.width == proxy.superview.heightAnchor * 0.7
-      proxy.height == proxy.superview.heightAnchor * 0.7
-      proxy.center == proxy.superview.centerAnchor
-    }
-  }
-
-  @discardableResult
-  public func loadingColor(_ color: UIColor) -> Self {
-    loadingView.tintColor(color)
-    return self
-  }
-
-  @discardableResult
-  public func loading(_ value: Bool) -> Self {
-    isLoading = value
-    return self
-  }
-
   // Prevent weird bug which do animation the second time with image miss-rotation.
   override public func setImage(_ image: UIImage?, for state: UIControl.State) {
     super.setImage(image ?? emptyImage, for: state)
@@ -107,5 +82,32 @@ public final class LoadingButton: HitTestSlopButton {
       isLoading.toggle()
       isLoading.toggle()
     }
+  }
+}
+
+public extension LoadingButton {
+  @discardableResult
+  func loadingView(_ view: AnimationView) -> Self {
+    loadingView.removeFromSuperview()
+    loadingView = view
+    view.isAnimating = false
+
+    return addSubview(view) { proxy in
+      proxy.width == proxy.superview.heightAnchor * 0.7
+      proxy.height == proxy.superview.heightAnchor * 0.7
+      proxy.center == proxy.superview.centerAnchor
+    }
+  }
+
+  @discardableResult
+  func loadingColor(_ color: UIColor) -> Self {
+    loadingView.tintColor(color)
+    return self
+  }
+
+  @discardableResult
+  func loading(_ value: Bool) -> Self {
+    isLoading = value
+    return self
   }
 }
