@@ -21,7 +21,7 @@ public final class RefreshControl: UIRefreshControl {
   private func awake() {
     tintColor = .clear
 
-    spinView.progress = 0
+    spinView.hidesWhenStopped = false
     spinView.tintColor = .label
     addSubview(spinView)
     spinView.translatesAutoresizingMaskIntoConstraints = false
@@ -81,6 +81,16 @@ public final class RefreshControl: UIRefreshControl {
 
     spinView.progress = isRefreshing ? 1.0 : pullRatio
     spinView.isAnimating = isRefreshing
+  }
+
+  override public var isHidden: Bool {
+    set {
+      super.isHidden = newValue
+      spinView.isHidden = newValue
+    }
+    get {
+      super.isHidden
+    }
   }
 }
 

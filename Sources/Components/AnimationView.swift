@@ -12,26 +12,25 @@ open class AnimationView: UIView {
 
   override public init(frame: CGRect) {
     super.init(frame: frame)
-    setup()
+    awake()
   }
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    setup()
+    awake()
   }
 
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
 
-  private func setup() {
+  private func awake() {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(updateAnimation),
       name: UIApplication.didBecomeActiveNotification,
       object: nil
     )
-    stopAnimating()
   }
 
   open var isAnimating: Bool = false {
@@ -44,6 +43,13 @@ open class AnimationView: UIView {
   }
 
   open var hidesWhenStopped: Bool = true
+
+  override open func didMoveToSuperview() {
+    super.didMoveToSuperview()
+    if superview != nil {
+      stopAnimating()
+    }
+  }
 
   override open func didMoveToWindow() {
     super.didMoveToWindow()

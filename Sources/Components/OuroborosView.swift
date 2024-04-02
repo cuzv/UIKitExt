@@ -4,15 +4,15 @@ import UIKit
 public final class OuroborosView: SpinView {
   override public init(frame: CGRect) {
     super.init(frame: frame)
-    setup()
+    awake()
   }
 
   public required init?(coder: NSCoder) {
     super.init(coder: coder)
-    setup()
+    awake()
   }
 
-  private func setup() {
+  private func awake() {
     if let layer = layer as? CAGradientLayer {
       layer.type = .conic
       layer.startPoint = CGPoint(x: 0.5, y: 0.5)
@@ -28,29 +28,30 @@ public final class OuroborosView: SpinView {
   override public func layoutSubviews() {
     super.layoutSubviews()
 
-    let shape = CAShapeLayer()
-    shape.frame = bounds
-    shape.strokeColor = tintColor.cgColor
-    shape.fillColor = UIColor.clear.cgColor
-
     let lineWidth: CGFloat = 4
-    let path = UIBezierPath(
-      ovalIn: shape.frame.inset(by: UIEdgeInsets(
-        top: lineWidth,
-        left: lineWidth,
-        bottom: lineWidth,
-        right: lineWidth
-      ))
-    ).cgPath
-    shape.path = path
-    shape.lineWidth = lineWidth
-    shape.lineCap = .round
-    shape.lineJoin = .round
-    shape.strokeStart = 0.02
-    shape.strokeEnd = 0.98
-    shape.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-    shape.transform = CATransform3DMakeRotation(-.pi / 2, 0, 0, 1)
-    layer.mask = shape
+
+    let rect = bounds.inset(by: UIEdgeInsets(
+      top: lineWidth,
+      left: lineWidth,
+      bottom: lineWidth,
+      right: lineWidth
+    ))
+    let path = UIBezierPath(ovalIn: rect).cgPath
+
+    let shapeLayer = CAShapeLayer()
+    shapeLayer.path = path
+    shapeLayer.frame = bounds
+    shapeLayer.strokeColor = tintColor.cgColor
+    shapeLayer.fillColor = UIColor.clear.cgColor
+    shapeLayer.lineWidth = lineWidth
+    shapeLayer.lineCap = .round
+    shapeLayer.lineJoin = .round
+    shapeLayer.strokeStart = 0.025
+    shapeLayer.strokeEnd = progress
+    shapeLayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+    shapeLayer.transform = CATransform3DMakeRotation(-.pi / 2, 0, 0, 1)
+
+    layer.mask = shapeLayer
   }
 
   override public var tintColor: UIColor! {
@@ -60,9 +61,9 @@ public final class OuroborosView: SpinView {
     }
   }
 
-  public var progress: CGFloat = 0.02 {
+  public var progress: CGFloat = 1 {
     didSet {
-      (layer.mask as? CAShapeLayer)?.strokeEnd = max(0.02, min(progress, 0.98))
+      (layer.mask as? CAShapeLayer)?.strokeEnd = max(progress, 0.025)
     }
   }
 }
