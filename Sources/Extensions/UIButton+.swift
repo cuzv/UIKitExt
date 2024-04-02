@@ -4,7 +4,7 @@ public extension UIButton {
   convenience init(
     type buttonType: ButtonType = .system,
     title: String,
-    titleColor: UIColor? = .foreground,
+    titleColor: UIColor? = .label,
     backgroundColor: UIColor? = nil,
     font: UIFont? = nil,
     image: UIImage? = nil,

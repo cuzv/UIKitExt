@@ -5,7 +5,7 @@ apple_framework(
     srcs = glob([
         "Sources/**/*.swift",
     ]),
-    platforms = {"ios": "12.0"},
+    platforms = {"ios": "13.0"},
     swift_version = "5.9",
     visibility = [
         "//visibility:public",

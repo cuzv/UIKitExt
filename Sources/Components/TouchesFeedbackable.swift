@@ -52,20 +52,12 @@ public extension TouchesFeedbackable where Self: UIView {
 }
 
 open class TouchesFeedbackView: UIView, TouchesFeedbackable {
-  public var tapAction: ((TouchesFeedbackView) -> Void)?
-
-  public var touchesBeganDate: Date?
-  public var backgroundView: UIView?
-  public var feedbackView: UIView = {
-    let view = UIView()
-    if #available(iOS 13.0, *) {
-      view.backgroundColor = .secondarySystemBackground
-    } else {
-      view.backgroundColor = UIColor(red: 217 / 255.0, green: 217 / 255.0, blue: 217 / 255.0, alpha: 1)
-    }
-    view.alpha = 0
-    return view
-  }()
+  open var tapAction: ((TouchesFeedbackView) -> Void)?
+  open var touchesBeganDate: Date?
+  open var backgroundView: UIView?
+  open var feedbackView = UIView()
+    .backgroundColor(.secondaryBackground)
+    .alpha(0)
 
   private var isCancelled = false
 

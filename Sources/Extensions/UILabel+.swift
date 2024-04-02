@@ -3,7 +3,7 @@ import UIKit
 public extension UILabel {
   convenience init(
     text: String,
-    textColor: UIColor = .foreground,
+    textColor: UIColor = .label,
     textAlignment: NSTextAlignment = .natural,
     font: UIFont = .preferredFont(forTextStyle: .body),
     lineBreakMode: NSLineBreakMode = .byTruncatingTail,
