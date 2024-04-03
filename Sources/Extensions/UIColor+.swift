@@ -15,7 +15,7 @@ public extension UIColor {
   }
 
   /// 0x3300cc or 0x30c
-  convenience init(hex: UInt32, alpha: CGFloat = 1) {
+  convenience init(hex: UInt64, alpha: CGFloat = 1) {
     let short = hex <= 0xFFF
     let divisor: CGFloat = short ? 15 : 255
     let red = CGFloat(short ? (hex & 0xF00) >> 8 : (hex & 0xFF0000) >> 16) / divisor
@@ -27,14 +27,14 @@ public extension UIColor {
   /// #3300cc or #30c
   convenience init(hex: String, alpha: CGFloat = 1) {
     // Convert hex string to an integer
-    var hexint: UInt32 = 0
+    var hexint: UInt64 = 0
 
     // Create scanner
     let scanner = Scanner(string: hex)
 
     // Tell scanner to skip the # character
     scanner.charactersToBeSkipped = CharacterSet(charactersIn: "#")
-    scanner.scanHexInt32(&hexint)
+    scanner.scanHexInt64(&hexint)
 
     self.init(hex: hexint, alpha: alpha)
   }
@@ -49,7 +49,7 @@ public extension UIColor {
 
 public extension Int {
   func toHexColor(alpha: CGFloat = 1) -> UIColor {
-    .init(hex: UInt32(self), alpha: alpha)
+    .init(hex: UInt64(self), alpha: alpha)
   }
 
   var hexColor: UIColor {

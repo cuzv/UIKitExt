@@ -371,7 +371,7 @@ public extension UIButton {
 
   @discardableResult
   func titleColor(
-    _ hex: UInt32,
+    _ hex: UInt64,
     alpha: CGFloat = 1,
     for state: UIControl.State
   ) -> Self {
@@ -380,7 +380,7 @@ public extension UIButton {
 
   @discardableResult
   func tintColor(
-    _ hex: UInt32,
+    _ hex: UInt64,
     alpha: CGFloat = 1
   ) -> Self {
     tintColor(.init(hex: hex, alpha: alpha))

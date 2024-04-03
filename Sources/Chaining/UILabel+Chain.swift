@@ -111,7 +111,7 @@ public extension UILabel {
   }
 
   @discardableResult
-  func textColor(_ hex: UInt32, alpha: CGFloat = 1) -> Self {
+  func textColor(_ hex: UInt64, alpha: CGFloat = 1) -> Self {
     textColor(.init(hex: hex, alpha: alpha))
   }
 }
