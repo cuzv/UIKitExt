@@ -6,14 +6,14 @@ open class PagesController: UIPageViewController {
 
   public init(
     transitionStyle style: UIPageViewController.TransitionStyle = .scroll,
-    navigationOrientation: UIPageViewController.NavigationOrientation = .horizontal,
+    navigationOrientation orientation: UIPageViewController.NavigationOrientation = .horizontal,
     options: [UIPageViewController.OptionsKey: Any]? = nil,
     pages: [UIViewController]
   ) {
     self.pages = pages
     super.init(
       transitionStyle: style,
-      navigationOrientation: navigationOrientation,
+      navigationOrientation: orientation,
       options: options
     )
   }

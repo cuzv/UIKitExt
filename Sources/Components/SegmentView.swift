@@ -11,7 +11,13 @@ public struct SegmentStyle {
   let highlightTextColor: UIColor
   let indicatorColor: UIColor
 
-  public init(normalFont: UIFont, normalTextColor: UIColor, highlightFont: UIFont, highlightTextColor: UIColor, indicatorColor: UIColor) {
+  public init(
+    normalFont: UIFont,
+    normalTextColor: UIColor,
+    highlightFont: UIFont,
+    highlightTextColor: UIColor,
+    indicatorColor: UIColor
+  ) {
     self.normalFont = normalFont
     self.normalTextColor = normalTextColor
     self.highlightFont = highlightFont
@@ -24,8 +30,9 @@ public struct SegmentStyle {
 public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIView {
   public let items: [Element]
   public let style: SegmentStyle
-  public let onClick: ((Element) -> Void)?
+  public let onClick: ((Element, Element) -> Void)?
 
+  private var selected: Int
   private var itemViews: [UILabel]?
   private let indicator = UIView()
   let stackView = UIStackView(axis: .horizontal, distribution: .equalSpacing, spacing: 32, paddings: .init(vertical: 8, horizontal: 16))
@@ -33,10 +40,13 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
   public init(
     items: [Element],
     style: SegmentStyle,
-    onClick: ((Element) -> Void)?
+    selected: Int = 0,
+    onClick: ((Element, Element) -> Void)?
   ) {
+    precondition(!items.isEmpty)
     self.items = items
     self.style = style
+    self.selected = selected
     self.onClick = onClick
     super.init(frame: .zero)
     setup()
@@ -60,7 +70,7 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
         .userInteractionEnabled(true)
         .tapAction { [weak self] sender in
           guard let self else { return }
-          onClick(index: sender.tag)
+          select(sender.tag)
         }
     }
     self.itemViews = itemViews
@@ -100,9 +110,10 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
     indicator.cornerRadius(indicator.bounds.height * 0.5)
   }
 
-  private func onClick(index: Int) {
+  private func select(_ index: Int) {
     reactToggle(index: index)
-    onClick?(items[index])
+    onClick?(items[selected], items[index])
+    selected = index
   }
 
   private func reactToggle(index: Int) {
@@ -135,9 +146,12 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
     }
   }
 
-  public func select(item: Element) {
+  public func select(_ item: Element) {
     if let index = items.firstIndex(where: { $0 == item }) {
-      onClick(index: index)
+      if selected == index {
+        return
+      }
+      select(index)
     } else {
       fatalError("select element must be in items provided by initializer")
     }
@@ -160,12 +174,12 @@ public struct Segment<Element: Hashable & CustomStringConvertible>: UIViewRepres
 
   public let items: [Element]
   public let style: SegmentStyle
-  @Binding private var selection: Element
+  @Binding private var selection: (Element, Element)
 
   public init(
     items: [Element],
     style: SegmentStyle,
-    selection: Binding<Element>
+    selection: Binding<(Element, Element)>
   ) {
     self.items = items
     self.style = style
@@ -173,12 +187,12 @@ public struct Segment<Element: Hashable & CustomStringConvertible>: UIViewRepres
   }
 
   public func makeUIView(context: Context) -> UIViewType {
-    .init(items: items, style: style) { item in
-      selection = item
+    .init(items: items, style: style) { old, new in
+      selection = (old, new)
     }
   }
 
   public func updateUIView(_ uiView: UIViewType, context: Context) {
-    uiView.select(item: selection)
+    uiView.select(selection)
   }
 }
