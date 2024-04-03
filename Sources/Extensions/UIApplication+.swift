@@ -2,7 +2,16 @@ import UIKit
 
 public extension UIApplication {
   var _keyWindow: UIWindow? {
-    windows.first(where: \.isKeyWindow)
+    if #available(iOS 15.0, *) {
+      connectedScenes
+        .filter { $0.activationState == .foregroundActive }
+        .compactMap { $0 as? UIWindowScene }
+        .first?
+        .windows
+        .first(where: \.isKeyWindow)
+    } else {
+      windows.first(where: \.isKeyWindow)
+    }
   }
 
   func topMostViewController() -> UIViewController? {
