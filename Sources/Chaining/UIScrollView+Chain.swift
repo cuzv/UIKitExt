@@ -112,6 +112,12 @@ public extension UIScrollView {
     return self
   }
 
+  @discardableResult
+  func scrollIndicatorInsets(_ insets: UIEdgeInsets) -> Self {
+    scrollIndicatorInsets = insets
+    return self
+  }
+
   @available(iOS 13.0, *)
   @discardableResult
   func automaticallyAdjustsScrollIndicatorInsets(_ adjusts: Bool) -> Self {
