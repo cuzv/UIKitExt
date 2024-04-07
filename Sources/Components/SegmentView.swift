@@ -81,7 +81,6 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
       .in(self)
 
     let pivot = itemViews[0]
-    pivot.textColor(.label)
 
     addSubview(
       indicator
