@@ -9,33 +9,36 @@ public enum FontError: Error {
 public struct CustomFont {
   public let name: String
 
-  public init(named name: String, extension ext: String) {
+  public init(
+    bundle: Bundle,
+    named name: String,
+    extension ext: String
+  ) {
     self.name = name
     do {
-      try registerFont(named: name, extension: ext)
+      try registerFont(
+        bundle: bundle,
+        named: name,
+        extension: ext
+      )
     } catch {
       let reason = error.localizedDescription
       fatalError("Failed to register font: \(reason)")
     }
   }
 
-  private func registerFont(named name: String, extension ext: String) throws {
-    guard let url = BundleToken.bundle.url(forResource: name, withExtension: ext),
-          let provider = CGDataProvider(url: url as CFURL),
-          let font = CGFont(provider),
-          CTFontManagerRegisterGraphicsFont(font, nil)
+  private func registerFont(
+    bundle: Bundle,
+    named name: String,
+    extension ext: String
+  ) throws {
+    guard
+      let url = bundle.url(forResource: name, withExtension: ext),
+      let provider = CGDataProvider(url: url as CFURL),
+      let font = CGFont(provider),
+      CTFontManagerRegisterGraphicsFont(font, nil)
     else {
       throw FontError.failedToRegisterFont
     }
   }
-}
-
-private final class BundleToken {
-  static let bundle: Bundle = {
-#if SWIFT_PACKAGE
-    return Bundle.module
-#else
-    return Bundle(for: BundleToken.self)
-#endif
-  }()
 }
