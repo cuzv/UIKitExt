@@ -20,8 +20,8 @@ public extension Navigation where Base: UIViewController {
       it.translatesAutoresizingMaskIntoConstraints = false
       base.view.addSubview(it)
       NSLayoutConstraint.activate([
-        it.leadingAnchor.constraint(equalTo: base.view.leadingAnchor),
-        it.trailingAnchor.constraint(equalTo: base.view.trailingAnchor),
+        it.leadingAnchor.constraint(equalTo: base.view.safeAreaLayoutGuide.leadingAnchor),
+        it.trailingAnchor.constraint(equalTo: base.view.safeAreaLayoutGuide.trailingAnchor),
         it.topAnchor.constraint(equalTo: base.view.topAnchor),
         it.bottomAnchor.constraint(equalTo: base.view.safeAreaLayoutGuide.topAnchor),
       ])
