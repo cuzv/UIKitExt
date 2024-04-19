@@ -75,7 +75,8 @@ public extension UIView {
   static func animateKeyboard(
     withDuration duration: TimeInterval,
     curve: UIView.AnimationCurve,
-    animations: @escaping () -> Void
+    animations: @escaping () -> Void,
+    completion: ((Bool) -> Void)? = nil
   ) {
     if #available(iOS 14, *) {
       UIView.animate(
@@ -83,7 +84,7 @@ public extension UIView {
         delay: 0,
         options: AnimationOptions(rawValue: UInt(curve.rawValue) << 16),
         animations: animations,
-        completion: nil
+        completion: completion
       )
     } else {
       UIView.beginAnimations(nil, context: nil)
@@ -92,6 +93,9 @@ public extension UIView {
       UIView.setAnimationCurve(curve)
       animations()
       UIView.commitAnimations()
+      DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+        completion?(true)
+      }
     }
   }
 }
