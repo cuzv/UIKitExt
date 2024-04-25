@@ -28,6 +28,24 @@ public extension UIViewController {
   }
 }
 
+public extension UIViewController {
+  func close() {
+    close(animated: true)
+  }
+
+  func close(animated: Bool) {
+    close(animated: animated, completion: nil)
+  }
+
+  func close(animated: Bool, completion: (() -> Void)?) {
+    if let pvc = presentingViewController {
+      pvc.dismiss(animated: animated, completion: completion)
+    } else {
+      navigationController?.pop(animated: animated, completion: completion)
+    }
+  }
+}
+
 // MARK: - Adding/Removing a Child View Controller to/from Your Content
 
 // see https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/ImplementingaContainerViewController.html
