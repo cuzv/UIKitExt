@@ -150,6 +150,57 @@ public extension UITextField {
     inputAccessoryView = view
     return self
   }
+}
+
+// MARK: - UITextInputTraits
+
+public extension UITextField {
+  @discardableResult
+  func autocapitalizationType(_ value: UITextAutocapitalizationType) -> Self {
+    autocapitalizationType = value
+    return self
+  }
+
+  @discardableResult
+  func autocorrectionType(_ value: UITextAutocorrectionType) -> Self {
+    autocorrectionType = value
+    return self
+  }
+
+  @available(iOS 5.0, *)
+  @discardableResult
+  func spellCheckingType(_ value: UITextSpellCheckingType) -> Self {
+    spellCheckingType = value
+    return self
+  }
+
+  @available(iOS 11.0, *)
+  @discardableResult
+  func smartQuotesType(_ value: UITextSmartQuotesType) -> Self {
+    smartQuotesType = value
+    return self
+  }
+
+  @available(iOS 11.0, *)
+  @discardableResult
+  func smartDashesType(_ value: UITextSmartDashesType) -> Self {
+    smartDashesType = value
+    return self
+  }
+
+  @available(iOS 11.0, *)
+  @discardableResult
+  func smartInsertDeleteType(_ value: UITextSmartInsertDeleteType) -> Self {
+    smartInsertDeleteType = value
+    return self
+  }
+
+  @available(iOS 17.0, *)
+  @discardableResult
+  func inlinePredictionType(_ value: UITextInlinePredictionType) -> Self {
+    inlinePredictionType = value
+    return self
+  }
 
   @discardableResult
   func keyboardType(_ value: UIKeyboardType) -> Self {
@@ -181,9 +232,29 @@ public extension UITextField {
     return self
   }
 
+  @available(iOS 10.0, *)
   @discardableResult
-  func textContentType(_ value: UITextContentType) -> Self {
+  func textContentType(_ value: UITextContentType?) -> Self {
     textContentType = value
     return self
+  }
+
+  @available(iOS 10.0, *)
+  @discardableResult
+  func passwordRules(_ value: UITextInputPasswordRules?) -> Self {
+    passwordRules = value
+    return self
+  }
+}
+
+// MARK: - Hex Color
+
+public extension UITextField {
+  func textColor(_ hex: String, alpha: CGFloat = 1) -> Self {
+    textColor(.init(hex: hex, alpha: alpha))
+  }
+
+  func textColor(_ hex: UInt64, alpha: CGFloat = 1) -> Self {
+    textColor(.init(hex: hex, alpha: alpha))
   }
 }

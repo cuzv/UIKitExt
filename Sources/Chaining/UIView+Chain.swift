@@ -629,7 +629,7 @@ public extension UIView {
   }
 }
 
-// MARK: - Color
+// MARK: - Hex Color
 
 public extension UIView {
   @discardableResult
