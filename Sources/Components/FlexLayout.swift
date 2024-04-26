@@ -6,6 +6,7 @@ public typealias FlexColumn = Flex.Column
 public typealias FlexRow = Flex.Row
 public typealias FlexScroll = Flex.Scroll
 public typealias FlexView = Flex.View
+public typealias FlexStack = Flex.Stack
 
 public typealias FlexJustifyContent = Flex.JustifyContent
 public typealias FlexAlignItems = Flex.AlignItems
@@ -181,6 +182,21 @@ public enum Flex {
     ) {
       self.init()
       addSubview(content(), edges: edges, paddings: insets)
+    }
+  }
+
+  // MARK: Stack
+
+  open class Stack: HitTestSlopView {
+    public convenience init(
+      edges: PinEdge = .superview,
+      paddings insets: NSDirectionalEdgeInsets = .zero,
+      @ChildrenViewBuilder content: () -> [UIView]
+    ) {
+      self.init()
+      for view in content() {
+        addSubview(view, edges: edges, paddings: insets)
+      }
     }
   }
 
