@@ -648,9 +648,8 @@ public extension UIView {
   @discardableResult
   func overlap(_ view: UIView) -> Self {
     guard let superview = view.superview else { return self }
-    superview.addSubview(self) { proxy in
-      proxy.edges == view.edgesAnchor
-    }
+    superview.addSubview(self)
+    constraint(to: view, pin: .superview)
     return self
   }
 

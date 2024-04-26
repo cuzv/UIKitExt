@@ -87,16 +87,11 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
         .useConstraints()
         .backgroundColor(style.indicatorColor)
     )
-    indicator.layout { proxy in
-      proxy.leading == pivot.leadingAnchor - 16
-      proxy.trailing == pivot.trailingAnchor + 16
-      proxy.top == pivot.topAnchor - 8
-      proxy.bottom == pivot.bottomAnchor + 8
-    }
+    indicator
+      .clipsToBounds(true)
+      .constraint(to: pivot, pin: .superview, margins: .init(vertical: 8, horizontal: 16).reversed)
+      .sendToBack()
 
-    sendSubviewToBack(indicator)
-
-    indicator.clipsToBounds(true)
     clipsToBounds(true)
 
     reactToggle(index: 0)
@@ -122,12 +117,10 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
 
     let pivot = itemViews[index]
 
-    indicator.relayout { proxy in
-      proxy.leading == pivot.leadingAnchor - 16
-      proxy.trailing == pivot.trailingAnchor + 16
-      proxy.top == pivot.topAnchor - 8
-      proxy.bottom == pivot.bottomAnchor + 8
-    }
+    indicator
+      .deactivateConstraints()
+      .constraint(to: pivot, pin: .superview, margins: .init(vertical: 8, horizontal: 16).reversed)
+      .updateConstraintsIfNecessary()
 
     for label in itemViews {
       label
