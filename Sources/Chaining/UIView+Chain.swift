@@ -655,7 +655,11 @@ public extension UIView {
   }
 
   @discardableResult
-  func overlay(_ view: UIView, alignment: Flex.OverlayAlignment = .center, offset: CGPoint = .zero) -> Self {
+  func overlay(
+    _ view: UIView,
+    alignment: Flex.OverlayAlignment = .center,
+    offset: CGPoint = .zero
+  ) -> Self {
     addSubview(view) { proxy in
       switch alignment {
       case .center:

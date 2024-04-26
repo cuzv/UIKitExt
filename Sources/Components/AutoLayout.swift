@@ -206,7 +206,10 @@ public extension UIView {
   }
 
   var sizeAnchor: SizeAnchorPack {
-    .init(widthAnchor: widthAnchor, heightAnchor: heightAnchor)
+    .init(
+      widthAnchor: widthAnchor,
+      heightAnchor: heightAnchor
+    )
   }
 
   struct CenterAnchorPack {
@@ -215,7 +218,10 @@ public extension UIView {
   }
 
   var centerAnchor: CenterAnchorPack {
-    .init(centerXAnchor: centerXAnchor, centerYAnchor: centerYAnchor)
+    .init(
+      centerXAnchor: centerXAnchor,
+      centerYAnchor: centerYAnchor
+    )
   }
 
   struct EdgesPack {
@@ -299,21 +305,28 @@ public extension UIView {
 
 public extension UIView {
   @discardableResult
-  func addSubview(_ view: UIView, layout: (LayoutProxy) -> Void) -> Self {
+  func addSubview(
+    _ view: UIView,
+    layout: (LayoutProxy) -> Void
+  ) -> Self {
     addSubview(view)
     view.layout(using: layout)
     return self
   }
 
   @discardableResult
-  func layout(using closure: (LayoutProxy) -> Void) -> Self {
+  func layout(
+    using closure: (LayoutProxy) -> Void
+  ) -> Self {
     translatesAutoresizingMaskIntoConstraints = false
     closure(LayoutProxy(target: self))
     return self
   }
 
   @discardableResult
-  func relayout(using closure: (LayoutProxy) -> Void) -> Self {
+  func relayout(
+    using closure: (LayoutProxy) -> Void
+  ) -> Self {
     deactivateConstraints()
     closure(LayoutProxy(target: self))
     updateConstraintsIfNeeded()
@@ -337,7 +350,10 @@ public extension UIView {
 
   @discardableResult
   func addSubviews(
-    _ pairs: (view: UIView, layout: (LayoutProxy) -> Void)...
+    _ pairs: (
+      view: UIView,
+      layout: (LayoutProxy) -> Void
+    )...
   ) -> Self {
     for pair in pairs {
       addSubview(pair.view)
@@ -348,7 +364,10 @@ public extension UIView {
 
   @discardableResult
   func addSubviews(
-    _ pairs: [(view: UIView, layout: (LayoutProxy) -> Void)]
+    _ pairs: [(
+      view: UIView,
+      layout: (LayoutProxy) -> Void
+    )]
   ) -> Self {
     for pair in pairs {
       addSubview(pair.view)
@@ -371,7 +390,10 @@ public extension UIStackView {
 
   @discardableResult
   func addArrangedSubviews(
-    _ pairs: (view: UIView, layout: (LayoutProxy) -> Void)...
+    _ pairs: (
+      view: UIView,
+      layout: (LayoutProxy) -> Void
+    )...
   ) -> Self {
     for pair in pairs {
       addArrangedSubview(pair.view)
@@ -382,7 +404,10 @@ public extension UIStackView {
 
   @discardableResult
   func addArrangedSubviews(
-    _ pairs: [(view: UIView, layout: (LayoutProxy) -> Void)]
+    _ pairs: [(
+      view: UIView,
+      layout: (LayoutProxy) -> Void
+    )]
   ) -> Self {
     for pair in pairs {
       addArrangedSubview(pair.view)
@@ -460,14 +485,22 @@ public func * <Anchor: LayoutDimension>(
   lhs: LayoutDimensionBox<Anchor>,
   rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
-  .init(anchor: lhs.anchor, multiplier: rhs, constant: 0)
+  .init(
+    anchor: lhs.anchor,
+    multiplier: rhs,
+    constant: 0
+  )
 }
 
 public func / <Anchor: LayoutDimension>(
   lhs: LayoutDimensionBox<Anchor>,
   rhs: CGFloat
 ) -> LayoutDimensionPack<Anchor> {
-  .init(anchor: lhs.anchor, multiplier: 1.0 / rhs, constant: 0)
+  .init(
+    anchor: lhs.anchor,
+    multiplier: 1.0 / rhs,
+    constant: 0
+  )
 }
 
 public func + (
@@ -505,7 +538,10 @@ public func >= <Anchor: LayoutAnchor>(
   lhs: LayoutAnchorBox<Anchor>,
   rhs: LayoutAnchorPack<Anchor>
 ) -> NSLayoutConstraint {
-  lhs.greaterThanOrEqual(to: rhs.anchor, offsetBy: rhs.constant)
+  lhs.greaterThanOrEqual(
+    to: rhs.anchor,
+    offsetBy: rhs.constant
+  )
 }
 
 @discardableResult
@@ -521,7 +557,10 @@ public func <= <Anchor: LayoutAnchor>(
   lhs: LayoutAnchorBox<Anchor>,
   rhs: LayoutAnchorPack<Anchor>
 ) -> NSLayoutConstraint {
-  lhs.lessThanOrEqual(to: rhs.anchor, offsetBy: rhs.constant)
+  lhs.lessThanOrEqual(
+    to: rhs.anchor,
+    offsetBy: rhs.constant
+  )
 }
 
 @discardableResult
