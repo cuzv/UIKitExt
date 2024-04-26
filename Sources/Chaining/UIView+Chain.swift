@@ -493,80 +493,141 @@ public extension UIView {
   }
 }
 
+// MARK: - Spacer
+
 public final class Spacer: UIView {
-  public init(touchable: Bool = true) {
+  public init(
+    touchable: Bool = true
+  ) {
     super.init(frame: .zero)
     useConstraints().userInteractionEnabled(touchable)
   }
 
   @available(*, unavailable)
-  required init?(coder: NSCoder) {
+  required init?(
+    coder: NSCoder
+  ) {
     fatalError("init(coder:) has not been implemented")
   }
 }
 
-// MARK: - Pin Edges Layout
+// MARK: - Pin Anchor Layout
 
 @available(iOS 11.0, *)
 public extension UIView {
   @discardableResult
-  func addSubview(_ view: UIView, edges: PinEdge = .superview, paddings: NSDirectionalEdgeInsets) -> Self {
+  func addSubview(
+    _ view: UIView,
+    pin anchors: PinLayoutAnchor,
+    paddings: NSDirectionalEdgeInsets = .zero,
+    position: CGPoint = .init(),
+    size: CGSize = .init(),
+    layout: (LayoutProxy) -> Void = { _ in }
+  ) -> Self {
     addSubview(view)
-    view.pin(to: self, edges: edges, margins: paddings)
+    view.constraint(
+      to: self,
+      pin: anchors,
+      margins: paddings,
+      position: position,
+      size: size,
+      layout: layout
+    )
     return self
   }
 
   @discardableResult
-  func pin(to other: UIView, edges: PinEdge, margins insets: NSDirectionalEdgeInsets = .zero) -> Self {
+  func constraint(
+    to other: UIView,
+    pin anchors: PinLayoutAnchor,
+    margins insets: NSDirectionalEdgeInsets = .zero,
+    position: CGPoint = .init(),
+    size: CGSize = .init(),
+    layout closure: (LayoutProxy) -> Void = { _ in }
+  ) -> Self {
     layout { proxy in
-      if edges.contains(.leading) {
+      if anchors.contains(.leading) {
         proxy.leading == other.leadingAnchor + insets.leading
       }
-      if edges.contains(.trailing) {
+      if anchors.contains(.trailing) {
         proxy.trailing == other.trailingAnchor - insets.trailing
       }
-      if edges.contains(.top) {
+      if anchors.contains(.top) {
         proxy.top == other.topAnchor + insets.top
       }
-      if edges.contains(.bottom) {
+      if anchors.contains(.bottom) {
         proxy.bottom == other.bottomAnchor - insets.bottom
       }
 
-      if edges.contains(.safeLeading) {
+      if anchors.contains(.safeLeading) {
         proxy.leading == other.safeAreaLayoutGuide.leadingAnchor + insets.leading
       }
-      if edges.contains(.safeTrailing) {
+      if anchors.contains(.safeTrailing) {
         proxy.trailing == other.safeAreaLayoutGuide.trailingAnchor - insets.trailing
       }
-      if edges.contains(.safeTop) {
+      if anchors.contains(.safeTop) {
         proxy.top == other.safeAreaLayoutGuide.topAnchor + insets.top
       }
-      if edges.contains(.safeBottom) {
+      if anchors.contains(.safeBottom) {
         proxy.bottom == other.safeAreaLayoutGuide.bottomAnchor - insets.bottom
       }
+
+      if anchors.contains(.centerX) {
+        proxy.centerX == other.centerXAnchor + position.x
+      }
+      if anchors.contains(.centerY) {
+        proxy.centerY == other.centerYAnchor + position.y
+      }
+
+      if anchors.contains(.width) {
+        proxy.width == other.widthAnchor - size.width
+      }
+      if anchors.contains(.height) {
+        proxy.height == other.heightAnchor - size.height
+      }
+
+      if anchors.contains(.firstBaseline) {
+        proxy.firstBaseline == other.firstBaselineAnchor
+      }
+      if anchors.contains(.lastBaseline) {
+        proxy.lastBaseline == other.lastBaselineAnchor
+      }
+
+      closure(proxy)
     }
   }
 
-  struct PinEdge: OptionSet, @unchecked Sendable {
+  struct PinLayoutAnchor: OptionSet, @unchecked Sendable {
     public let rawValue: UInt
 
-    public init(rawValue: UInt) {
+    public init(
+      rawValue: UInt
+    ) {
       self.rawValue = rawValue
     }
 
-    public static let top = PinEdge(rawValue: 1 << 0)
-    public static let bottom = PinEdge(rawValue: 1 << 1)
-    public static let leading = PinEdge(rawValue: 1 << 2)
-    public static let trailing = PinEdge(rawValue: 1 << 3)
+    public static let top = PinLayoutAnchor(rawValue: 1 << 0)
+    public static let bottom = PinLayoutAnchor(rawValue: 1 << 1)
+    public static let leading = PinLayoutAnchor(rawValue: 1 << 2)
+    public static let trailing = PinLayoutAnchor(rawValue: 1 << 3)
 
-    public static let safeTop = PinEdge(rawValue: 1 << 4)
-    public static let safeBottom = PinEdge(rawValue: 1 << 5)
-    public static let safeLeading = PinEdge(rawValue: 1 << 6)
-    public static let safeTrailing = PinEdge(rawValue: 1 << 7)
+    public static let safeTop = PinLayoutAnchor(rawValue: 1 << 4)
+    public static let safeBottom = PinLayoutAnchor(rawValue: 1 << 5)
+    public static let safeLeading = PinLayoutAnchor(rawValue: 1 << 6)
+    public static let safeTrailing = PinLayoutAnchor(rawValue: 1 << 7)
 
-    public static let superview: PinEdge = [.top, .bottom, .leading, .trailing]
-    public static let safeArea: PinEdge = [.safeTop, .safeBottom, .safeLeading, .safeTrailing]
-    public static let sheet: PinEdge = [.safeTop, .bottom, .safeLeading, .safeTrailing]
+    public static let centerX = PinLayoutAnchor(rawValue: 1 << 8)
+    public static let centerY = PinLayoutAnchor(rawValue: 1 << 9)
+
+    public static let width = PinLayoutAnchor(rawValue: 1 << 10)
+    public static let height = PinLayoutAnchor(rawValue: 1 << 11)
+
+    public static let firstBaseline = PinLayoutAnchor(rawValue: 1 << 12)
+    public static let lastBaseline = PinLayoutAnchor(rawValue: 1 << 13)
+
+    public static let superview: PinLayoutAnchor = [.top, .bottom, .leading, .trailing]
+    public static let safeArea: PinLayoutAnchor = [.safeTop, .safeBottom, .safeLeading, .safeTrailing]
+    public static let sheet: PinLayoutAnchor = [.safeTop, .bottom, .safeLeading, .safeTrailing]
   }
 }
 
@@ -577,10 +638,10 @@ public extension UIView {
   @discardableResult
   func `in`(
     _ superview: UIView,
-    edges: PinEdge = .superview,
+    pin anchors: PinLayoutAnchor = .superview,
     paddings insets: NSDirectionalEdgeInsets = .zero
   ) -> Self {
-    superview.addSubview(self, edges: edges, paddings: insets)
+    superview.addSubview(self, pin: anchors, paddings: insets)
     return self
   }
 

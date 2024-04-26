@@ -147,10 +147,7 @@ public enum Flex {
             paddings: paddings,
             content: content
           ),
-          layout: { proxy in
-            proxy.edges == proxy.superview.edgesAnchor
-            proxy.height == proxy.superview.heightAnchor
-          }
+          pin: [.superview, .height]
         )
       case .vertical:
         addSubview(
@@ -161,10 +158,7 @@ public enum Flex {
             paddings: paddings,
             content: content
           ),
-          layout: { proxy in
-            proxy.edges == proxy.superview.edgesAnchor
-            proxy.width == proxy.superview.widthAnchor
-          }
+          pin: [.superview, .width]
         )
       @unknown default:
         break
@@ -176,12 +170,12 @@ public enum Flex {
 
   open class View: HitTestSlopView {
     public convenience init(
-      edges: PinEdge = .superview,
+      pin anchors: PinLayoutAnchor = .superview,
       paddings insets: NSDirectionalEdgeInsets = .zero,
       @ChildViewBuilder content: () -> UIView
     ) {
       self.init()
-      addSubview(content(), edges: edges, paddings: insets)
+      addSubview(content(), pin: anchors, paddings: insets)
     }
   }
 
@@ -189,13 +183,13 @@ public enum Flex {
 
   open class Stack: HitTestSlopView {
     public convenience init(
-      edges: PinEdge = .superview,
+      pin anchors: PinLayoutAnchor = .superview,
       paddings insets: NSDirectionalEdgeInsets = .zero,
       @ChildrenViewBuilder content: () -> [UIView]
     ) {
       self.init()
       for view in content() {
-        addSubview(view, edges: edges, paddings: insets)
+        addSubview(view, pin: anchors, paddings: insets)
       }
     }
   }
@@ -467,11 +461,11 @@ public extension UIView {
 
   @discardableResult
   func inView(
-    edges: PinEdge = .superview,
+    pin anchors: PinLayoutAnchor = .superview,
     paddings insets: NSDirectionalEdgeInsets = .zero
   ) -> Flex.View {
     .init(
-      edges: edges,
+      pin: anchors,
       paddings: insets
     ) {
       self
@@ -480,11 +474,11 @@ public extension UIView {
 
   @discardableResult
   func padding(
-    edges: PinEdge = .superview,
+    pin anchors: PinLayoutAnchor = .superview,
     _ insets: NSDirectionalEdgeInsets = .zero
   ) -> Flex.View {
     inView(
-      edges: edges,
+      pin: anchors,
       paddings: insets
     )
   }

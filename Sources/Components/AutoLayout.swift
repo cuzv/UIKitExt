@@ -1,18 +1,9 @@
 import UIKit
 
 public protocol LayoutAnchor {
-  func constraint(
-    equalTo anchor: Self,
-    constant: CGFloat
-  ) -> NSLayoutConstraint
-  func constraint(
-    greaterThanOrEqualTo anchor: Self,
-    constant: CGFloat
-  ) -> NSLayoutConstraint
-  func constraint(
-    lessThanOrEqualTo anchor: Self,
-    constant: CGFloat
-  ) -> NSLayoutConstraint
+  func constraint(equalTo anchor: Self, constant: CGFloat) -> NSLayoutConstraint
+  func constraint(greaterThanOrEqualTo anchor: Self, constant: CGFloat) -> NSLayoutConstraint
+  func constraint(lessThanOrEqualTo anchor: Self, constant: CGFloat) -> NSLayoutConstraint
 }
 
 public protocol LayoutDimension: LayoutAnchor {
@@ -20,21 +11,9 @@ public protocol LayoutDimension: LayoutAnchor {
   func constraint(greaterThanOrEqualToConstant c: CGFloat) -> NSLayoutConstraint
   func constraint(lessThanOrEqualToConstant c: CGFloat) -> NSLayoutConstraint
 
-  func constraint(
-    equalTo anchor: Self,
-    multiplier m: CGFloat,
-    constant c: CGFloat
-  ) -> NSLayoutConstraint
-  func constraint(
-    greaterThanOrEqualTo anchor: Self,
-    multiplier m: CGFloat,
-    constant c: CGFloat
-  ) -> NSLayoutConstraint
-  func constraint(
-    lessThanOrEqualTo anchor: Self,
-    multiplier m: CGFloat,
-    constant c: CGFloat
-  ) -> NSLayoutConstraint
+  func constraint(equalTo anchor: Self, multiplier m: CGFloat, constant c: CGFloat) -> NSLayoutConstraint
+  func constraint(greaterThanOrEqualTo anchor: Self, multiplier m: CGFloat, constant c: CGFloat) -> NSLayoutConstraint
+  func constraint(lessThanOrEqualTo anchor: Self, multiplier m: CGFloat, constant c: CGFloat) -> NSLayoutConstraint
 }
 
 extension NSLayoutAnchor: LayoutAnchor {}
@@ -335,11 +314,23 @@ public extension UIView {
 
   @discardableResult
   func relayout(using closure: (LayoutProxy) -> Void) -> Self {
+    deactivateConstraints()
+    closure(LayoutProxy(target: self))
+    updateConstraintsIfNeeded()
+    return self
+  }
+
+  @discardableResult
+  func deactivateConstraints() -> Self {
     let constraints = superview?.constraints.filter { constraint in
       constraint.firstItem as? Self == self || constraint.secondItem as? Self == self
     } ?? []
     NSLayoutConstraint.deactivate(constraints)
-    closure(LayoutProxy(target: self))
+    return self
+  }
+
+  @discardableResult
+  func updateConstraintsIfNecessary() -> Self {
     updateConstraintsIfNeeded()
     return self
   }
