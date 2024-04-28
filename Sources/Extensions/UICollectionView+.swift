@@ -96,15 +96,20 @@ public extension UICollectionView {
 }
 
 public extension UICollectionView {
-  func calculateSize(
-    forDeployedCell cell: UICollectionViewCell,
-    sectionInset: UIEdgeInsets? = nil
+  func layoutSize(
+    for cell: UICollectionViewCell,
+    sectionInset: UIEdgeInsets = .zero
+  ) -> CGSize {
+    super.layoutSize(for: cell, sectionInset: sectionInset)
+  }
+}
+
+extension UIScrollView {
+  func layoutSize(
+    for cell: any ReusableCell,
+    sectionInset: UIEdgeInsets = .zero
   ) -> CGSize {
     cell.layoutIfNeeded()
-
-    let sectionInset = sectionInset ??
-      (collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset ??
-      .zero
 
     let fixedWith = bounds
       .inset(by: contentInset)
@@ -112,7 +117,10 @@ public extension UICollectionView {
       .width
 
     let calculatedSize = cell.contentView.systemLayoutSizeFitting(
-      .init(width: fixedWith, height: UIView.layoutFittingCompressedSize.height),
+      .init(
+        width: fixedWith,
+        height: UIView.layoutFittingCompressedSize.height
+      ),
       withHorizontalFittingPriority: .required,
       verticalFittingPriority: .fittingSizeLevel
     )
@@ -120,3 +128,10 @@ public extension UICollectionView {
     return calculatedSize
   }
 }
+
+protocol ReusableCell: UIView {
+  var contentView: UIView { get }
+}
+
+extension UICollectionViewCell: ReusableCell {}
+extension UITableViewCell: ReusableCell {}

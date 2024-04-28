@@ -98,25 +98,10 @@ public extension UITableView {
 }
 
 public extension UITableView {
-  func calculateSize(
-    forDeployedCell cell: UITableViewCell,
-    sectionInset: UIEdgeInsets? = nil
+  func layoutSize(
+    for cell: UITableViewCell,
+    sectionInset: UIEdgeInsets = .zero
   ) -> CGSize {
-    cell.layoutIfNeeded()
-
-    let sectionInset = sectionInset ?? .zero
-
-    let fixedWith = bounds
-      .inset(by: contentInset)
-      .inset(by: sectionInset)
-      .width
-
-    let calculatedSize = cell.contentView.systemLayoutSizeFitting(
-      .init(width: fixedWith, height: UIView.layoutFittingCompressedSize.height),
-      withHorizontalFittingPriority: .required,
-      verticalFittingPriority: .fittingSizeLevel
-    )
-
-    return calculatedSize
+    super.layoutSize(for: cell, sectionInset: sectionInset)
   }
 }
