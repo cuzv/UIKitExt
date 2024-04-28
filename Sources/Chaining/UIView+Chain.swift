@@ -399,11 +399,6 @@ public extension UIView {
   }
 
   @discardableResult
-  func size(_ value: CGFloat) -> Self {
-    size(.init(width: value, height: value))
-  }
-
-  @discardableResult
   func size(_ width: CGFloat, _ height: CGFloat) -> Self {
     size(.init(width: width, height: height))
   }
@@ -520,8 +515,8 @@ public extension UIView {
     _ view: UIView,
     pin anchors: PinLayoutAnchor,
     paddings: NSDirectionalEdgeInsets = .zero,
-    position: CGPoint = .init(),
-    size: CGSize = .init(),
+    translation: CGPoint = .zero,
+    sizeGap: CGSize = .zero,
     layout: (LayoutProxy) -> Void = { _ in }
   ) -> Self {
     addSubview(view)
@@ -529,8 +524,8 @@ public extension UIView {
       to: self,
       pin: anchors,
       margins: paddings,
-      position: position,
-      size: size,
+      translation: translation,
+      sizeGap: sizeGap,
       layout: layout
     )
     return self
@@ -540,50 +535,50 @@ public extension UIView {
   func constraint(
     to other: UIView,
     pin anchors: PinLayoutAnchor,
-    margins insets: NSDirectionalEdgeInsets = .zero,
-    position: CGPoint = .init(),
-    size: CGSize = .init(),
+    margins: NSDirectionalEdgeInsets = .zero,
+    translation: CGPoint = .zero,
+    sizeGap: CGSize = .zero,
     layout closure: (LayoutProxy) -> Void = { _ in }
   ) -> Self {
     layout { proxy in
       if anchors.contains(.leading) {
-        proxy.leading == other.leadingAnchor + insets.leading
+        proxy.leading == other.leadingAnchor + margins.leading
       }
       if anchors.contains(.trailing) {
-        proxy.trailing == other.trailingAnchor - insets.trailing
+        proxy.trailing == other.trailingAnchor - margins.trailing
       }
       if anchors.contains(.top) {
-        proxy.top == other.topAnchor + insets.top
+        proxy.top == other.topAnchor + margins.top
       }
       if anchors.contains(.bottom) {
-        proxy.bottom == other.bottomAnchor - insets.bottom
+        proxy.bottom == other.bottomAnchor - margins.bottom
       }
 
       if anchors.contains(.safeLeading) {
-        proxy.leading == other.safeAreaLayoutGuide.leadingAnchor + insets.leading
+        proxy.leading == other.safeAreaLayoutGuide.leadingAnchor + margins.leading
       }
       if anchors.contains(.safeTrailing) {
-        proxy.trailing == other.safeAreaLayoutGuide.trailingAnchor - insets.trailing
+        proxy.trailing == other.safeAreaLayoutGuide.trailingAnchor - margins.trailing
       }
       if anchors.contains(.safeTop) {
-        proxy.top == other.safeAreaLayoutGuide.topAnchor + insets.top
+        proxy.top == other.safeAreaLayoutGuide.topAnchor + margins.top
       }
       if anchors.contains(.safeBottom) {
-        proxy.bottom == other.safeAreaLayoutGuide.bottomAnchor - insets.bottom
+        proxy.bottom == other.safeAreaLayoutGuide.bottomAnchor - margins.bottom
       }
 
       if anchors.contains(.centerX) {
-        proxy.centerX == other.centerXAnchor + position.x
+        proxy.centerX == other.centerXAnchor + translation.x
       }
       if anchors.contains(.centerY) {
-        proxy.centerY == other.centerYAnchor + position.y
+        proxy.centerY == other.centerYAnchor + translation.y
       }
 
       if anchors.contains(.width) {
-        proxy.width == other.widthAnchor - size.width
+        proxy.width == other.widthAnchor - sizeGap.width
       }
       if anchors.contains(.height) {
-        proxy.height == other.heightAnchor - size.height
+        proxy.height == other.heightAnchor - sizeGap.height
       }
 
       if anchors.contains(.firstBaseline) {

@@ -29,3 +29,26 @@ public extension NSDirectionalEdgeInsets {
     self.init(top: top, leading: leading, bottom: bottom, trailing: trailing)
   }
 }
+
+extension NSDirectionalEdgeInsets: ExpressibleByIntegerLiteral {
+  public init(integerLiteral value: IntegerLiteralType) {
+    self = .init(value: CGFloat(value))
+  }
+}
+
+extension NSDirectionalEdgeInsets: ExpressibleByFloatLiteral {
+  public init(floatLiteral value: FloatLiteralType) {
+    self = .init(value: value)
+  }
+}
+
+extension NSDirectionalEdgeInsets: ExpressibleByArrayLiteral {
+  public init(arrayLiteral elements: CGFloat...) {
+    self = .init(
+      top: elements[0, default: 0],
+      leading: elements[1, default: 0],
+      bottom: elements[2, default: 0],
+      trailing: elements[3, default: 0]
+    )
+  }
+}
