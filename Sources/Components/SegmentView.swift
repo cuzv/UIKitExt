@@ -4,48 +4,56 @@ import Foundation
 import SwiftUI
 import UIKit
 
-public struct SegmentStyle {
+public enum SegmentIndicatorStyle {
+  case capsule
+  case line(size: CGSize = .init(width: 4, height: 4))
+}
+
+public struct SegmentAppearance {
   let normalFont: UIFont
   let normalTextColor: UIColor
   let highlightFont: UIFont
   let highlightTextColor: UIColor
   let indicatorColor: UIColor
+  let indicatorStyle: SegmentIndicatorStyle
 
   public init(
     normalFont: UIFont,
     normalTextColor: UIColor,
     highlightFont: UIFont,
     highlightTextColor: UIColor,
-    indicatorColor: UIColor
+    indicatorColor: UIColor,
+    indicatorStyle: SegmentIndicatorStyle
   ) {
     self.normalFont = normalFont
     self.normalTextColor = normalTextColor
     self.highlightFont = highlightFont
     self.highlightTextColor = highlightTextColor
     self.indicatorColor = indicatorColor
+    self.indicatorStyle = indicatorStyle
   }
 }
 
 @available(iOS 13.0, *)
 public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIView {
   public let items: [Element]
-  public let style: SegmentStyle
+  public let appearance: SegmentAppearance
   public let onClick: ((Element, Element) -> Void)?
 
   private var selected: Int
   private var itemViews: [UILabel]?
   private let indicator = UIView()
-  let stackView = UIStackView(axis: .horizontal, distribution: .equalSpacing, spacing: 32, paddings: .init(vertical: 8, horizontal: 16))
+  private let paddings = NSDirectionalEdgeInsets(vertical: 8, horizontal: 16)
 
   public init(
     items: [Element],
-    style: SegmentStyle,
+    appearance: SegmentAppearance,
     selected: Int = 0,
     onClick: ((Element, Element) -> Void)?
   ) {
     precondition(!items.isEmpty)
     self.items = items
-    self.style = style
+    self.appearance = appearance
     self.selected = selected
     self.onClick = onClick
     super.init(frame: .zero)
@@ -60,8 +68,8 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
   private func setup() {
     let itemViews = items.enumerated().map { offset, item in
       SegmentLabel(text: String(describing: item))
-        .textColor(style.normalTextColor)
-        .font(style.normalFont)
+        .textColor(appearance.normalTextColor)
+        .font(appearance.normalFont)
         .tag(offset)
         .contentHuggingPriority(.defaultHigh, for: .horizontal)
         .contentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -75,22 +83,44 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
     }
     self.itemViews = itemViews
 
-    stackView
-      .backgroundColor(.black.withAlphaComponent(0.06))
-      .addArrangedSubviews(itemViews)
-      .in(self)
+    UIStackView(
+      axis: .horizontal,
+      distribution: .equalSpacing,
+      spacing: 32,
+      paddings: paddings
+    ) {
+      itemViews
+    }
+    .in(self)
 
     let pivot = itemViews[0]
 
     addSubview(
       indicator
         .useConstraints()
-        .backgroundColor(style.indicatorColor)
+        .backgroundColor(appearance.indicatorColor)
+        .clipsToBounds(true)
     )
-    indicator
-      .clipsToBounds(true)
-      .constraint(to: pivot, pin: .superview, margins: .init(vertical: 8, horizontal: 16).reversed)
-      .sendToBack()
+
+    switch appearance.indicatorStyle {
+    case .capsule:
+      indicator
+        .constraint(
+          to: pivot,
+          pin: .superview,
+          margins: paddings.reversed
+        )
+        .sendToBack()
+    case let .line(size):
+      indicator
+        .size(size)
+        .constraint(
+          to: pivot,
+          pin: [.centerX, .bottom],
+          margins: paddings.reversed
+        )
+        .sendToBack()
+    }
 
     clipsToBounds(true)
 
@@ -100,7 +130,9 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
   override public func layoutSubviews() {
     super.layoutSubviews()
 
-    cornerRadius(indicator.bounds.height * 0.5)
+    if case .capsule = appearance.indicatorStyle {
+      cornerRadius(bounds.height * 0.5)
+    }
     indicator.cornerRadius(indicator.bounds.height * 0.5)
   }
 
@@ -117,20 +149,36 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
 
     let pivot = itemViews[index]
 
-    indicator
-      .deactivateConstraints()
-      .constraint(to: pivot, pin: .superview, margins: .init(vertical: 8, horizontal: 16).reversed)
-      .updateConstraintsIfNecessary()
+    switch appearance.indicatorStyle {
+    case .capsule:
+      indicator
+        .deactivateConstraints()
+        .constraint(
+          to: pivot,
+          pin: .superview,
+          margins: paddings.reversed
+        )
+        .updateConstraintsIfNecessary()
+    case .line:
+      indicator
+        .deactivateConstraints()
+        .constraint(
+          to: pivot,
+          pin: [.centerX, .bottom],
+          margins: paddings.reversed
+        )
+        .updateConstraintsIfNecessary()
+    }
 
     for label in itemViews {
       label
-        .font(style.normalFont)
-        .textColor(style.normalTextColor)
+        .font(appearance.normalFont)
+        .textColor(appearance.normalTextColor)
     }
 
     pivot
-      .font(style.highlightFont)
-      .textColor(style.highlightTextColor)
+      .font(appearance.highlightFont)
+      .textColor(appearance.highlightTextColor)
 
     setNeedsLayout()
     UIView.animate(withDuration: 0.25) {
@@ -165,21 +213,21 @@ public struct Segment<Element: Hashable & CustomStringConvertible>: UIViewRepres
   public typealias UIViewType = SegmentView<Element>
 
   public let items: [Element]
-  public let style: SegmentStyle
+  public let appearance: SegmentAppearance
   @Binding private var selection: (Element, Element)
 
   public init(
     items: [Element],
-    style: SegmentStyle,
+    appearance: SegmentAppearance,
     selection: Binding<(Element, Element)>
   ) {
     self.items = items
-    self.style = style
+    self.appearance = appearance
     _selection = selection
   }
 
   public func makeUIView(context: Context) -> UIViewType {
-    .init(items: items, style: style) { old, new in
+    .init(items: items, appearance: appearance) { old, new in
       selection = (old, new)
     }
   }
