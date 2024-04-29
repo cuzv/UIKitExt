@@ -437,6 +437,7 @@ public extension UIView {
     return self
   }
 
+  /// width = height * ratio
   @discardableResult
   func aspectRatio(_ value: CGFloat) -> Self {
     widthAnchor.constraint(equalTo: heightAnchor, multiplier: value).isActive = true

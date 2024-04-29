@@ -175,6 +175,7 @@ public enum Flex {
       @ChildViewBuilder content: () -> UIView
     ) {
       self.init()
+      translatesAutoresizingMaskIntoConstraints = false
       addSubview(content(), pin: anchors, paddings: insets)
     }
   }
@@ -188,6 +189,7 @@ public enum Flex {
       @ChildrenViewBuilder content: () -> [UIView]
     ) {
       self.init()
+      translatesAutoresizingMaskIntoConstraints = false
       for view in content() {
         addSubview(view, pin: anchors, paddings: insets)
       }

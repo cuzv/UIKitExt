@@ -500,3 +500,35 @@ public extension UIView {
     }
   }
 }
+
+public extension UIView {
+  /// Different cornerRadius for each corner
+  ///
+  /// https://stackoverflow.com/questions/40498892/different-cornerradius-for-each-corner
+  @discardableResult
+  func roundCorners(
+    topLeft: CGFloat = 0,
+    topRight: CGFloat = 0,
+    bottomLeft: CGFloat = 0,
+    bottomRight: CGFloat = 0
+  ) -> CAShapeLayer {
+    let topLeftRadius = CGSize(width: topLeft, height: topLeft)
+    let topRightRadius = CGSize(width: topRight, height: topRight)
+    let bottomLeftRadius = CGSize(width: bottomLeft, height: bottomLeft)
+    let bottomRightRadius = CGSize(width: bottomRight, height: bottomRight)
+
+    let maskPath = UIBezierPath(
+      shouldRoundRect: bounds,
+      topLeftRadius: topLeftRadius,
+      topRightRadius: topRightRadius,
+      bottomLeftRadius: bottomLeftRadius,
+      bottomRightRadius: bottomRightRadius
+    )
+
+    let shape = CAShapeLayer()
+    shape.path = maskPath.cgPath
+    layer.mask = shape
+
+    return shape
+  }
+}
