@@ -70,6 +70,7 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
       SegmentLabel(text: String(describing: item))
         .textColor(appearance.normalTextColor)
         .font(appearance.normalFont)
+        .textAlignment(.center)
         .tag(offset)
         .contentHuggingPriority(.defaultHigh, for: .horizontal)
         .contentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -83,15 +84,29 @@ public final class SegmentView<Element: Hashable & CustomStringConvertible>: UIV
     }
     self.itemViews = itemViews
 
-    UIStackView(
-      axis: .horizontal,
-      distribution: .equalSpacing,
-      spacing: 32,
-      paddings: paddings
-    ) {
-      itemViews
+    let stackView: UIStackView
+    switch appearance.indicatorStyle {
+    case .capsule:
+      stackView = UIStackView(
+        axis: .horizontal,
+        distribution: .equalSpacing,
+        spacing: paddings.leading * 2,
+        paddings: paddings
+      )
+    case .line:
+      stackView = UIStackView(
+        axis: .horizontal,
+        distribution: .fillEqually,
+        spacing: 0,
+        paddings: paddings
+      )
     }
-    .in(self)
+
+    stackView
+      .arrange {
+        itemViews
+      }
+      .in(self)
 
     let pivot = itemViews[0]
 
