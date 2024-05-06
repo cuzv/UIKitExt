@@ -244,7 +244,7 @@ public enum Flex {
       var leadingView: UIView?
       if [.end, .center, .spaceEvenly, .spaceAround].contains(justify) {
         let view = UIView().useConstraints()
-        addArrangedSubview(view)
+        arrange(view)
         leadingView = view
       }
 
@@ -256,16 +256,13 @@ public enum Flex {
           if itemView !== last {
             let spacer = UIView().useConstraints()
             spacers.append(spacer)
-            addArrangedSubviews([
-              itemView,
-              spacer,
-            ])
+            arrange(itemView, spacer)
           } else {
-            addArrangedSubview(itemView)
+            arrange(itemView)
           }
         }
       } else {
-        addArrangedSubviews(itemViews)
+        arrange(itemViews)
       }
 
       let growItemViews = itemViews.filter { $0.grow >= 1 }
@@ -290,7 +287,7 @@ public enum Flex {
       var trailingView: UIView?
       if [.start, .center, .spaceEvenly, .spaceAround].contains(justify) {
         let view = UIView().useConstraints()
-        addArrangedSubview(view)
+        arrange(view)
         trailingView = view
       }
 
@@ -468,14 +465,5 @@ public extension UIView {
     ) {
       self
     }
-  }
-}
-
-public extension UIStackView {
-  @discardableResult
-  func arrange(
-    @ChildrenViewBuilder content: () -> [UIView]
-  ) -> Self {
-    addArrangedSubviews(content())
   }
 }

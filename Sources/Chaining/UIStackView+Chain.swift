@@ -70,81 +70,77 @@ public extension UIStackView {
     views.compactMap { $0 }.forEach(addArrangedSubview(_:))
     return self
   }
+}
 
+public extension UIStackView {
   @discardableResult
-  func removeArrangedSubviews(_ views: UIView...) -> Self {
-    views.forEach(removeArrangedSubview(_:))
-    return self
+  func arrange(_ view: UIView?) -> Self {
+    addArrangedSubview(view)
   }
 
   @discardableResult
-  func removeArrangedSubviews(_ views: [UIView]) -> Self {
-    views.forEach(removeArrangedSubview(_:))
-    return self
+  func arrange(_ views: UIView?...) -> Self {
+    addArrangedSubviews(views)
+  }
+
+  @discardableResult
+  func arrange(_ views: [UIView?]) -> Self {
+    addArrangedSubviews(views)
+  }
+
+  @discardableResult
+  func arrange(_ views: UIView...) -> Self {
+    addArrangedSubviews(views)
+  }
+
+  @discardableResult
+  func arrange(_ views: [UIView]) -> Self {
+    addArrangedSubviews(views)
+  }
+
+  @discardableResult
+  func arrange(
+    @ChildrenViewBuilder content: () -> [UIView]
+  ) -> Self {
+    addArrangedSubviews(content())
   }
 
   /// Compose of `removeArrangedSubview(_:)` & `removeFromSuperview`
-  func detachArrangedSubview(_ view: UIView) {
+  @discardableResult
+  func disarrange(_ view: UIView) -> Self {
     removeArrangedSubview(view)
     view.removeFromSuperview()
-  }
-
-  func detachArrangedSubviews(_ views: UIView...) {
-    views.forEach(detachArrangedSubview(_:))
-  }
-
-  func detachArrangedSubviews(_ views: [UIView]) {
-    views.forEach(detachArrangedSubview(_:))
-  }
-
-  /// Call lastly while arrange subviews
-  @discardableResult
-  func distributionCenter() -> Self {
-    insertArrangedSubview(UIView().useConstraints(), at: 0)
-    addArrangedSubview(UIView().useConstraints())
-    return distributeHeadEqualTail()
+    return self
   }
 
   @discardableResult
-  func distributeHeadEqualTail() -> Self {
-    if
-      let head = arrangedSubviews.first,
-      let tail = arrangedSubviews.last,
-      head !== tail
-    {
-      switch axis {
-      case .horizontal:
-        head.width(equalTo: tail)
-      case .vertical:
-        head.height(equalTo: tail)
-      @unknown default:
-        print("Unknown default distribution: do nothing")
-      }
+  func disarrange(_ views: UIView...) -> Self {
+    for view in views {
+      disarrange(view)
     }
     return self
+  }
+
+  @discardableResult
+  func disarrange(_ views: [UIView]) -> Self {
+    for view in views {
+      disarrange(view)
+    }
+    return self
+  }
+
+  @discardableResult
+  func disarrange() -> Self {
+    disarrange(arrangedSubviews)
   }
 }
 
 public extension UIStackView {
   @discardableResult
   func centering() -> Self {
-    let header = UIView().useConstraints()
-    let footer = UIView().useConstraints()
-
-    insertArrangedSubview(header, at: 0)
-    addArrangedSubview(footer)
-
-    switch axis {
-    case .horizontal:
-      header.widthAnchor.constraint(equalTo: footer.widthAnchor).isActive = true
-    case .vertical:
-      header.heightAnchor.constraint(equalTo: footer.heightAnchor).isActive = true
-    @unknown default:
-      header.heightAnchor.constraint(equalTo: footer.heightAnchor).isActive = true
-      header.widthAnchor.constraint(equalTo: footer.widthAnchor).isActive = true
-    }
-
-    return self
+    insertArrangedSubview(UIView().useConstraints(), at: 0)
+    addArrangedSubview(UIView().useConstraints())
+    return applyCentering()
   }
 
   @discardableResult
