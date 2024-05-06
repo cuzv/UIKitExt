@@ -11,6 +11,7 @@ public typealias FlexRow = Flex.Row
 public typealias FlexTile = Flex.Tile
 public typealias FlexStack = Flex.Stack
 public typealias FlexContainer = Flex.Container
+public typealias FlexView = Flex.View
 public typealias FlexScroll = Flex.Scroll
 
 // MARK: - Flex
