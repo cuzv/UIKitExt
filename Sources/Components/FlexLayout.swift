@@ -2,15 +2,16 @@ import UIKit
 
 // MARK: - Typealias
 
-public typealias FlexColumn = Flex.Column
-public typealias FlexRow = Flex.Row
-public typealias FlexScroll = Flex.Scroll
-public typealias FlexView = Flex.View
-public typealias FlexStack = Flex.Stack
-
 public typealias FlexJustifyContent = Flex.JustifyContent
 public typealias FlexAlignItems = Flex.AlignItems
 public typealias FlexOverlayAlignment = Flex.OverlayAlignment
+
+public typealias FlexColumn = Flex.Column
+public typealias FlexRow = Flex.Row
+public typealias FlexTile = Flex.Tile
+public typealias FlexStack = Flex.Stack
+public typealias FlexContainer = Flex.Container
+public typealias FlexScroll = Flex.Scroll
 
 // MARK: - Flex
 
@@ -69,7 +70,7 @@ public enum Flex {
 
   // MARK: Column
 
-  open class Column: HitTestSlopStackView {
+  open class Column: Tile {
     public convenience init(
       justify: JustifyContent = .start,
       align: AlignItems = .stretch,
@@ -90,7 +91,7 @@ public enum Flex {
 
   // MARK: Row
 
-  open class Row: HitTestSlopStackView {
+  open class Row: Tile {
     public convenience init(
       justify: JustifyContent = .start,
       align: AlignItems = .stretch,
@@ -109,9 +110,51 @@ public enum Flex {
     }
   }
 
+  // MARK: Stack
+
+  open class Stack: View {
+    public convenience init(
+      pin anchors: PinLayoutAnchor = .superview,
+      paddings insets: NSDirectionalEdgeInsets = .zero,
+      @ChildrenViewBuilder content: () -> [UIView]
+    ) {
+      self.init()
+      translatesAutoresizingMaskIntoConstraints = false
+      for view in content() {
+        addSubview(view, pin: anchors, paddings: insets)
+      }
+    }
+  }
+
+  // MARK: Container
+
+  open class Container: View {
+    public convenience init(
+      pin anchors: PinLayoutAnchor = .superview,
+      paddings insets: NSDirectionalEdgeInsets = .zero,
+      @ChildViewBuilder content: () -> UIView
+    ) {
+      self.init()
+      translatesAutoresizingMaskIntoConstraints = false
+      addSubview(content(), pin: anchors, paddings: insets)
+    }
+  }
+
   // MARK: Scroll
 
-  open class Scroll: HitTestSlopScrollView {
+  open class Scroll: UIScrollView, HitTestSlop {
+    public private(set) var hitTestSlop: UIEdgeInsets = .zero
+
+    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+      judgeWhetherInclude(point: point, with: event)
+    }
+
+    @discardableResult
+    public func hitTestSlop(_ slop: UIEdgeInsets) -> Self {
+      hitTestSlop = slop
+      return self
+    }
+
     public convenience init(
       axis: NSLayoutConstraint.Axis,
       contentInset: UIEdgeInsets = .zero,
@@ -166,185 +209,137 @@ public enum Flex {
     }
   }
 
-  // MARK: View
+  // MARK: Tile
 
-  open class View: HitTestSlopView {
-    public convenience init(
-      pin anchors: PinLayoutAnchor = .superview,
-      paddings insets: NSDirectionalEdgeInsets = .zero,
-      @ChildViewBuilder content: () -> UIView
-    ) {
-      self.init()
-      translatesAutoresizingMaskIntoConstraints = false
-      addSubview(content(), pin: anchors, paddings: insets)
+  open class Tile: UIStackView, HitTestSlop {
+    public private(set) var hitTestSlop: UIEdgeInsets = .zero
+
+    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+      judgeWhetherInclude(point: point, with: event)
     }
-  }
 
-  // MARK: Stack
+    @discardableResult
+    public func hitTestSlop(_ slop: UIEdgeInsets) -> Self {
+      hitTestSlop = slop
+      return self
+    }
 
-  open class Stack: HitTestSlopView {
-    public convenience init(
-      pin anchors: PinLayoutAnchor = .superview,
-      paddings insets: NSDirectionalEdgeInsets = .zero,
+    convenience init(
+      axis: NSLayoutConstraint.Axis,
+      justify: Flex.JustifyContent,
+      align: Flex.AlignItems,
+      spacing: CGFloat,
+      paddings: NSDirectionalEdgeInsets,
       @ChildrenViewBuilder content: () -> [UIView]
     ) {
-      self.init()
-      translatesAutoresizingMaskIntoConstraints = false
-      for view in content() {
-        addSubview(view, pin: anchors, paddings: insets)
+      self.init(
+        axis: axis,
+        distribution: justify.distribution,
+        alignment: align.alignment(axis: axis),
+        spacing: spacing,
+        paddings: paddings
+      )
+
+      var leadingView: UIView?
+      if [.end, .center, .spaceEvenly, .spaceAround].contains(justify) {
+        let view = UIView().useConstraints()
+        addArrangedSubview(view)
+        leadingView = view
       }
-    }
-  }
 
-  // MARK: HitTestSlopStackView
-
-  open class HitTestSlopStackView: UIStackView, HitTestSlop {
-    public private(set) var hitTestSlop: UIEdgeInsets = .zero
-
-    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-      judgeWhetherInclude(point: point, with: event)
-    }
-
-    @discardableResult
-    public func hitTestSlop(_ slop: UIEdgeInsets) -> Self {
-      hitTestSlop = slop
-      return self
-    }
-  }
-
-  // MARK: HitTestSlopScrollView
-
-  open class HitTestSlopScrollView: UIScrollView, HitTestSlop {
-    public private(set) var hitTestSlop: UIEdgeInsets = .zero
-
-    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-      judgeWhetherInclude(point: point, with: event)
-    }
-
-    @discardableResult
-    public func hitTestSlop(_ slop: UIEdgeInsets) -> Self {
-      hitTestSlop = slop
-      return self
-    }
-  }
-
-  // MARK: HitTestSlopView
-
-  open class HitTestSlopView: TouchableFeedbackView, HitTestSlop {
-    public private(set) var hitTestSlop: UIEdgeInsets = .zero
-
-    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-      judgeWhetherInclude(point: point, with: event)
-    }
-
-    @discardableResult
-    public func hitTestSlop(_ slop: UIEdgeInsets) -> Self {
-      hitTestSlop = slop
-      return self
-    }
-  }
-}
-
-public extension Flex.HitTestSlopStackView {
-  convenience init(
-    axis: NSLayoutConstraint.Axis,
-    justify: Flex.JustifyContent,
-    align: Flex.AlignItems,
-    spacing: CGFloat,
-    paddings: NSDirectionalEdgeInsets,
-    @ChildrenViewBuilder content: () -> [UIView]
-  ) {
-    self.init(
-      axis: axis,
-      distribution: justify.distribution,
-      alignment: align.alignment(axis: axis),
-      spacing: spacing,
-      paddings: paddings
-    )
-
-    var leadingView: UIView?
-    if [.end, .center, .spaceEvenly, .spaceAround].contains(justify) {
-      let view = UIView().useConstraints()
-      addArrangedSubview(view)
-      leadingView = view
-    }
-
-    var spacers = [UIView]()
-    let itemViews = content()
-    if [.spaceBetween, .spaceAround].contains(justify) {
-      let last = itemViews.last
-      for itemView in itemViews {
-        if itemView !== last {
-          let spacer = UIView().useConstraints()
-          spacers.append(spacer)
-          addArrangedSubviews([
-            itemView,
-            spacer,
-          ])
-        } else {
-          addArrangedSubview(itemView)
+      var spacers = [UIView]()
+      let itemViews = content()
+      if [.spaceBetween, .spaceAround].contains(justify) {
+        let last = itemViews.last
+        for itemView in itemViews {
+          if itemView !== last {
+            let spacer = UIView().useConstraints()
+            spacers.append(spacer)
+            addArrangedSubviews([
+              itemView,
+              spacer,
+            ])
+          } else {
+            addArrangedSubview(itemView)
+          }
         }
-      }
-    } else {
-      addArrangedSubviews(itemViews)
-    }
-
-    let growItemViews = itemViews.filter { $0.grow >= 1 }
-    if growItemViews.count > 1 {
-      let first = growItemViews[0]
-      for view in growItemViews.dropFirst() {
-        switch axis {
-        case .horizontal:
-          NSLayoutConstraint.activate(
-            first.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: first.grow / view.grow)
-          )
-        case .vertical:
-          NSLayoutConstraint.activate(
-            first.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: first.grow / view.grow)
-          )
-        @unknown default:
-          break
-        }
-      }
-    }
-
-    var trailingView: UIView?
-    if [.start, .center, .spaceEvenly, .spaceAround].contains(justify) {
-      let view = UIView().useConstraints()
-      addArrangedSubview(view)
-      trailingView = view
-    }
-
-    if let leadingView, let trailingView {
-      switch axis {
-      case .horizontal:
-        NSLayoutConstraint.activate(
-          leadingView.widthAnchor.constraint(equalTo: trailingView.widthAnchor)
-        )
-      case .vertical:
-        NSLayoutConstraint.activate(
-          leadingView.heightAnchor.constraint(equalTo: trailingView.heightAnchor)
-        )
-      @unknown default:
-        break
+      } else {
+        addArrangedSubviews(itemViews)
       }
 
-      if justify == .spaceAround {
-        for view in spacers {
+      let growItemViews = itemViews.filter { $0.grow >= 1 }
+      if growItemViews.count > 1 {
+        let first = growItemViews[0]
+        for view in growItemViews.dropFirst() {
           switch axis {
           case .horizontal:
             NSLayoutConstraint.activate(
-              view.widthAnchor.constraint(equalTo: leadingView.widthAnchor, multiplier: 2)
+              first.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: first.grow / view.grow)
             )
           case .vertical:
             NSLayoutConstraint.activate(
-              view.heightAnchor.constraint(equalTo: leadingView.heightAnchor, multiplier: 2)
+              first.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: first.grow / view.grow)
             )
           @unknown default:
             break
           }
         }
       }
+
+      var trailingView: UIView?
+      if [.start, .center, .spaceEvenly, .spaceAround].contains(justify) {
+        let view = UIView().useConstraints()
+        addArrangedSubview(view)
+        trailingView = view
+      }
+
+      if let leadingView, let trailingView {
+        switch axis {
+        case .horizontal:
+          NSLayoutConstraint.activate(
+            leadingView.widthAnchor.constraint(equalTo: trailingView.widthAnchor)
+          )
+        case .vertical:
+          NSLayoutConstraint.activate(
+            leadingView.heightAnchor.constraint(equalTo: trailingView.heightAnchor)
+          )
+        @unknown default:
+          break
+        }
+
+        if justify == .spaceAround {
+          for view in spacers {
+            switch axis {
+            case .horizontal:
+              NSLayoutConstraint.activate(
+                view.widthAnchor.constraint(equalTo: leadingView.widthAnchor, multiplier: 2)
+              )
+            case .vertical:
+              NSLayoutConstraint.activate(
+                view.heightAnchor.constraint(equalTo: leadingView.heightAnchor, multiplier: 2)
+              )
+            @unknown default:
+              break
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // MARK: SlopTouchableView
+
+  open class View: TouchableFeedbackView, HitTestSlop {
+    public private(set) var hitTestSlop: UIEdgeInsets = .zero
+
+    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+      judgeWhetherInclude(point: point, with: event)
+    }
+
+    @discardableResult
+    public func hitTestSlop(_ slop: UIEdgeInsets) -> Self {
+      hitTestSlop = slop
+      return self
     }
   }
 }
@@ -410,19 +405,32 @@ public extension UIView {
   }
 
   @discardableResult
-  func inStack(
+  func inTile(
     axis: NSLayoutConstraint.Axis,
     justify: Flex.JustifyContent = .start,
     align: Flex.AlignItems = .stretch,
     spacing: CGFloat = 0,
     paddings: NSDirectionalEdgeInsets = .zero
-  ) -> Flex.HitTestSlopStackView {
+  ) -> Flex.Tile {
     .init(
       axis: axis,
       justify: justify,
       align: align,
       spacing: spacing,
       paddings: paddings
+    ) {
+      self
+    }
+  }
+
+  @discardableResult
+  func inContainer(
+    pin anchors: PinLayoutAnchor = .superview,
+    paddings insets: NSDirectionalEdgeInsets = .zero
+  ) -> Flex.Container {
+    .init(
+      pin: anchors,
+      paddings: insets
     ) {
       self
     }
@@ -459,30 +467,6 @@ public extension UIView {
     ) {
       self
     }
-  }
-
-  @discardableResult
-  func inView(
-    pin anchors: PinLayoutAnchor = .superview,
-    paddings insets: NSDirectionalEdgeInsets = .zero
-  ) -> Flex.View {
-    .init(
-      pin: anchors,
-      paddings: insets
-    ) {
-      self
-    }
-  }
-
-  @discardableResult
-  func padding(
-    pin anchors: PinLayoutAnchor = .superview,
-    _ insets: NSDirectionalEdgeInsets = .zero
-  ) -> Flex.View {
-    inView(
-      pin: anchors,
-      paddings: insets
-    )
   }
 }
 
