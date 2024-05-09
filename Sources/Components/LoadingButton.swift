@@ -12,7 +12,7 @@ public final class LoadingButton: HitTestSlopButton {
     didSet {
       let loading = isLoading
       if oldValue != loading {
-        onLoadingStateUpdated(isLoading: loading)
+        updateLoadingState(isLoading: loading)
       }
 
       isUserInteractionEnabled = !loading
@@ -72,7 +72,7 @@ public final class LoadingButton: HitTestSlopButton {
     resumeAnimationIfNeeded()
   }
 
-  private func onLoadingStateUpdated(isLoading: Bool) {
+  private func updateLoadingState(isLoading: Bool) {
     loadingView.isAnimating = isLoading
     setNeedsLayout()
   }

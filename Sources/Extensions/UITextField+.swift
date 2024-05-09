@@ -26,10 +26,10 @@ public extension UITextField {
 
 extension UITextField {
   public func fixRightViewAppearsWhileEditing() {
-    addTarget(self, action: #selector(onEditingChanged(_:)), for: .editingChanged)
+    addTarget(self, action: #selector(handleEditingChanged(_:)), for: .editingChanged)
   }
 
-  @objc private func onEditingChanged(_ sender: UITextField) {
+  @objc private func handleEditingChanged(_ sender: UITextField) {
     sender.rightViewMode = sender.text?.isEmpty == true ? .never : .always
   }
 

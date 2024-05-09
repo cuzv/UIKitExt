@@ -109,7 +109,7 @@ public extension Navigation where Base: UIViewController {
     }
   }
 
-  func onPopTapped() {
+  func pop() {
     if let nvc = base.navigationController {
       if nvc.viewControllers.count > 1 {
         nvc.popViewController(animated: true)

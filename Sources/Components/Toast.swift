@@ -120,24 +120,24 @@ final class ToastWindow: UIWindow {
 
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(onKeyboardWillShow),
+      selector: #selector(handleKeyboardWillShow),
       name: UIWindow.keyboardWillShowNotification,
       object: nil
     )
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(onKeyboardDidHide),
+      selector: #selector(handleKeyboardDidHide),
       name: UIWindow.keyboardDidHideNotification,
       object: nil
     )
   }
 
-  @objc private func onKeyboardWillShow() {
+  @objc private func handleKeyboardWillShow() {
     keyboardWindowDidAppear = true
     handleTopWindowAppear()
   }
 
-  @objc private func onKeyboardDidHide() {
+  @objc private func handleKeyboardDidHide() {
     removedSubviews.forEach(rootVC.view.fillSubview(_:))
     removedSubviews = []
     keyboardWindowDidAppear = false
