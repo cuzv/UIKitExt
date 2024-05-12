@@ -6,8 +6,8 @@ import UIKit
 
 public extension String {
   func attributed(
-    foregroundColor: UIColor? = nil,
     font: UIFont,
+    foregroundColor: UIColor? = nil,
     lineSpacing: CGFloat = 0,
     alignment: NSTextAlignment = .justified
   ) -> NSAttributedString {
