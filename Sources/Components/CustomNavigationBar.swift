@@ -6,17 +6,17 @@ let kBarHeight: CGFloat = 44
 // MARK: - Navigation subviews
 
 public extension Navigation where Base: UIViewController {
-  var bar: UIView {
+  var bar: UIToolbar {
     let it = base.view.subviews.first { view in
-      view.isKind(of: _NavView.self)
+      view.isKind(of: _NavBar.self)
     }
 
-    if let it {
+    if let it = it as? UIToolbar {
       return it
     } else {
       base.additionalSafeAreaInsets.top = kBarHeight
 
-      let it = _NavView()
+      let it = _NavBar()
       it.translatesAutoresizingMaskIntoConstraints = false
       base.view.addSubview(it)
       NSLayoutConstraint.activate([
@@ -118,6 +118,47 @@ public extension Navigation where Base: UIViewController {
       }
     }
   }
+
+  @discardableResult
+  func backgroundColor(_ color: UIColor?) -> Self {
+    bar.backgroundColor(color)
+    return self
+  }
+
+  @discardableResult
+  func barStyle(_ style: UIBarStyle) -> Self {
+    bar.barStyle = style
+    return self
+  }
+
+  @discardableResult
+  func translucent(_ isTranslucent: Bool) -> Self {
+    bar.isTranslucent = isTranslucent
+    return self
+  }
+
+  @discardableResult
+  func title(_ value: String?) -> Self {
+    titleLabel.text(value)
+    return self
+  }
+
+  @discardableResult
+  func leadingButtons(_ buttons: [UIButton]) -> Self {
+    leadingButtons = buttons
+    return self
+  }
+
+  @discardableResult
+  func trailingButtons(_ buttons: [UIButton]) -> Self {
+    trailingButtons = buttons
+    return self
+  }
+
+  @discardableResult
+  func backButton(_ button: UIButton) -> Self {
+    leadingButtons([button])
+  }
 }
 
 // MARK: - Leading & Trailing StackView
@@ -185,7 +226,7 @@ extension Navigation where Base: UIViewController {
 
 // MARK: - Private classes
 
-private final class _NavView: UIView {}
+private final class _NavBar: UIToolbar {}
 private class _StackView: UIStackView {
   override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
     for view in arrangedSubviews {
@@ -216,7 +257,7 @@ public extension NavigationProvider {
   }
 }
 
-public struct Navigation<Base> {
+public final class Navigation<Base> {
   public let base: Base
 
   fileprivate init(_ base: Base) {
