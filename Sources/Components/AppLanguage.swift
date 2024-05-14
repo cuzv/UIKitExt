@@ -10,6 +10,8 @@ public enum AppLanguage {
       UserDefaults.standard.string(forKey: #function) ?? NSLocale.preferredLanguages.first
     }
     set {
+      _ = Bundle.runOnce
+
       if let newValue, !newValue.isEmpty {
         UserDefaults.standard.set([newValue], forKey: kAppleLanguages)
         UserDefaults.standard.set(newValue, forKey: #function)
@@ -27,6 +29,10 @@ private var _al_localizedBundleKey: Void?
 private var _al_languageKey: Void?
 
 public extension Bundle {
+  fileprivate static let runOnce: Void = {
+    Bundle.awake()
+  }()
+
   class func awake() {
     let clazz = Bundle.self
     let originalSelector = #selector(localizedString(forKey:value:table:))
@@ -107,20 +113,5 @@ public extension Bundle {
         self, &_al_languageKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC
       )
     }
-  }
-}
-
-// MARK: -
-
-// See https://stackoverflow.com/questions/42824541/swift-3-1-deprecates-initialize-how-can-i-achieve-the-same-thing/42824542
-extension UIApplication {
-  private static let runOnce: Void = {
-    Bundle.awake()
-  }()
-
-  override open var next: UIResponder? {
-    // Called before applicationDidFinishLaunching
-    UIApplication.runOnce
-    return super.next
   }
 }
