@@ -32,4 +32,39 @@ public extension UIApplication {
   var safeAreaInsets: UIEdgeInsets {
     _keyWindow?.safeAreaInsets ?? .zero
   }
+
+  func openSettings(
+    options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:],
+    completionHandler completion: ((Bool) -> Void)? = nil
+  ) {
+    open(
+      link: UIApplication.openSettingsURLString,
+      options: options,
+      completionHandler: completion
+    )
+  }
+
+  @available(iOS 16.0, *)
+  func openNotificationSettings(
+    options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:],
+    completionHandler completion: ((Bool) -> Void)? = nil
+  ) {
+    open(
+      link: UIApplication.openNotificationSettingsURLString,
+      options: options,
+      completionHandler: completion
+    )
+  }
+
+  func open(
+    link: String,
+    options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:],
+    completionHandler completion: ((Bool) -> Void)? = nil
+  ) {
+    if let url = URL(string: link), canOpenURL(url) {
+      open(url, options: options, completionHandler: completion)
+    } else {
+      completion?(false)
+    }
+  }
 }
